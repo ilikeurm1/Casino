@@ -7,12 +7,12 @@ import math
 import os
 import time
 
-# Game files
-
-# Make the main directory of the game
+# CUSTUMIZABLE SETTINGS
 
 Main_Directory = r"" # You can customise this field as you want, so you decide where your game files are stored. Please try not to change this after diciding where to store as it can result in data loss or having to move everything manually.
 Game_Profile = '' # Change this to change or create profiles
+
+# Make the main directory of the game
 
 folder_path = os.path.join(Main_Directory, Game_Profile)
 os.makedirs(folder_path, 511, True)
@@ -72,7 +72,6 @@ def Bet(money):
     time.sleep(1)
     return Total, Money_Betting
 
-
 def HasColor(x):
     Red_Numbers = [1, 3, 5, 7, 9, 12, 14, 16, 18, 19, 21, 23, 25, 27, 30, 32, 34, 36]
     if x == 0:
@@ -82,7 +81,6 @@ def HasColor(x):
     else:
         Color = "b"
     return Color
-
 
 # Games
 
@@ -114,8 +112,6 @@ def Guesser(Money_Bet, Streak, Times_Won):
         time.sleep(1)
     return Money_Won, Streak, Times_Won
         
-
-
 # Roulette
 
 def Roulette(Money_Bet, Streak, Times_Won):
@@ -155,7 +151,6 @@ You choose to bet on: """)
             print(f"Sorry! The correct number was {Winning_Number} and you chose {Chosen}, better luck next time!")
             time.sleep(1)
 
-    
     except: # A color was chosen
         if Winning_Color == "g": # Multiplier
             Money_Multiplier = 10
@@ -177,16 +172,6 @@ You choose to bet on: """)
     
     return Money_Won, Streak, Times_Won
 
-
-
-
-
-# The main "UI" i guess
-# The main "UI" i guess
-# The main "UI" i guess
-# The main "UI" i guess
-# The main "UI" i guess
-# The main "UI" i guess
 # The main "UI" i guess
 
 while True:
@@ -216,12 +201,6 @@ You may type the name of the game or use the number assigned to it.
         Money = Money + Money_Won
         Highest_Winnings.append(Money_Won)
         
-
-
-
-
-
-
     print("")
     print(f"You now have {Money}$ and are on a streak of {Streak}")
     Highest_Streak.append(Streak)
@@ -283,17 +262,3 @@ In total you won {Times_Won} time(s)!
     else:
             print("Invalid Input, the program will now shut off")
             break
-
-
-
-
-
-
-
-
-
-
-
-
-
-
