@@ -3,7 +3,6 @@
 # imports
 
 import random
-import math
 import os
 import time
 
@@ -178,7 +177,11 @@ You may type the name of the game or use the number assigned to it.
     print("")
     print(f"You now have {Money}$ and are on a streak of {Streak}")
     Highest_Streak.append(Streak)
-    time.sleep(1)
+
+    with open(file_path, 'w') as fp:
+        fp.write(str(Money))
+        print("")
+        print('Money saved!')
 
 # LOSE
     if Money == 0:
@@ -200,19 +203,11 @@ In total you won {Times_Won} time(s)!
     print("")
     again = input("Run again? (y/n): ")
     if 'y' in again:
-            with open(file_path, 'w') as fp:
-                fp.write(str(Money))
-                print("")
-                print('Money saved!')
-                time.sleep(2)
-            continue
+        time.sleep(1)
+        continue
     elif 'n' in again:
-            with open(file_path, 'w') as fp:
-                fp.write(str(Money))
-
-
             print("")
-            print(f"Money saved! When you come back next time you will start with {Money}$")
+            print(f"When you come back next time you will start with {Money}$")
             time.sleep(2)
             print(f"""
 Good bye!
