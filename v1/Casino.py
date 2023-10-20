@@ -7,48 +7,20 @@ import math
 import os
 import time
 
-# CUSTUMIZABLE SETTINGS
+# File creaton
 
-Main_Directory = r"" # You can customise this field as you want, so you decide where your game files are stored. Please try not to change this after diciding where to store as it can result in data loss or having to move everything manually.
-Game_Profile = '' # Change this to change or create profiles
-
-# Make the main directory of the game
-
-folder_path = os.path.join(Main_Directory, Game_Profile)
-os.makedirs(folder_path, 511, True)
-
-# Add settings file
-file_name = 'Money.txt'
-file_path = os.path.join(folder_path, file_name) # Used to save your money
-if os.path.exists(file_path):
-    print("")
-    print("Hello again, setting money to last stored")
-    with open(file_path, "r") as f:
-        Money = int(f.readline())
-    print("")
-    print(f"You are starting with {Money}$")
-else:
-    Money = input('How much money do u want to start with: ')
-    print("")
-    print('Created settings file!')
-    with open(file_path, 'w') as fp:
-        fp.write(Money)
-    Money = int(Money)
-
-print("")
-print(f"Storing game files in path: {folder_path}")
-time.sleep(1)
+# import Settings
 
 # Variables 
 
 Streak = 0
 Times_Won = 0
+from Settings import Money, file_path
 
 # Lists
 
 Highest_Streak = []
 Highest_Winnings = []
-Colors = ["Red", "Red", "Red", "Red", "Red", "Red", "Red", "Red", "Red", "Red", "Red", "Red", "Red", "Red", "Red", "Red", "Red", "Red", "Black", "Black", "Black", "Black", "Black", "Black", "Black", "Black", "Black", "Black", "Black", "Black", "Black", "Black", "Black", "Black", "Black", "Black", "Green"]
 
 # Functions 
 
@@ -117,6 +89,8 @@ def Guesser(Money_Bet, Streak, Times_Won):
 def Roulette(Money_Bet, Streak, Times_Won):
     Winning_Number = random.randint(0, 36)
     Winning_Color = HasColor(Winning_Number)
+    # print(Winning_Number)
+    # print(Winning_Color)
     Chosen = input("""What do you guess, pick from:
                    
 Numbers: 0 - 36
@@ -255,8 +229,7 @@ Your highest streak was when you won {max(Highest_Streak)} time(s) in a row
 
 Your highest winning was {max(Highest_Winnings)}$
 
-In total you won {Times_Won} time(s)!
-                
+In total you won {Times_Won} time(s)!             
 """)
             break
     else:
