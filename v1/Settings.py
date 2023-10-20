@@ -4,7 +4,7 @@ import time
 # CUSTUMIZABLE SETTINGS
 
 Main_Directory = os.getcwd() + r"\profiles\v1" # You can customise this field as you want, so you decide where your game files are stored. Please try not to change this after diciding where to store as it can result in data loss or having to move everything manually.
-Game_Profile = 'Kamiel' # Change this to change or create profiles
+Game_Profile = 'Admin' # Change this to change or create profiles
 
 # Make the main directory of the game
 
