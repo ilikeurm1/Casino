@@ -1,4 +1,4 @@
-import time, random, utils
+import time, random, Utils
 
 # Number Guesser
 
@@ -33,10 +33,10 @@ def Guesser(Money_Bet, Streak, Times_Won):
 
 def Roulette(Money_Bet, Streak, Times_Won):
     Winning_Number = random.randint(0, 36)
-    Winning_Color = utils.HasColor(Winning_Number)
+    Winning_Color = Utils.HasColor(Winning_Number)
     print(Winning_Number)
     print(Winning_Color)
-    Chosen = input(utils.ROULETTE_WELCOME)
+    Chosen = input(Utils.ROULETTE_WELCOME)
     Chosen_Color = Chosen[0].lower()
     
     time.sleep(1)
@@ -84,7 +84,7 @@ def Roulette(Money_Bet, Streak, Times_Won):
 
 def Slots(Money_Bet, Streak, Times_Won):
     slots = [random.randint(1,9), random.randint(1,9), random.randint(1,9)]
-    utils.Roll(slots)
+    Utils.Roll(slots)
     if slots[0] == slots[1] == slots[2]:
         if slots[0] == 7:
             Money_Multiplier = 100
