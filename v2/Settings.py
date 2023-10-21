@@ -1,36 +1,53 @@
-import os
-import time
+import os, time, json
 
 # CUSTUMIZABLE SETTINGS
 
 Main_Directory = os.getcwd() + r"\profiles\v2" # You can customise this field as you want, so you decide where your game files are stored. Please try not to change this after diciding where to store as it can result in data loss or having to move everything manually.
-Game_Profile = 'Admin' # Change this to change or create profiles
+Game_Profile = input("What is your username: ") # If you have 
 
 # Make the main directory of the game
-
-folder_path = os.path.join(Main_Directory, Game_Profile)
-os.makedirs(folder_path, 511, True)
-
 print("")
-print(f"Storing game files in path: {folder_path}")
+print(f"Storing game files in path: {Main_Directory}")
 
-# Add settings file
+os.makedirs(Main_Directory, 511, True)
 
-file_name = 'Money.txt'
-file_path = os.path.join(folder_path, file_name) # Used to save your money
+# Add users file
+
+file_name = 'Users.json'
+file_path = os.path.join(Main_Directory, file_name) # Used to save your money
+
 if os.path.exists(file_path):
-    print("")
-    print("Hello again, setting money to last stored")
-    with open(file_path, "r") as f:
-        Money = int(f.readline())
-    print("")
-    print(f"You are starting with {Money}$")
+    with open(file_path, "r") as read_file:
+        print("")
+        print(f"Hello {Game_Profile}")
+        print("")
+        Users = json.load(read_file)
+        # print(Users)
+        # print(type(Users))
+        # IF user does not exist, ask the money question
+        try: 
+            Money = Users[Game_Profile]["Money"]
+            print(Money)
+        except KeyError:
+            Money = int(input('How much money do u want to start with: '))
+            Users[Game_Profile] = {            
+                "Money": Money
+            }
+            with open(file_path, "w") as write_file:
+                json.dump(Users, write_file, indent=4)
+
 else:
-    Money = input('How much money do u want to start with: ')
+    # New game file
+    print(f"Hello {Game_Profile}")
     print("")
-    print('Created settings file!')
-    with open(file_path, 'w') as fp:
-        fp.write(Money)
-    Money = int(Money)
+    Money = int(input('How much money do u want to start with: '))
+    print("")
+    data = {
+        Game_Profile: {
+            "Money": Money
+        }
+    }
+    with open(file_path, "w") as write_file:
+        json.dump(data, write_file, indent=4)
 
 time.sleep(1)
