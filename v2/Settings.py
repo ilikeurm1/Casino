@@ -11,6 +11,22 @@ print(f"Storing game files in path: {Main_Directory}")
 
 os.makedirs(Main_Directory, 511, True)
 
+# Save function
+def Save(Money):
+    with open(file_path, "r") as read_file:
+        Users = json.load(read_file)
+        # print(Users)
+        # print(type(Users))
+        # IF user does not exist, ask the money question
+        try: 
+            Users[Game_Profile]["Money"] = Money
+            with open(file_path, "w") as write_file:
+                json.dump(Users, write_file, indent=4)
+            print(f"Saved money as: {Money}")
+        except KeyError:
+            print("Money not saved, unknown user!")
+
+
 # Add users file
 
 file_name = 'Users.json'
@@ -28,6 +44,11 @@ if os.path.exists(file_path):
         try: 
             Money = Users[Game_Profile]["Money"]
             print(Money)
+            if Money == 0:
+                print("")
+                Money = int(input('How much money do u want to start with: '))
+                print("")
+                Save(Money)
         except KeyError:
             Money = int(input('How much money do u want to start with: '))
             Users[Game_Profile] = {            

@@ -1,7 +1,7 @@
 # imports
 
-import os, time, Utils, Games
-from Settings import Money, file_path
+import time, Utils, Games
+from Settings import Money, Save
 
 # Init
 
@@ -37,15 +37,11 @@ while True:
     print(f"You now have {Money}$ and are on a streak of {Streak}")
     Highest_Streak.append(Streak)
 
-    with open(file_path, 'w') as fp:
-        fp.write(str(Money))
-        print("")
-        print('Money saved!')
+    Save(Money)
 
 # LOSE
     if Money == 0:
         print(Utils.LOST(Highest_Streak, Highest_Winnings, Times_Won))
-        os.remove(file_path)   
         break
 
 # Run again
