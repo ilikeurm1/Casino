@@ -25,18 +25,15 @@ while True:
     elif Game == All_Games[1] or int(Game) == 2:
         Chosen_Game = Games.Roulette
         Game_Index = 1
-
     print("")
     print(f"You have chosen to play {All_Games[Game_Index]}!")
     Money, Money_Betting = Utils.Bet(Money)
     Money_Won, Streak, Times_Won = Chosen_Game(Money_Betting, Streak, Times_Won)
     Money = Money + Money_Won
     Highest_Winnings.append(Money_Won)
-        
     print("")
     print(f"You now have {Money}$ and are on a streak of {Streak}")
     Highest_Streak.append(Streak)
-
     Save(Money)
 
 # LOSE

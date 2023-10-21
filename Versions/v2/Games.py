@@ -37,7 +37,6 @@ def Roulette(Money_Bet, Streak, Times_Won):
     # print(Winning_Color)
     Chosen = input(Utils.ROULETTE_WELCOME)
     Chosen_Color = Chosen[0].lower()
-    
     time.sleep(1)
     try: # A number was chosen
         Chosen = int(Chosen)
@@ -57,13 +56,11 @@ def Roulette(Money_Bet, Streak, Times_Won):
             print("")
             print(f"Sorry! The correct number was {Winning_Number} and you chose {Chosen}, better luck next time!")
             time.sleep(1)
-
     except: # A color was chosen
         if Winning_Color == "g": # Multiplier
             Money_Multiplier = 10
         else:
             Money_Multiplier = 2
-
         if Chosen_Color == Winning_Color:
             Money_Won = Money_Bet * Money_Multiplier
             Streak += 1

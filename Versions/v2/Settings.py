@@ -6,9 +6,9 @@ Main_Directory = os.getcwd() + r"\profiles\v2" # You can customise this field as
 Game_Profile = input("What is your username: ") # If you have 
 
 # Make the main directory of the game
+
 print("")
 print(f"Storing game files in path: {Main_Directory}")
-
 os.makedirs(Main_Directory, 511, True)
 
 # Save function
@@ -25,7 +25,6 @@ def Save(Money):
             print(f"Saved money as: {Money}")
         except KeyError:
             print("Money not saved, unknown user!")
-
 
 # Add users file
 
@@ -56,7 +55,6 @@ if os.path.exists(file_path):
             }
             with open(file_path, "w") as write_file:
                 json.dump(Users, write_file, indent=4)
-
 else:
     # New game file
     print(f"Hello {Game_Profile}")
@@ -70,5 +68,4 @@ else:
     }
     with open(file_path, "w") as write_file:
         json.dump(data, write_file, indent=4)
-
 time.sleep(1)
