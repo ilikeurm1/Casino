@@ -2,13 +2,7 @@
 
 # imports
 
-import random
-import os
-import time
-
-# File creaton
-
-# import Settings
+import random, os, time
 
 # Variables 
 
