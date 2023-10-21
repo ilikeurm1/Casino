@@ -10,7 +10,7 @@ In the Settings.py file, edit:
 Main_Directory = os.getcwd() + r"\profiles\v1"
 ```
 
-## Configuration v2
+## Configuration v2+
 
 Pretty much the same as v1 only your file is now saved in a **JSON** file instead of a txt file.
 
