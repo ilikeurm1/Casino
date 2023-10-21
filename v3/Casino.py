@@ -1,7 +1,7 @@
 # imports
 
-import time, Utils, Games
-from Settings import Money, Save
+import time, utils, games
+from settings import Money, Save
 
 # Init
 
@@ -13,28 +13,28 @@ All_Games = ["Number Guesser", "Roulette", "Slots"]
 # Main game loop
 
 while True:
-    Game = input(Utils.WELCOME) or 0
+    Game = input(utils.WELCOME) or 0
 
     if Game == 0:
         continue
     
     if Game == All_Games[0] or int(Game) == 1:
-        Chosen_Game = Games.Guesser
+        Chosen_Game = games.Guesser
         Game_Index = 0
 
     elif Game == All_Games[1] or int(Game) == 2:
-        Chosen_Game = Games.Roulette
+        Chosen_Game = games.Roulette
         Game_Index = 1
 
     elif Game == All_Games[2] or int(Game) == 3:
-         Chosen_Game = Games.Slots
+         Chosen_Game = games.Slots
          Game_Index = 2
 
     # Initialize game
 
     print("")
     print(f"You have chosen to play {All_Games[Game_Index]}!")
-    Money, Money_Betting = Utils.Bet(Money)
+    Money, Money_Betting = utils.Bet(Money)
     Money_Won, Streak, Times_Won = Chosen_Game(Money_Betting, Streak, Times_Won)
     Money = Money + Money_Won
     Highest_Winnings.append(Money_Won)
@@ -47,7 +47,7 @@ while True:
 
 # LOSE
     if Money == 0:
-        print(Utils.LOST(Highest_Streak, Highest_Winnings, Times_Won))
+        print(utils.LOST(Highest_Streak, Highest_Winnings, Times_Won))
         break
 
 # Run again
@@ -60,7 +60,7 @@ while True:
             print("")
             print(f"When you come back next time you will start with {Money}$")
             time.sleep(2)
-            print(Utils.BYE(Highest_Streak, Highest_Winnings, Times_Won))
+            print(utils.BYE(Highest_Streak, Highest_Winnings, Times_Won))
             break
     else:
             print("Invalid Input, the program will now shut off")
