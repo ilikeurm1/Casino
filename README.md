@@ -12,5 +12,5 @@ Main_Directory = os.getcwd() + r"\profiles\v1"
 
 ## Configuration v2+
 
-Pretty much the same as v1 only your file is now saved in a **JSON** file instead of a txt file.
+Pretty much the same as v1 only your file is now saved in a **JSON** file instead of a txt file. Which makes it so there is 1 file for every user (as long as `Main_Directory` is the same).
 
