@@ -48,7 +48,7 @@ What game do you want to play?
 
 1. Number Guesser | Rewards: 2
 2. Roulette | Rewards: 2x (Color) 5x (Number) 10x (Green or 0)
-3. Slots | Rewards: 2x (2 of the same) 5x (2x '7') 10x (3 of the same) 100x (3x '7')
+3. Slots | Rewards: 3x (2 of the same) 8x (2x '7') 8x (3 of the same) 100x (3x '7')
        
 You may type the name of the game or use the number assigned to it: """
 

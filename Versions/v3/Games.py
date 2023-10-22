@@ -34,8 +34,8 @@ def Guesser(Money_Bet, Streak, Times_Won):
 def Roulette(Money_Bet, Streak, Times_Won):
     Winning_Number = random.randint(0, 36)
     Winning_Color = Utils.HasColor(Winning_Number)
-    print(Winning_Number)
-    print(Winning_Color)
+    # print(Winning_Number)
+    # print(Winning_Color)
     Chosen = input(Utils.ROULETTE_WELCOME)
     Chosen_Color = Chosen[0].lower()
     
@@ -84,17 +84,18 @@ def Roulette(Money_Bet, Streak, Times_Won):
 
 def Slots(Money_Bet, Streak, Times_Won):
     slots = [random.randint(1,9), random.randint(1,9), random.randint(1,9)]
+    # slots = [7, 7, 7]
     Utils.Roll(slots)
     if slots[0] == slots[1] == slots[2]:
         if slots[0] == 7:
             Money_Multiplier = 100
         else:
-            Money_Multiplier = 10
+            Money_Multiplier = 8
     elif slots[0] == slots[1] or slots[1] == slots[2] or slots[0] == slots[2]:
         if (slots[0] != 7 and slots[1] != 7) or (slots[1] != 7 and slots[2] != 7) or (slots[0] != 7 and slots[2] != 7):
-            Money_Multiplier = 2
+            Money_Multiplier = 3
         else:
-            Money_Multiplier = 5
+            Money_Multiplier = 8
     else:
         Money_Multiplier = 0
     if Money_Multiplier != 0:
@@ -111,4 +112,3 @@ def Slots(Money_Bet, Streak, Times_Won):
         print(f"Sorry! The slot machine ended at {slots[0], slots[1], slots[2]} which means you lost your money ({Money_Bet}$), better luck next time!")
         time.sleep(1)
     return Money_Won, Streak, Times_Won
-        
