@@ -6,7 +6,7 @@ from Settings import Money, Save
 # Init
 
 Streak = Times_Won = 0
-Highest_Streak = [0]
+Highest_Streak = []
 Highest_Winnings = []
 All_Games = ["Number Guesser", "Roulette", "Slots"]
 
@@ -38,6 +38,7 @@ while True:
     Money_Won, Streak, Times_Won = Chosen_Game(Money_Betting, Streak, Times_Won)
     Money = Money + Money_Won
     Highest_Winnings.append(Money_Won)
+    Highest_Streak.append(Streak)
         
     Save(Money)
 
@@ -48,7 +49,7 @@ while True:
 
     print("")
     print(f"You now have {Money}$ and are on a streak of {Streak}")
-    Highest_Streak.append(Streak)
+    
 
     # Run again
     print("")
