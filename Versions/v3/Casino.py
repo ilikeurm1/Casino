@@ -6,7 +6,7 @@ from Settings import Money, Save
 # Init
 
 Streak = Times_Won = 0
-Highest_Streak = []
+Highest_Streak = [0]
 Highest_Winnings = []
 All_Games = ["Number Guesser", "Roulette", "Slots"]
 
