@@ -39,18 +39,18 @@ while True:
     Money = Money + Money_Won
     Highest_Winnings.append(Money_Won)
         
-    print("")
-    print(f"You now have {Money}$ and are on a streak of {Streak}")
-    Highest_Streak.append(Streak)
-
     Save(Money)
 
-# LOSE
+    # LOSE
     if Money == 0:
         print(Utils.LOST(Highest_Streak, Highest_Winnings, Times_Won))
         break
 
-# Run again
+    print("")
+    print(f"You now have {Money}$ and are on a streak of {Streak}")
+    Highest_Streak.append(Streak)
+
+    # Run again
     print("")
     again = input("Run again? (y/n): ")
     if 'y' in again:
