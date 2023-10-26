@@ -155,6 +155,11 @@ def Blackjack(Money_Bet, Streak, Times_Won):
             elif action == "stand":
                 break
 
+        # Convert 11 to 1 if the total score is over 21
+        if 11 in dealer_hand and sum(dealer_hand) > 21:
+            dealer_hand.remove(11)
+            dealer_hand.append(1)
+
         while sum(dealer_hand) < 17:
             dealer_hand.append(Utils.deal_card())
             # Convert 11 to 1 if the total score is over 21
@@ -166,9 +171,9 @@ def Blackjack(Money_Bet, Streak, Times_Won):
         dealer_score = sum(dealer_hand)
 
         print("") 
-        print(f"Your hand: {player_hand}")
+        print(f"Your hand: {player_hand}, Total: {sum(player_hand)}")
         print("") 
-        print(f"Dealer's hand: {dealer_hand}")
+        print(f"Dealer's hand: {dealer_hand}, Total: {sum(dealer_hand)}")
 
         if player_blackjack and dealer_blackjack:
             result = "It's a push (tie). Your bet is returned."
