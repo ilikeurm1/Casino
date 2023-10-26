@@ -70,7 +70,7 @@ while True:
         print(f"When you come back next time you will start with {Money}$")
         time.sleep(2)
         print(Utils.BYE(Highest_Streak, Highest_Winnings, Times_Won))
-        end = True
+        break
     else:
         continue
     
