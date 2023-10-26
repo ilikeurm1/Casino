@@ -8,7 +8,7 @@ from Settings import Money, Save
 Streak = Times_Won = 0
 Highest_Streak = []
 Highest_Winnings = []
-All_Games = ["Number Guesser", "Roulette", "Slots"]
+All_Games = ["Number Guesser", "Roulette", "Slots", "Blackjack"]
 
 # Main game loop
 
@@ -29,6 +29,10 @@ while True:
     elif Game == All_Games[2] or int(Game) == 3:
          Chosen_Game = Games.Slots
          Game_Index = 2
+    
+    elif Game == All_Games[3] or int(Game) == 4:
+         Chosen_Game = Games.Blackjack
+         Game_Index = 3
 
     # Initialize game
 
@@ -44,7 +48,8 @@ while True:
 
     # LOSE
     if Money == 0:
-        print(Utils.LOST(Highest_Streak, Highest_Winnings, Times_Won))
+        print(Utils.LOST())
+        print(Utils.BYE(Highest_Streak, Highest_Winnings, Times_Won))
         break
 
     print("")

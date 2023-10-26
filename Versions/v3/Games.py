@@ -112,3 +112,94 @@ def Slots(Money_Bet, Streak, Times_Won):
         print(f"Sorry! The slot machine ended at {slots[0], slots[1], slots[2]} which means you lost your money ({Money_Bet}$), better luck next time!")
         time.sleep(1)
     return Money_Won, Streak, Times_Won
+
+# Blackjack
+
+def Blackjack(Money_Bet, Streak, Times_Won):
+
+    while True:
+        player_hand = []
+        dealer_hand = []
+        player_score = 0
+        dealer_score = 0
+        player_blackjack = False
+        dealer_blackjack = False
+
+        # Deal two cards to the player and dealer
+
+        for _ in range(2):
+            player_hand.append(Utils.deal_card())
+            dealer_hand.append(Utils.deal_card())
+
+        if sum(player_hand) == 21 and len(player_hand) == 2:
+            player_blackjack = True
+
+        if sum(dealer_hand) == 21 and len(dealer_hand) == 2:
+            dealer_blackjack = True
+
+        while sum(player_hand) < 21:
+            print("")
+            print(f"Your hand: {player_hand}")
+            print("")
+            # print(f"Dealer's hand: [{dealer_hand[0]}, ?]")
+            print(f"Dealer's hand: {dealer_hand}")
+            print("")
+
+            action = input("Do you want to 'hit' or 'stand'? ").lower()
+            if action == "hit":
+                player_hand.append(Utils.deal_card())
+                # Convert 11 to 1 if the total score is over 21
+                if 11 in player_hand and sum(player_hand) > 21:
+                    player_hand.remove(11)
+                    player_hand.append(1)
+            elif action == "stand":
+                break
+
+        while sum(dealer_hand) < 17:
+            dealer_hand.append(Utils.deal_card())
+            # Convert 11 to 1 if the total score is over 21
+            if 11 in dealer_hand and sum(dealer_hand) > 21:
+                dealer_hand.remove(11)
+                dealer_hand.append(1)
+
+        player_score = sum(player_hand)
+        dealer_score = sum(dealer_hand)
+
+        print(f"Your hand: {player_hand}")
+        print(f"Dealer's hand: {dealer_hand}")
+
+        if player_blackjack and dealer_blackjack:
+            result = "It's a push (tie). Your bet is returned."
+        elif player_blackjack:
+            result = "Blackjack! You win!"
+        elif dealer_blackjack:
+            result = "Dealer has a blackjack. You lose."
+        elif player_score > 21:
+            result = "Bust! You lose."
+        elif dealer_score > 21:
+            result = "Dealer busts! You win!"
+        elif player_score > dealer_score:
+            result = "You win!"
+        elif player_score < dealer_score:
+            result = "You lose."
+        else:
+            result = "It's a push (tie). Your bet is returned."
+
+        print(result)
+
+        if "Blackjack" in result: # result == "You win!" or result == "Blackjack! You win!" or result == "Dealer busts! You win!":
+            Money_Won = Money_Bet * 10
+            Streak += 1
+            Times_Won += 1
+        elif "win" in result:
+            Money_Won = Money_Bet * 3
+            Streak += 1
+            Times_Won += 1
+        elif "lose" in result: # result == "You lose." or result == "Dealer has a blackjack. You lose." or result == "Bust! You lose.":
+            Money_Won = 0
+            Streak = 0
+        else:
+            Money_Won = Money_Bet
+        break
+
+    return Money_Won, Streak, Times_Won

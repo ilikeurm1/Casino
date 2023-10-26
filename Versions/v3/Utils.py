@@ -1,4 +1,4 @@
-import time
+import time, random
 
 def Bet(money):
     while True:
@@ -40,15 +40,19 @@ def Roll(Slots):
     print("")
     print(f"{Slots[0]} {Slots[1]} {Slots[2]}")
     time.sleep(1)
-    
+
+def deal_card():
+    cards = [2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10, 11]
+    return random.choice(cards)
 
 
 WELCOME = """
 What game do you want to play? 
 
-1. Number Guesser | Rewards: 2
+1. Number Guesser | Rewards: 2x
 2. Roulette | Rewards: 2x (Color) 5x (Number) 10x (Green or 0)
 3. Slots | Rewards: 3x (2 of the same) 8x (2x '7') 8x (3 of the same) 100x (3x '7')
+4. Blackjack | Rewards: 10x (Blackjack) 3x (Win)
        
 You may type the name of the game or use the number assigned to it: """
 
@@ -77,7 +81,7 @@ Thank you for playing!
 
 Credits:
 
-Programming: Matthijs Duhoux
+Programming: Matthijs Duhoux, ChatGPT
                   
 Fun Facts:
 
@@ -90,15 +94,6 @@ In total you won {TW} time(s)!
 
 
 
-def LOST(HS, HW, TW):
+def LOST():
     return f"""
-Sorry but you have no money left! You have lost the game! You can start a new game by restarting the program!
-
-Fun Facts:
-
-Your highest streak was when you won {max(HS)} time(s) in a row
-
-Your highest winning was {max(HW)}$
-
-In total you won {TW} time(s)!
-"""
+Sorry but you have no money left! You have lost the game! You can start a new game by restarting the program!"""
