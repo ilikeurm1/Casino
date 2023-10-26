@@ -139,10 +139,10 @@ def Blackjack(Money_Bet, Streak, Times_Won):
 
         while sum(player_hand) < 21:
             print("")
-            print(f"Your hand: {player_hand}")
+            print(f"Your hand: {player_hand}, Total: {sum(player_hand)}")
             print("")
-            # print(f"Dealer's hand: [{dealer_hand[0]}, ?]")
-            print(f"Dealer's hand: {dealer_hand}")
+            print(f"Dealer's hand: [{dealer_hand[0]}, ?]")
+            # print(f"Dealer's hand: {dealer_hand}, Total: {sum(dealer_hand)}")
             print("")
 
             action = input("Do you want to 'hit' or 'stand'? ").lower()
