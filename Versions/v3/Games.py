@@ -140,7 +140,7 @@ def Blackjack(Money_Bet, Streak, Times_Won):
         while sum(player_hand) < 21:
             print("")
             print(f"Your hand: {player_hand}, Total: {sum(player_hand)}")
-            print("")
+            print("") 
             print(f"Dealer's hand: [{dealer_hand[0]}, ?]")
             # print(f"Dealer's hand: {dealer_hand}, Total: {sum(dealer_hand)}")
             print("")
@@ -165,7 +165,9 @@ def Blackjack(Money_Bet, Streak, Times_Won):
         player_score = sum(player_hand)
         dealer_score = sum(dealer_hand)
 
+        print("") 
         print(f"Your hand: {player_hand}")
+        print("") 
         print(f"Dealer's hand: {dealer_hand}")
 
         if player_blackjack and dealer_blackjack:
@@ -185,8 +187,6 @@ def Blackjack(Money_Bet, Streak, Times_Won):
         else:
             result = "It's a push (tie). Your bet is returned."
 
-        print(result)
-
         if "Blackjack" in result: # result == "You win!" or result == "Blackjack! You win!" or result == "Dealer busts! You win!":
             Money_Won = Money_Bet * 10
             Streak += 1
@@ -200,6 +200,10 @@ def Blackjack(Money_Bet, Streak, Times_Won):
             Streak = 0
         else:
             Money_Won = Money_Bet
+
+        print("") 
+        print(result)
+
         break
 
     return Money_Won, Streak, Times_Won

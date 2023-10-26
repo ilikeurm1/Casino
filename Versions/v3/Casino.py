@@ -15,10 +15,13 @@ All_Games = ["Number Guesser", "Roulette", "Slots", "Blackjack"]
 while True:
     Game = input(Utils.WELCOME) or 0
 
-    if Game == 0:
+    if "q" in Game:
+        break
+
+    elif Game == 0:
         continue
     
-    if Game == All_Games[0] or int(Game) == 1:
+    elif Game == All_Games[0] or int(Game) == 1:
         Chosen_Game = Games.Guesser
         Game_Index = 0
 
@@ -57,17 +60,17 @@ while True:
     
 
     # Run again
-    while True:
+    print("")
+    again = input("Run again? (y/n): ")
+    if 'y' in again:
+        time.sleep(1)
+        continue
+    elif 'n' in again:
         print("")
-        again = input("Run again? (y/n): ")
-        if 'y' in again:
-            time.sleep(1)
-            continue
-        elif 'n' in again:
-            print("")
-            print(f"When you come back next time you will start with {Money}$")
-            time.sleep(2)
-            print(Utils.BYE(Highest_Streak, Highest_Winnings, Times_Won))
-            break
-        else:
-            continue
+        print(f"When you come back next time you will start with {Money}$")
+        time.sleep(2)
+        print(Utils.BYE(Highest_Streak, Highest_Winnings, Times_Won))
+        end = True
+    else:
+        continue
+    

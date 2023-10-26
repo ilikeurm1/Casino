@@ -54,6 +54,9 @@ What game do you want to play?
 3. Slots | Rewards: 3x (2 of the same) 8x (2x '7') 8x (3 of the same) 100x (3x '7')
 4. Blackjack | Rewards: 10x (Blackjack) 3x (Win)
        
+
+(Type quit to leave the program)
+
 You may type the name of the game or use the number assigned to it: """
 
 
@@ -75,9 +78,7 @@ You choose to bet on: """
 
 def BYE(HS, HW, TW):
     return f"""
-Good bye!
-
-Thank you for playing!
+Good bye! Thanks for playing!
 
 Credits:
 
