@@ -57,17 +57,17 @@ while True:
     
 
     # Run again
-    print("")
-    again = input("Run again? (y/n): ")
-    if 'y' in again:
-        time.sleep(1)
-        continue
-    elif 'n' in again:
+    while True:
+        print("")
+        again = input("Run again? (y/n): ")
+        if 'y' in again:
+            time.sleep(1)
+            continue
+        elif 'n' in again:
             print("")
             print(f"When you come back next time you will start with {Money}$")
             time.sleep(2)
             print(Utils.BYE(Highest_Streak, Highest_Winnings, Times_Won))
             break
-    else:
-            print("Invalid Input, the program will now shut off")
-            break
+        else:
+            continue

@@ -19,7 +19,7 @@ def Save(Money):
             with open(file_path, "w") as write_file:
                 json.dump(Users, write_file, indent=4)
             print("")
-            print(f"Saved money as: {Money}")
+            print(f"Saved money as: {Money}$")
         except KeyError:
             print("Money not saved, unknown user!")
 
