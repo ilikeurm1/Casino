@@ -39,7 +39,7 @@ while True:
 
     # Initialize game
 
-    print("")
+    print()
     print(f"You have chosen to play {All_Games[Game_Index]}!")
     Money, Money_Betting = Utils.Bet(Money)
     Money_Won, Streak, Times_Won = Chosen_Game(Money_Betting, Streak, Times_Won)
@@ -55,18 +55,18 @@ while True:
         print(Utils.BYE(Highest_Streak, Highest_Winnings, Times_Won))
         break
 
-    print("")
+    print()
     print(f"You now have {Money}$ and are on a streak of {Streak}")
     
 
     # Run again
-    print("")
+    print()
     again = input("Run again? (y/n): ")
     if 'y' in again:
         time.sleep(1)
         continue
     elif 'n' in again:
-        print("")
+        print()
         print(f"When you come back next time you will start with {Money}$")
         time.sleep(2)
         print(Utils.BYE(Highest_Streak, Highest_Winnings, Times_Won))

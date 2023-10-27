@@ -4,9 +4,9 @@ import time, random, Utils
 
 def Guesser(Money_Bet, Streak, Times_Won):
     while True:
-        print("")
+        print()
         End = int(input("The game will pick a number from 1 to x, what is x (minimum '5'): "))
-        print("")
+        print()
         if End < 5:
             print("You tried! Please enter a minimum of 5")
             continue
@@ -19,12 +19,12 @@ def Guesser(Money_Bet, Streak, Times_Won):
         Money_Won = Money_Bet * 2
         Streak += 1
         Times_Won += 1
-        print("")
+        print()
         print(f"Nice! You chose the right number, you have doubled your money bet ({Money_Won}$)!")
     else:
         Money_Won = 0
         Streak = 0
-        print("")
+        print()
         print(f"Sorry! The correct number was {Winning_Number} and you chose {Chosen}, better luck next time!")
         time.sleep(1)
     return Money_Won, Streak, Times_Won
@@ -50,12 +50,12 @@ def Roulette(Money_Bet, Streak, Times_Won):
             Money_Won = Money_Bet * Money_Multiplier
             Streak += 1
             Times_Won += 1
-            print("")
+            print()
             print(f"Nice! You chose the right number, you have {Money_Multiplier}x your money bet ({Money_Bet * Money_Multiplier}$)!")
         else:
             Money_Won = 0
             Streak = 0
-            print("")
+            print()
             print(f"Sorry! The correct number was {Winning_Number} and you chose {Chosen}, better luck next time!")
             time.sleep(1)
 
@@ -69,13 +69,13 @@ def Roulette(Money_Bet, Streak, Times_Won):
             Money_Won = Money_Bet * Money_Multiplier
             Streak += 1
             Times_Won += 1
-            print("")
+            print()
             print(f"Nice! You chose the right color, you have {Money_Multiplier}x your money bet ({Money_Bet * Money_Multiplier}$)!")
             time.sleep(1)
         else:
             Money_Won = 0
             Streak = 0
-            print("")
+            print()
             print(f"Sorry! The correct color was {Winning_Color} and you chose {Chosen}, better luck next time!")
             time.sleep(1)
     return Money_Won, Streak, Times_Won
@@ -102,13 +102,13 @@ def Slots(Money_Bet, Streak, Times_Won):
         Money_Won = Money_Bet * Money_Multiplier
         Streak += 1
         Times_Won += 1
-        print("")
+        print()
         print(f"Nice! The slot machine ended at {slots[0], slots[1], slots[2]} which means you {Money_Multiplier}x your bet ({Money_Bet * Money_Multiplier}$)")
         time.sleep(1)
     else:
         Money_Won = 0
         Streak = 0
-        print("")
+        print()
         print(f"Sorry! The slot machine ended at {slots[0], slots[1], slots[2]} which means you lost your money ({Money_Bet}$), better luck next time!")
         time.sleep(1)
     return Money_Won, Streak, Times_Won
@@ -138,12 +138,12 @@ def Blackjack(Money_Bet, Streak, Times_Won):
             dealer_blackjack = True
 
         while sum(player_hand) < 21:
-            print("")
+            print()
             print(f"Your hand: {player_hand}, Total: {sum(player_hand)}")
-            print("") 
+            print() 
             print(f"Dealer's hand: [{dealer_hand[0]}, ?]")
             # print(f"Dealer's hand: {dealer_hand}, Total: {sum(dealer_hand)}")
-            print("")
+            print()
 
             action = input("Do you want to 'hit' or 'stand'? ").lower()
             if action == "hit":
@@ -170,9 +170,9 @@ def Blackjack(Money_Bet, Streak, Times_Won):
         player_score = sum(player_hand)
         dealer_score = sum(dealer_hand)
 
-        print("") 
+        print() 
         print(f"Your hand: {player_hand}, Total: {sum(player_hand)}")
-        print("") 
+        print() 
         print(f"Dealer's hand: {dealer_hand}, Total: {sum(dealer_hand)}")
 
         if player_blackjack and dealer_blackjack:
@@ -206,7 +206,7 @@ def Blackjack(Money_Bet, Streak, Times_Won):
         else:
             Money_Won = Money_Bet
 
-        print("") 
+        print() 
         print(result)
 
         break

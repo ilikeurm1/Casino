@@ -2,17 +2,17 @@ import time, random
 
 def Bet(money):
     while True:
-        print("")
+        print()
         Money_Betting = int(input("How much money do you want to bet (Type '0' to go all in): "))
         if Money_Betting == 0:
             Money_Betting = money
        
         if Money_Betting > money:
-            print("")
+            print()
             print("You dont have that much money!!!")
             
         else:
-            print("")
+            print()
             print(f"ok! You are betting {Money_Betting}$")
             break
 
@@ -31,15 +31,11 @@ def HasColor(x):
     return Color
 
 def Roll(Slots):
-    print("")
-    print(f"{Slots[0]} # #")
-    time.sleep(2)
-    print("")
-    print(f"{Slots[0]} {Slots[1]} #")
-    time.sleep(2)
-    print("")
-    print(f"{Slots[0]} {Slots[1]} {Slots[2]}")
+    print()
     time.sleep(1)
+    for x in range(0, 3):
+        print(Slots[x], end=" ", flush=True)
+        time.sleep(2)
 
 def deal_card():
     cards = [2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10, 11]
