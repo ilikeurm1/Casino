@@ -68,7 +68,7 @@ What game do you want to play?
 
 (Type quit to leave the program)
 
-You may type the name of the game or use the number assigned to it: """
+Please type the number assigned to it: """
 
 
 
