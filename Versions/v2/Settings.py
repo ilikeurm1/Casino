@@ -15,9 +15,6 @@ os.makedirs(Main_Directory, 511, True)
 def Save(Money):
     with open(file_path, "r") as read_file:
         Users = json.load(read_file)
-        # print(Users)
-        # print(type(Users))
-        # IF user does not exist, ask the money question
         try: 
             Users[Game_Profile]["Money"] = Money
             with open(file_path, "w") as write_file:
