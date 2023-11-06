@@ -1,14 +1,15 @@
 # imports
 
-import time, Utils, Games
+import Utils, Games
 from Settings import Money, Save
+from time import sleep
 
 # Init
 
 Streak = Times_Won = 0
 Highest_Streak = []
 Highest_Winnings = []
-All_Games = ["Number Guesser", "Roulette", "Slots", "Blackjack"]
+All_Games = ["Number Guesser", "Roulette", "Slots", "Blackjack", "Baccarat"]
 
 # Main game loop
 
@@ -36,6 +37,10 @@ while True:
     elif Game == All_Games[3] or int(Game) == 4:
          Chosen_Game = Games.Blackjack
          Game_Index = 3
+    
+    elif Game == All_Games[4] or int(Game) == 5:
+        Chosen_Game = Games.Baccarat
+        Game_Index = 4
 
     # Initialize game
 
@@ -53,6 +58,8 @@ while True:
     if Money == 0:
         print(Utils.LOST())
         print(Utils.BYE(Highest_Streak, Highest_Winnings, Times_Won))
+        sleep(10)
+        Utils.clear()
         break
 
     print()
@@ -63,13 +70,17 @@ while True:
     print()
     again = input("Run again? (y/n): ")
     if 'y' in again:
-        time.sleep(1)
+        print("Ok! Clearing terminal for easier view!")
+        sleep(2)
+        Utils.clear()
         continue
     elif 'n' in again:
         print()
         print(f"When you come back next time you will start with {Money}$")
-        time.sleep(2)
+        sleep(2)
         print(Utils.BYE(Highest_Streak, Highest_Winnings, Times_Won))
+        sleep(10)
+        Utils.clear()
         break
     else:
         continue

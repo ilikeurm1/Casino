@@ -1,4 +1,5 @@
-import os, time, json
+import os, json
+from time import sleep
 
 # CUSTUMIZABLE SETTINGS
 
@@ -62,4 +63,4 @@ else:
 
 print()
 print(f"You are starting with {Money}$, have fun!")
-time.sleep(1)
+sleep(1)

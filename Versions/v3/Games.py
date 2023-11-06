@@ -1,4 +1,5 @@
-import time, random, Utils
+import random, Utils
+from time import sleep
 
 # Number Guesser
 
@@ -26,7 +27,7 @@ def Guesser(Money_Bet, Streak, Times_Won):
         Streak = 0
         print()
         print(f"Sorry! The correct number was {Winning_Number} and you chose {Chosen}, better luck next time!")
-        time.sleep(1)
+        sleep(1)
     return Money_Won, Streak, Times_Won
         
 # Roulette
@@ -39,7 +40,7 @@ def Roulette(Money_Bet, Streak, Times_Won):
     Chosen = input(Utils.ROULETTE_WELCOME)
     Chosen_Color = Chosen[0].lower()
     
-    time.sleep(1)
+    sleep(1)
     try: # A number was chosen
         Chosen = int(Chosen)
         if Winning_Number == 0: # Multiplier
@@ -57,7 +58,7 @@ def Roulette(Money_Bet, Streak, Times_Won):
             Streak = 0
             print()
             print(f"Sorry! The correct number was {Winning_Number} and you chose {Chosen}, better luck next time!")
-            time.sleep(1)
+            sleep(1)
 
     except: # A color was chosen
         if Winning_Color == "g": # Multiplier
@@ -71,13 +72,13 @@ def Roulette(Money_Bet, Streak, Times_Won):
             Times_Won += 1
             print()
             print(f"Nice! You chose the right color, you have {Money_Multiplier}x your money bet ({Money_Bet * Money_Multiplier}$)!")
-            time.sleep(1)
+            sleep(1)
         else:
             Money_Won = 0
             Streak = 0
             print()
             print(f"Sorry! The correct color was {Winning_Color} and you chose {Chosen}, better luck next time!")
-            time.sleep(1)
+            sleep(1)
     return Money_Won, Streak, Times_Won
 
 # Slot machine
@@ -104,13 +105,13 @@ def Slots(Money_Bet, Streak, Times_Won):
         Times_Won += 1
         print()
         print(f"Nice! The slot machine ended at {slots[0], slots[1], slots[2]} which means you {Money_Multiplier}x your bet ({Money_Bet * Money_Multiplier}$)")
-        time.sleep(1)
+        sleep(1)
     else:
         Money_Won = 0
         Streak = 0
         print()
         print(f"Sorry! The slot machine ended at {slots[0], slots[1], slots[2]} which means you lost your money ({Money_Bet}$), better luck next time!")
-        time.sleep(1)
+        sleep(1)
     return Money_Won, Streak, Times_Won
 
 # Blackjack
@@ -210,5 +211,111 @@ def Blackjack(Money_Bet, Streak, Times_Won):
         print(result)
 
         break
+
+    return Money_Won, Streak, Times_Won
+
+# Baccarat
+
+import random
+
+def Baccarat(Money_Bet, Streak, Times_Won):
+    
+    # Determine the point values of the cards
+    def card_value(card):
+        return card if card <= 10 else 0
+    
+    # Generate random cards for the player and banker
+    player_cards = []
+    banker_cards = []
+
+    for x in range(2):
+        player_cards.append(random.randint(1, 13))
+        banker_cards.append(random.randint(1, 13))
+
+    player_points = sum(card_value(card) for card in player_cards) % 10
+    banker_points = sum(card_value(card) for card in banker_cards) % 10
+        
+    print()
+    print(f"Your hand is: {player_cards}")
+    print()
+    print(f"Your total is: {player_points}")
+    sleep(2)
+
+    # Player's rule
+    if player_points <= 5:
+        new_card = random.randint(1, 13)
+        player_cards.append(new_card)  # Draw a third card
+        player_points = sum(card_value(card) for card in player_cards) % 10
+        print()
+        print(f"You drew a third card: {new_card}")
+        print()
+        print(f"Your new total is: {player_points}")
+        sleep(2)
+
+    # Banker's rule
+    if len(player_cards) == 2:  # Player stood pat
+        if banker_points <= 5:
+            banker_cards.append(random.randint(1, 13))  # Draw a third card
+            banker_points = sum(card_value(card) for card in banker_cards) % 10
+            print()
+            print("Banker drew a third card.")
+            sleep(2)
+
+    else:  # Player drew a third card
+        # Additional rules for banker when player drew a third card
+        if banker_points <= 2:
+            banker_cards.append(random.randint(1, 13))
+            print()
+            print("Banker drew a third card.")
+            sleep(2)
+        elif banker_points == 3 and player_cards[2] != 8:
+            banker_cards.append(random.randint(1, 13))
+            print()
+            print("Banker drew a third card.")
+            sleep(2)
+        elif banker_points == 4 and player_cards[2] in [2, 3, 4, 5, 6, 7]:
+            banker_cards.append(random.randint(1, 13))
+            print()
+            print("Banker drew a third card.")
+            sleep(2)
+        elif banker_points == 5 and player_cards[2] in [4, 5, 6, 7]:
+            banker_cards.append(random.randint(1, 13))
+            print()
+            print("Banker drew a third card.")
+            sleep(2)
+        elif banker_points == 6 and player_cards[2] in [6, 7]:
+            banker_cards.append(random.randint(1, 13)())
+            print()
+            print("Banker drew a third card.")
+            sleep(2)
+
+    banker_points = sum(card_value(card) for card in banker_cards) % 10
+
+    print()
+    print(f"Your cards are: {player_cards} so your total = {player_points}")
+    print()
+    print(f"Bankers cards are: {banker_cards} so their total = {banker_points}")
+    sleep(2)
+
+    
+    # Determine the winner
+    if player_points > banker_points:
+        Money_Won = Money_Bet * 3 
+        Streak += 1  
+        Times_Won += 1  
+        print()
+        print(f"Wow! You won, your bet ({Money_Bet}$) has been tripled to {Money_Won}$")
+        sleep(2)
+    elif banker_points > player_points:
+        Money_Won = 0
+        Streak = 0 
+        print()
+        print(f"Sorry! You lost, you lost your bet {Money_Bet}")
+        sleep(2)
+    else:
+        Money_Won = Money_Bet
+        print()
+        print("Its a tie, you didnt lose any money!")
+        sleep(2)
 
     return Money_Won, Streak, Times_Won

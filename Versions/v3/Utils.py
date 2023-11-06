@@ -1,24 +1,38 @@
-import time, random
+import random, os
+from time import sleep
+
+def clear():
+    os.system('cls')
 
 def Bet(money):
     while True:
-        print()
-        Money_Betting = int(input("How much money do you want to bet (Type '0' to go all in): "))
-        if Money_Betting == 0:
-            Money_Betting = money
-       
-        if Money_Betting > money:
+        print("")
+        Money_Betting = input(f"How much money do you want to bet (You have {money}$, type '0' to go all in): ")
+
+        if Money_Betting == "":
+            print()
+            print("invalid input!")
+            sleep(1)
+            continue
+
+        bet = int(Money_Betting)
+
+        if bet == 0 or Money_Betting == "0":
+            bet = money
+            
+        if bet > money:
             print()
             print("You dont have that much money!!!")
-            
+    
         else:
             print()
-            print(f"ok! You are betting {Money_Betting}$")
+            print(f"ok! You are betting {bet}$")
             break
 
-    Total = money - Money_Betting
-    time.sleep(1)
-    return Total, Money_Betting
+    Total = money - bet
+    sleep(1)
+    
+    return Total, bet
 
 def HasColor(x):
     Red_Numbers = [1, 3, 5, 7, 9, 12, 14, 16, 18, 19, 21, 23, 25, 27, 30, 32, 34, 36]
@@ -32,10 +46,10 @@ def HasColor(x):
 
 def Roll(Slots):
     print()
-    time.sleep(1)
+    sleep(1)
     for x in range(0, 3):
         print(Slots[x], end=" ", flush=True)
-        time.sleep(2)
+        sleep(2)
 
 def deal_card():
     cards = [2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10, 11]
@@ -49,6 +63,7 @@ What game do you want to play?
 2. Roulette | Rewards: 2x (Color) 5x (Number) 10x (Green or 0)
 3. Slots | Rewards: 3x (2 of the same) 8x (2x '7') 8x (3 of the same) 100x (3x '7')
 4. Blackjack | Rewards: 10x (Blackjack) 3x (Win)
+5. Baccarat | Rewards: 3x
        
 
 (Type quit to leave the program)
