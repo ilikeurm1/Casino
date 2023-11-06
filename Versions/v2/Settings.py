@@ -37,9 +37,6 @@ if os.path.exists(file_path):
         print(f"Hello {Game_Profile}")
         print("")
         Users = json.load(read_file)
-        # print(Users)
-        # print(type(Users))
-        # IF user does not exist, ask the money question
         try: 
             Money = Users[Game_Profile]["Money"]
             print(Money)
