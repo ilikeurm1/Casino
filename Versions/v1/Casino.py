@@ -3,12 +3,12 @@
 # imports
 
 import random, os, time
+from Settings import Money, file_path
 
 # Variables 
 
 Streak = 0
 Times_Won = 0
-from Settings import Money, file_path
 
 # Lists
 
