@@ -46,6 +46,7 @@ while True:
 
     print()
     print(f"You have chosen to play {All_Games[Game_Index]}!")
+    
     Money, Money_Betting = Utils.Bet(Money)
     Money_Won, Streak, Times_Won = Chosen_Game(Money_Betting, Streak, Times_Won)
     Money = Money + Money_Won
