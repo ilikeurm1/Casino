@@ -5,7 +5,7 @@ from time import sleep
 
 Main_Directory = os.getcwd() + r"\profiles\v3" # You can customise this field as you want, so you decide where your game files are stored. Please try not to change this after diciding where to store as it can result in data loss or having to move everything manually.
 print()
-Game_Profile = input("What is your username: ") # If you have already played put in your exact name (capitals matter)! ex. Admin 
+Game_Profile = input("What is your username: ").capitalize() # If you have already played put in your exact name! ex. Admin
 
 # Make the main directory of the game
 print()
