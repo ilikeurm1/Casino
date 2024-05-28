@@ -8,7 +8,7 @@ from time import sleep
 
 # CUSTUMIZABLE SETTINGS
 obfuscation_amount: int = (
-    20  # The amount of times the money gets obfuscated | max is 50 -> Memory issues (thanks python)
+    5  # The amount of times the money gets obfuscated | max is 50 -> Memory issues (thanks python)
 )
 
 
