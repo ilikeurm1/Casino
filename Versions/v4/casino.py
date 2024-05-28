@@ -4,6 +4,7 @@
 # Pylinted the code (im not going to do this again, it took me ~3 hours)
 # Added Sleeps to make the game more readable and easier to understand
 # Made the settings file more readable and easier to understand
+# Added obfuscation to the save function (no more cheating by changing the save file)
 
 from time import sleep
 import utils
@@ -17,7 +18,13 @@ while 1:
     times_won: int = 0
     highest_streak: list[int] = []
     highest_winnings: list[int] = []
-    all_games: list[str] = ["Number Guesser", "Roulette", "Slots", "Blackjack", "Baccarat"]
+    all_games: list[str] = [
+        "Number Guesser",
+        "Roulette",
+        "Slots",
+        "Blackjack",
+        "Baccarat",
+    ]
 
     money, user = settings_main()
     # Inner game loop

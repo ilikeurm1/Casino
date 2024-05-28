@@ -102,8 +102,13 @@ def settings_main() -> tuple[int, str]:
         with open(save_file, "r", encoding="utf-8") as read_file:  # Open the file
             try:  # Try to load the users
                 users = json.load(read_file)
-            except (json.decoder.JSONDecodeError, PermissionError):  # If the users file is empty (somehow)
-                print("The users file is empty (it shouldn't be), creating a new one...")
+            except (
+                json.decoder.JSONDecodeError,
+                PermissionError,
+            ):  # If the users file is empty (somehow)
+                print(
+                    "The users file is empty (it shouldn't be), creating a new one..."
+                )
                 users = {}
                 money = int(
                     input("How much money do u want to start with: ")
@@ -115,7 +120,9 @@ def settings_main() -> tuple[int, str]:
 
             try:  # If the user has already played
                 m = users[gp]["Money"]  # Get the money of the user
-                money = int(deobf(m, obfuscation_amount))  # Decode the money back to a number int
+                money = int(
+                    deobf(m, obfuscation_amount)
+                )  # Decode the money back to a number int
                 if money == 0:
                     print()
                     money = int(input("How much money do u want to start with: "))
@@ -124,7 +131,9 @@ def settings_main() -> tuple[int, str]:
                     with open(save_file, "w", encoding="utf-8") as write_file:
                         json.dump(users, write_file, indent=4)
 
-            except KeyError:  # Someones has already played but a new user is trying to play
+            except (
+                KeyError
+            ):  # Someones has already played but a new user is trying to play
                 money = int(
                     input("How much money do u want to start with: ")
                 )  # Ask the user how much money he wants to start with

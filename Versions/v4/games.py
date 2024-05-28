@@ -5,6 +5,10 @@ import random
 import utils
 
 
+# Disable line too long for the games as the print statements that explain the game are long
+# pylint: disable=line-too-long
+
+
 # Number Guesser
 def guesser(money_bet: int, streak: int, times_won: int) -> tuple[int, int, int]:
     """Number Guesser game
@@ -376,7 +380,9 @@ def baccarat(money_bet, streak, times_won):
         streak += 1
         times_won += 1
         print()
-        print(f"Nice! You won, your bet ({money_bet}$) has been tripled to {money_won}$")
+        print(
+            f"Nice! You won, your bet ({money_bet}$) has been tripled to {money_won}$"
+        )
     elif banker_points > player_points:
         money_won = 0
         streak = 0
