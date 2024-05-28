@@ -89,7 +89,11 @@ def deal_card():
     return cards[random.randint(0, 12)]
 
 
-WELCOME = """
+def welcome(user):
+    """Welcome message"""
+    return f"""
+Welcome to the Casino {user}!
+
 What game do you want to play? 
 
 1. Number Guesser | Rewards: 2x
@@ -102,6 +106,11 @@ What game do you want to play?
 (Type quit to leave the program)
 
 Please type the number assigned to it: """
+
+
+LOST = """
+Sorry but you have no money left! You have lost the game! 
+You can start a new game by restarting the program!"""
 
 
 ROULETTE_WELCOME = """What do you guess, pick from:
@@ -135,8 +144,3 @@ Your highest winning was {max(hw)}$
 
 In total you won {tw} time(s)!
 """
-
-
-LOST = """
-Sorry but you have no money left! You have lost the game! 
-You can start a new game by restarting the program!"""

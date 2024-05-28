@@ -1,22 +1,28 @@
 """Main Casino File"""
 
+# --> Version 4 Changelog <--
+# Pylinted the code (im not going to do this again, it took me ~3 hours)
+# Added Sleeps to make the game more readable and easier to understand
+# Made the settings file more readable and easier to understand
+
 from time import sleep
 import utils
 import games
-from settings import money, save
-
-streak: int = 0
-times_won: int = 0
-highest_streak: list[int] = []
-highest_winnings: list[int] = []
-all_games: list[str] = ["Number Guesser", "Roulette", "Slots", "Blackjack", "Baccarat"]
-
+from settings import settings_main, save
 
 # Outer game loop
 while 1:
+    # Initialize the game settings for every new game
+    streak: int = 0
+    times_won: int = 0
+    highest_streak: list[int] = []
+    highest_winnings: list[int] = []
+    all_games: list[str] = ["Number Guesser", "Roulette", "Slots", "Blackjack", "Baccarat"]
+
+    money, user = settings_main()
     # Inner game loop
     while 1:
-        game = input(utils.WELCOME) or "0"
+        game = input(utils.welcome(user)) or "0"
 
         if "quit" in game:
             break
@@ -55,7 +61,11 @@ while 1:
         highest_winnings.append(money_won)
         highest_streak.append(streak)
 
-        save(money)
+        save(money, user)
+
+        sleep(2)
+
+        utils.clear()
 
         # LOSE
         if money == 0:
@@ -68,9 +78,9 @@ while 1:
         print()
         print(f"You now have {money}$ and are on a streak of {streak}")
 
-        # Run again
+        # Run again in the current profile
         print()
-        again = input("Run again? (y/n): ")
+        again = input("Play a new game? (y/n): ")
         if "y" in again:
             print("Ok! Clearing terminal for easier view!")
             sleep(2)
@@ -85,4 +95,17 @@ while 1:
             utils.clear()
             break
         continue
-    break # Just a break for now this will changed to a function that will ask if you want to play again on a new profile...
+
+    # Restart the game
+    restart = input("Do you want to replay (on a new profile)? (y/n): ")
+    if "y" in restart:
+        print("Ok! Clearing terminal for easier view!")
+        sleep(2)
+        utils.clear()
+        continue
+    if "n" in restart:
+        print("Thank you for playing! Have a great day!")
+        sleep(5)
+        utils.clear()
+        break
+    continue

@@ -46,7 +46,7 @@ def guesser(money_bet: int, streak: int, times_won: int) -> tuple[int, int, int]
         print(
             f"Sorry! The correct number was {winning_number} and you chose {chosen}, better luck next time!"
         )
-        sleep(1)
+    sleep(5)
     return money_won, streak, times_won
 
 
@@ -70,7 +70,7 @@ def roulette(money_bet: int, streak: int, times_won: int) -> tuple[int, int, int
     chosen = input(utils.ROULETTE_WELCOME)
     chosen_color = chosen[0].lower()
 
-    sleep(1)
+    sleep(2)
     try:  # A number was chosen
         chosen = int(chosen)  # type: ignore
         if winning_number == 0:  # Multiplier
@@ -92,7 +92,6 @@ def roulette(money_bet: int, streak: int, times_won: int) -> tuple[int, int, int
             print(
                 f"Sorry! The correct number was {winning_number} and you chose {chosen}, better luck next time!"
             )
-            sleep(1)
 
     except ValueError:  # A color was chosen
         if winning_color == "g":  # Multiplier
@@ -108,7 +107,6 @@ def roulette(money_bet: int, streak: int, times_won: int) -> tuple[int, int, int
             print(
                 f"Nice! You chose the right color, you have {money_multiplier}x your money bet ({money_bet * money_multiplier}$)!"
             )
-            sleep(1)
         else:
             money_won = 0
             streak = 0
@@ -116,7 +114,7 @@ def roulette(money_bet: int, streak: int, times_won: int) -> tuple[int, int, int
             print(
                 f"Sorry! The correct color was {winning_color} and you chose {chosen}, better luck next time!"
             )
-            sleep(3)
+    sleep(5)
     return money_won, streak, times_won
 
 
@@ -164,7 +162,6 @@ def slots(money_bet: int, streak: int, times_won: int) -> tuple[int, int, int]:
         print(
             f"Nice! The slot machine ended at {slot_machine[0], slot_machine[1], slot_machine[2]} which means you {money_multiplier}x your bet ({money_bet * money_multiplier}$)"
         )
-        sleep(1)
     else:
         money_won = 0
         streak = 0
@@ -172,7 +169,7 @@ def slots(money_bet: int, streak: int, times_won: int) -> tuple[int, int, int]:
         print(
             f"Sorry! The slot machine ended at {slot_machine[0], slot_machine[1], slot_machine[2]} which means you lost your money ({money_bet}$), better luck next time!"
         )
-        sleep(3)
+    sleep(5)
     return money_won, streak, times_won
 
 
@@ -189,105 +186,102 @@ def blackjack(money_bet: int, streak: int, times_won: int) -> tuple[int, int, in
         tuple[int, int, int]: All the updated argument values
     """
 
-    while 1:
-        player_hand = []
-        dealer_hand = []
-        player_score = 0
-        dealer_score = 0
-        player_blackjack = False
-        dealer_blackjack = False
+    player_hand = []
+    dealer_hand = []
+    player_score = 0
+    dealer_score = 0
+    player_blackjack = False
+    dealer_blackjack = False
 
-        # Deal two cards to the player and dealer
+    # Deal two cards to the player and dealer
 
-        for _ in range(2):
+    for _ in range(2):
+        player_hand.append(utils.deal_card())
+        dealer_hand.append(utils.deal_card())
+
+    if sum(player_hand) == 21 and len(player_hand) == 2:
+        player_blackjack = True
+
+    if sum(dealer_hand) == 21 and len(dealer_hand) == 2:
+        dealer_blackjack = True
+
+    while sum(player_hand) < 21:
+        print()
+        print(f"Your hand: {player_hand}, Total: {sum(player_hand)}")
+        print()
+        print(f"Dealer's hand: [{dealer_hand[0]}, ?]")
+        # print(f"Dealer's hand: {dealer_hand}, Total: {sum(dealer_hand)}")
+        print()
+
+        action = input("Do you want to 'hit' or 'stand'? ").lower()
+        if action == "hit":
             player_hand.append(utils.deal_card())
-            dealer_hand.append(utils.deal_card())
+            # Convert 11 to 1 if the total score is over 21
+            if 11 in player_hand and sum(player_hand) > 21:
+                player_hand.remove(11)
+                player_hand.append(1)
+        elif action == "stand":
+            break
 
-        if sum(player_hand) == 21 and len(player_hand) == 2:
-            player_blackjack = True
+    # Convert 11 to 1 if the total score is over 21
+    if 11 in dealer_hand and sum(dealer_hand) > 21:
+        dealer_hand.remove(11)
+        dealer_hand.append(1)
 
-        if sum(dealer_hand) == 21 and len(dealer_hand) == 2:
-            dealer_blackjack = True
-
-        while sum(player_hand) < 21:
-            print()
-            print(f"Your hand: {player_hand}, Total: {sum(player_hand)}")
-            print()
-            print(f"Dealer's hand: [{dealer_hand[0]}, ?]")
-            # print(f"Dealer's hand: {dealer_hand}, Total: {sum(dealer_hand)}")
-            print()
-
-            action = input("Do you want to 'hit' or 'stand'? ").lower()
-            if action == "hit":
-                player_hand.append(utils.deal_card())
-                # Convert 11 to 1 if the total score is over 21
-                if 11 in player_hand and sum(player_hand) > 21:
-                    player_hand.remove(11)
-                    player_hand.append(1)
-            elif action == "stand":
-                break
-
+    while sum(dealer_hand) < 17:
+        dealer_hand.append(utils.deal_card())
         # Convert 11 to 1 if the total score is over 21
         if 11 in dealer_hand and sum(dealer_hand) > 21:
             dealer_hand.remove(11)
             dealer_hand.append(1)
 
-        while sum(dealer_hand) < 17:
-            dealer_hand.append(utils.deal_card())
-            # Convert 11 to 1 if the total score is over 21
-            if 11 in dealer_hand and sum(dealer_hand) > 21:
-                dealer_hand.remove(11)
-                dealer_hand.append(1)
+    player_score = sum(player_hand)
+    dealer_score = sum(dealer_hand)
 
-        player_score = sum(player_hand)
-        dealer_score = sum(dealer_hand)
+    print()
+    print(f"Your hand: {player_hand}, Total: {sum(player_hand)}")
+    print()
+    print(f"Dealer's hand: {dealer_hand}, Total: {sum(dealer_hand)}")
 
-        print()
-        print(f"Your hand: {player_hand}, Total: {sum(player_hand)}")
-        print()
-        print(f"Dealer's hand: {dealer_hand}, Total: {sum(dealer_hand)}")
+    if player_blackjack and dealer_blackjack:
+        result = "It's a push (tie). Your bet is returned."
+    elif player_blackjack:
+        result = "Blackjack! You win!"
+    elif dealer_blackjack:
+        result = "Dealer has a blackjack. You lose."
+    elif player_score > 21:
+        result = "Bust! You lose."
+    elif dealer_score > 21:
+        result = "Dealer busts! You win!"
+    elif player_score > dealer_score:
+        result = "You win!"
+    elif player_score < dealer_score:
+        result = "You lose."
+    else:
+        result = "It's a push (tie). Your bet is returned."
 
-        if player_blackjack and dealer_blackjack:
-            result = "It's a push (tie). Your bet is returned."
-        elif player_blackjack:
-            result = "Blackjack! You win!"
-        elif dealer_blackjack:
-            result = "Dealer has a blackjack. You lose."
-        elif player_score > 21:
-            result = "Bust! You lose."
-        elif dealer_score > 21:
-            result = "Dealer busts! You win!"
-        elif player_score > dealer_score:
-            result = "You win!"
-        elif player_score < dealer_score:
-            result = "You lose."
-        else:
-            result = "It's a push (tie). Your bet is returned."
+    if (
+        "Blackjack" in result
+    ):  # result == "You win!" or result == "Blackjack! You win!" or result == "Dealer busts! You win!":
+        money_won = money_bet * 10
+        streak += 1
+        times_won += 1
+    elif "win" in result:
+        money_won = money_bet * 3
+        streak += 1
+        times_won += 1
+    elif (
+        "lose" in result
+    ):  # result == "You lose." or result == "Dealer has a blackjack. You lose." or result == "Bust! You lose.":
+        money_won = 0
+        streak = 0
+    else:
+        money_won = money_bet
 
-        if (
-            "Blackjack" in result
-        ):  # result == "You win!" or result == "Blackjack! You win!" or result == "Dealer busts! You win!":
-            money_won = money_bet * 10
-            streak += 1
-            times_won += 1
-        elif "win" in result:
-            money_won = money_bet * 3
-            streak += 1
-            times_won += 1
-        elif (
-            "lose" in result
-        ):  # result == "You lose." or result == "Dealer has a blackjack. You lose." or result == "Bust! You lose.":
-            money_won = 0
-            streak = 0
-        else:
-            money_won = money_bet
+    print()
+    print(result)
 
-        print()
-        print(result)
-        sleep(3)
-
-        break
-
+    sleep(5)
     return money_won, streak, times_won
 
 
@@ -343,7 +337,6 @@ def baccarat(money_bet, streak, times_won):
             banker_points = sum(card_value(card) for card in banker_cards) % 10
             print()
             print("Banker drew a third card.")
-            sleep(2)
 
     else:  # Player drew a third card
         # Additional rules for banker when player drew a third card
@@ -367,7 +360,7 @@ def baccarat(money_bet, streak, times_won):
             banker_cards.append(random.randint(1, 13)())
             print()
             print("Banker drew a third card.")
-        sleep(2)
+    sleep(2)
 
     banker_points = sum(card_value(card) for card in banker_cards) % 10
 
@@ -383,7 +376,7 @@ def baccarat(money_bet, streak, times_won):
         streak += 1
         times_won += 1
         print()
-        print(f"Wow! You won, your bet ({money_bet}$) has been tripled to {money_won}$")
+        print(f"Nice! You won, your bet ({money_bet}$) has been tripled to {money_won}$")
     elif banker_points > player_points:
         money_won = 0
         streak = 0
@@ -393,6 +386,6 @@ def baccarat(money_bet, streak, times_won):
         money_won = money_bet
         print()
         print("Its a tie, you didnt lose any money!")
-    sleep(3)
+    sleep(5)
 
     return money_won, streak, times_won
