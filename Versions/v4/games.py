@@ -50,7 +50,7 @@ def guesser(money_bet: int, streak: int, times_won: int) -> tuple[int, int, int]
         print(
             f"Sorry! The correct number was {winning_number} and you chose {chosen}, better luck next time!"
         )
-    sleep(5)
+
     return money_won, streak, times_won
 
 
@@ -74,7 +74,7 @@ def roulette(money_bet: int, streak: int, times_won: int) -> tuple[int, int, int
     chosen = input(utils.ROULETTE_WELCOME)
     chosen_color = chosen[0].lower()
 
-    sleep(2)
+    sleep(3)
     try:  # A number was chosen
         chosen = int(chosen)  # type: ignore
         if winning_number == 0:  # Multiplier
@@ -118,7 +118,7 @@ def roulette(money_bet: int, streak: int, times_won: int) -> tuple[int, int, int
             print(
                 f"Sorry! The correct color was {winning_color} and you chose {chosen}, better luck next time!"
             )
-    sleep(5)
+
     return money_won, streak, times_won
 
 
@@ -173,7 +173,6 @@ def slots(money_bet: int, streak: int, times_won: int) -> tuple[int, int, int]:
         print(
             f"Sorry! The slot machine ended at {slot_machine[0], slot_machine[1], slot_machine[2]} which means you lost your money ({money_bet}$), better luck next time!"
         )
-    sleep(5)
     return money_won, streak, times_won
 
 
@@ -208,7 +207,7 @@ def blackjack(money_bet: int, streak: int, times_won: int) -> tuple[int, int, in
         dealer_blackjack = True
 
     while sum(player_hand) < 21:
-        sleep(2)
+        sleep(3)
         print()
         print(f"Your hand: {player_hand}, Total: {sum(player_hand)}")
         print()
@@ -281,7 +280,6 @@ def blackjack(money_bet: int, streak: int, times_won: int) -> tuple[int, int, in
     print()
     print(result)
 
-    sleep(5)
     return money_won, streak, times_won
 
 
@@ -317,7 +315,7 @@ def baccarat(money_bet, streak, times_won):
     print(f"Your hand is: {player_cards}")
     print()
     print(f"Your total is: {player_points}")
-    sleep(2)
+    sleep(3)
 
     # Player's rule
     if player_points <= 5:
@@ -328,7 +326,7 @@ def baccarat(money_bet, streak, times_won):
         print(f"You drew a third card: {new_card}")
         print()
         print(f"Your new total is: {player_points}")
-        sleep(2)
+        sleep(3)
 
     # Banker's rule
     if len(player_cards) == 2:  # Player stood pat
@@ -360,7 +358,7 @@ def baccarat(money_bet, streak, times_won):
             banker_cards.append(random.randint(1, 13)())
             print()
             print("Banker drew a third card.")
-    sleep(2)
+    sleep(3)
 
     banker_points = sum(card_value(card) for card in banker_cards) % 10
 
@@ -368,7 +366,7 @@ def baccarat(money_bet, streak, times_won):
     print(f"Your cards are: {player_cards} so your total = {player_points}")
     print()
     print(f"Bankers cards are: {banker_cards} so their total = {banker_points}")
-    sleep(2)
+    sleep(3)
 
     # Determine the winner
     if player_points > banker_points:
@@ -388,6 +386,5 @@ def baccarat(money_bet, streak, times_won):
         money_won = money_bet
         print()
         print("Its a tie, you didnt lose any money!")
-    
-    sleep(5)
+
     return money_won, streak, times_won

@@ -13,8 +13,7 @@ obfuscation_amount: int = (
 
 
 main_directory = (  # You can customise this field as you want
-    os.getcwd()
-    + r"\profiles\v4"
+    os.getcwd() + r"\profiles\v4"
 )  # Please try not to change this -> data loss | moving files manually
 
 
@@ -141,6 +140,7 @@ def settings_main() -> tuple[int, str]:
                 users[gp] = {"Money": m}  # Add the user to the users file
                 with open(save_file, "w", encoding="utf-8") as write_file:
                     json.dump(users, write_file, indent=4)  # Save the users file
+
     else:  # New game file
         money = int(
             input("How much money do u want to start with: ")

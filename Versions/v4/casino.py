@@ -66,13 +66,14 @@ while 1:
         sleep(3)
         clear()
         money_won, streak, times_won = Chosen_game(money_betting, streak, times_won)
+        sleep(5)
         money = money + money_won
         highest_winnings.append(money_won)
         highest_streak.append(streak)
 
         save(money, user)
 
-        sleep(2)
+        sleep(3)
         clear()
 
         # LOSE
@@ -91,29 +92,30 @@ while 1:
         again = input("Play a new game? (y/n): ")
         if "y" in again:
             print("Ok! Clearing terminal for easier view!")
-            sleep(2)
+            sleep(3)
             clear()
             continue
         if "n" in again:
             print()
             print(f"When you come back next time you will start with {money}$")
-            sleep(2)
+            sleep(3)
             print(bye(highest_streak, highest_winnings, times_won))
             sleep(10)
             clear()
             break
         continue
 
-    # Restart the game
-    restart = input("Do you want to replay (on a new profile)? (y/n): ")
-    if "y" in restart:
-        print("Ok! Clearing terminal for easier view!")
-        sleep(2)
-        clear()
+    if not "n" in again: # only ask to restart the game when the person has lost (has 0 dollars).
+        # Restart the game
+        restart = input("Do you want to replay (on a new profile)? (y/n): ")
+        if "y" in restart:
+            print("Ok! Clearing terminal for easier view!")
+            sleep(3)
+            clear()
+            continue
+        if "n" in restart:
+            print("Thank you for playing! Have a great day!")
+            sleep(3)
+            clear()
+            break
         continue
-    if "n" in restart:
-        print("Thank you for playing! Have a great day!")
-        sleep(5)
-        clear()
-        break
-    continue
