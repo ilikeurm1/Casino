@@ -192,8 +192,6 @@ def blackjack(money_bet: int, streak: int, times_won: int) -> tuple[int, int, in
 
     player_hand = []
     dealer_hand = []
-    player_score = 0
-    dealer_score = 0
     player_blackjack = False
     dealer_blackjack = False
 
@@ -210,6 +208,7 @@ def blackjack(money_bet: int, streak: int, times_won: int) -> tuple[int, int, in
         dealer_blackjack = True
 
     while sum(player_hand) < 21:
+        sleep(2)
         print()
         print(f"Your hand: {player_hand}, Total: {sum(player_hand)}")
         print()
@@ -239,9 +238,6 @@ def blackjack(money_bet: int, streak: int, times_won: int) -> tuple[int, int, in
             dealer_hand.remove(11)
             dealer_hand.append(1)
 
-    player_score = sum(player_hand)
-    dealer_score = sum(dealer_hand)
-
     print()
     print(f"Your hand: {player_hand}, Total: {sum(player_hand)}")
     print()
@@ -253,13 +249,13 @@ def blackjack(money_bet: int, streak: int, times_won: int) -> tuple[int, int, in
         result = "Blackjack! You win!"
     elif dealer_blackjack:
         result = "Dealer has a blackjack. You lose."
-    elif player_score > 21:
+    elif sum(player_hand) > 21:
         result = "Bust! You lose."
-    elif dealer_score > 21:
+    elif sum(dealer_hand) > 21:
         result = "Dealer busts! You win!"
-    elif player_score > dealer_score:
+    elif sum(player_hand) > sum(dealer_hand):
         result = "You win!"
-    elif player_score < dealer_score:
+    elif sum(player_hand) < sum(dealer_hand):
         result = "You lose."
     else:
         result = "It's a push (tie). Your bet is returned."
@@ -392,6 +388,6 @@ def baccarat(money_bet, streak, times_won):
         money_won = money_bet
         print()
         print("Its a tie, you didnt lose any money!")
+    
     sleep(5)
-
     return money_won, streak, times_won

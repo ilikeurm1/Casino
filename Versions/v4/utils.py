@@ -45,7 +45,6 @@ def bet(money: int) -> tuple[int, int]:
             break
 
     total = money - money_betting
-    sleep(1)
 
     return total, money_betting
 

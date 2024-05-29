@@ -7,8 +7,8 @@
 # Added obfuscation to the save function (no more cheating by changing the save file)
 
 from time import sleep
-import utils
 import games
+from utils import welcome, bet, clear, bye, LOST
 from settings import settings_main, save
 
 # Outer game loop
@@ -29,7 +29,7 @@ while 1:
     money, user = settings_main()
     # Inner game loop
     while 1:
-        game = input(utils.welcome(user)) or "0"
+        game = input(welcome(user)) or "0"
 
         if "quit" in game:
             break
@@ -62,7 +62,9 @@ while 1:
         print()
         print(f"You have chosen to play {all_games[GI]}!")
 
-        money, money_betting = utils.bet(money)
+        money, money_betting = bet(money)
+        sleep(3)
+        clear()
         money_won, streak, times_won = Chosen_game(money_betting, streak, times_won)
         money = money + money_won
         highest_winnings.append(money_won)
@@ -71,15 +73,14 @@ while 1:
         save(money, user)
 
         sleep(2)
-
-        utils.clear()
+        clear()
 
         # LOSE
         if money == 0:
-            print(utils.LOST)
-            print(utils.bye(highest_streak, highest_winnings, times_won))
+            print(LOST)
+            print(bye(highest_streak, highest_winnings, times_won))
             sleep(10)
-            utils.clear()
+            clear()
             break
 
         print()
@@ -91,15 +92,15 @@ while 1:
         if "y" in again:
             print("Ok! Clearing terminal for easier view!")
             sleep(2)
-            utils.clear()
+            clear()
             continue
         if "n" in again:
             print()
             print(f"When you come back next time you will start with {money}$")
             sleep(2)
-            print(utils.bye(highest_streak, highest_winnings, times_won))
+            print(bye(highest_streak, highest_winnings, times_won))
             sleep(10)
-            utils.clear()
+            clear()
             break
         continue
 
@@ -108,11 +109,11 @@ while 1:
     if "y" in restart:
         print("Ok! Clearing terminal for easier view!")
         sleep(2)
-        utils.clear()
+        clear()
         continue
     if "n" in restart:
         print("Thank you for playing! Have a great day!")
         sleep(5)
-        utils.clear()
+        clear()
         break
     continue
