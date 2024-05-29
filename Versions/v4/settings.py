@@ -32,7 +32,7 @@ def obf(s: str, a: int) -> str:
 
     Args:
         s (str): string to be obfuscated
-        a (int): amount of times to be obfuscat
+        a (int): amount of times to be obfuscated
 
     Returns:
         str: obfuscated string
