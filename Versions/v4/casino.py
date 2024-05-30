@@ -37,27 +37,30 @@ while 1:
 
         if "quit" in game:
             break
+        try:
+            if int(game) == 1:
+                Chosen_game = games.guesser
 
-        if game == all_games[0] or int(game) == 1:
-            Chosen_game = games.guesser
+            elif int(game) == 2:
+                Chosen_game = games.roulette
 
-        elif game == all_games[1] or int(game) == 2:
-            Chosen_game = games.roulette
+            elif int(game) == 3:
+                Chosen_game = games.slots
 
-        elif game == all_games[2] or int(game) == 3:
-            Chosen_game = games.slots
+            elif int(game) == 4:
+                Chosen_game = games.blackjack
 
-        elif game == all_games[3] or int(game) == 4:
-            Chosen_game = games.blackjack
+            elif int(game) == 5:
+                Chosen_game = games.baccarat
 
-        elif game == all_games[4] or int(game) == 5:
-            Chosen_game = games.baccarat
+            else:
+                print()
+                print("Sorry but that isn't a recognized input!")
 
-        else:
+            GI = int(game) - 1
+        except ValueError:
             print()
-            print("Sorry but that isn't a recognized input!")
-
-        GI = int(game) - 1
+            print("That isn't a valid input please input ")
 
         # Initialize game
 
