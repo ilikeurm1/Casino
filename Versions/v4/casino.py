@@ -37,6 +37,7 @@ while 1:
 
         if "quit" in game:
             break
+
         try:
             if int(game) == 1:
                 Chosen_game = games.guesser
