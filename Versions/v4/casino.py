@@ -16,6 +16,7 @@ while 1:
     # Initialize the game settings for every new game
     streak: int = 0
     times_won: int = 0
+    again: str = ""
     highest_streak: list[int] = []
     highest_winnings: list[int] = []
     all_games: list[str] = [
@@ -29,33 +30,34 @@ while 1:
     money, user = settings_main()
     # Inner game loop
     while 1:
-        game = input(welcome(user)) or "0"
+        game = input(welcome(user))
+
+        if not game:
+            continue
 
         if "quit" in game:
             break
 
-        if game == "0":
-            continue
-
         if game == all_games[0] or int(game) == 1:
             Chosen_game = games.guesser
-            GI = 0
 
         elif game == all_games[1] or int(game) == 2:
             Chosen_game = games.roulette
-            GI = 1
 
         elif game == all_games[2] or int(game) == 3:
             Chosen_game = games.slots
-            GI = 2
 
         elif game == all_games[3] or int(game) == 4:
             Chosen_game = games.blackjack
-            GI = 3
 
         elif game == all_games[4] or int(game) == 5:
             Chosen_game = games.baccarat
-            GI = 4
+
+        else:
+            print()
+            print("Sorry but that isn't a recognized input!")
+
+        GI = int(game) - 1
 
         # Initialize game
 
@@ -105,9 +107,9 @@ while 1:
             break
         continue
 
-    if not "n" in again: # only ask to restart the game when the person has lost (has 0 dollars).
+    if "n" not in again:  # only ask to restart the game when the person has lost (has 0 dollars).
         # Restart the game
-        restart = input("Do you want to replay (on a new profile)? (y/n): ")
+        restart = input("Do you want to restart (on a new profile)? (y/n): ")
         if "y" in restart:
             print("Ok! Clearing terminal for easier view!")
             sleep(3)
