@@ -61,7 +61,9 @@ while 1:
             GI = int(game) - 1
         except ValueError:
             print()
-            print("That isn't a valid input please input ")
+            print("That isn't a valid input please input a number or quit!")
+            sleep(3)
+            clear()
             continue
 
         # Initialize game
