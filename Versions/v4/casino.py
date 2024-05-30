@@ -35,7 +35,7 @@ while 1:
         if not game:
             continue
 
-        if "quit" in game:
+        if "q" in game:
             break
 
         try:
@@ -62,6 +62,7 @@ while 1:
         except ValueError:
             print()
             print("That isn't a valid input please input ")
+            continue
 
         # Initialize game
 
