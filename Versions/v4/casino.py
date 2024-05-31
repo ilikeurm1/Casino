@@ -44,25 +44,25 @@ def main() -> None:
 
             try:
                 if int(game) == 1:
-                    Chosen_game = games.guesser
+                    chosen_game = games.guesser
 
                 elif int(game) == 2:
-                    Chosen_game = games.roulette
+                    chosen_game = games.roulette
 
                 elif int(game) == 3:
-                    Chosen_game = games.slots
+                    chosen_game = games.slots
 
                 elif int(game) == 4:
-                    Chosen_game = games.blackjack
+                    chosen_game = games.blackjack
 
                 elif int(game) == 5:
-                    Chosen_game = games.baccarat
+                    chosen_game = games.baccarat
 
                 else:
                     print()
                     print("Sorry but that isn't a recognized input!")
 
-                GI = int(game) - 1
+                gi = int(game) - 1
             except ValueError:
                 print()
                 print("That isn't a valid input please input a number or quit!")
@@ -73,12 +73,12 @@ def main() -> None:
             # Initialize game
 
             print()
-            print(f"You have chosen to play {all_games[GI]}!")
+            print(f"You have chosen to play {all_games[gi]}!")
 
             money, money_betting = bet(money)
             sleep(3)
             clear()
-            money_won, streak, times_won = Chosen_game(money_betting, streak, times_won)
+            money_won, streak, times_won = chosen_game(money_betting, streak, times_won)
             sleep(5)
             money = money + money_won
             highest_winnings.append(money_won)
@@ -118,7 +118,7 @@ def main() -> None:
                 break
             continue
 
-        if "n" not in again:  # only ask to restart the game when the person has lost (has 0 dollars).
+        if "n" not in again: # only ask to restart the game when the person has 0 dollars.
             # Restart the game
             restart = input("Do you want to restart (on a new profile)? (y/n): ")
             if "y" in restart:
@@ -131,6 +131,6 @@ def main() -> None:
         clear()
         break
 
+
 if __name__ == "__main__":
     main()
-
