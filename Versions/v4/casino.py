@@ -11,119 +11,126 @@ import games
 from utils import welcome, bet, clear, bye, LOST
 from settings import settings_main, save
 
-# Outer game loop
-while 1:
-    # Initialize the game settings for every new game
-    streak: int = 0
-    times_won: int = 0
-    again: str = ""
-    highest_streak: list[int] = []
-    highest_winnings: list[int] = []
-    all_games: list[str] = [
-        "Number Guesser",
-        "Roulette",
-        "Slots",
-        "Blackjack",
-        "Baccarat",
-    ]
 
-    money, user = settings_main() # Get the user and their money
-    # Inner game loop
+def main() -> None:
+    """Main function."""
+    # Outer game loop
     while 1:
-        game = input(welcome(user))
+        # Initialize the game settings for every new game
+        streak: int = 0
+        times_won: int = 0
+        again: str = ""
+        highest_streak: list[int] = []
+        highest_winnings: list[int] = []
+        all_games: list[str] = [
+            "Number Guesser",
+            "Roulette",
+            "Slots",
+            "Blackjack",
+            "Baccarat",
+        ]
 
-        if not game:
-            clear()
-            continue
+        money, user = settings_main() # Get the user and their money
+        # Inner game loop
+        while 1:
+            game = input(welcome(user))
 
-        if "q" in game:
-            break
+            if not game:
+                clear()
+                continue
 
-        try:
-            if int(game) == 1:
-                Chosen_game = games.guesser
+            if "q" in game:
+                break
 
-            elif int(game) == 2:
-                Chosen_game = games.roulette
+            try:
+                if int(game) == 1:
+                    Chosen_game = games.guesser
 
-            elif int(game) == 3:
-                Chosen_game = games.slots
+                elif int(game) == 2:
+                    Chosen_game = games.roulette
 
-            elif int(game) == 4:
-                Chosen_game = games.blackjack
+                elif int(game) == 3:
+                    Chosen_game = games.slots
 
-            elif int(game) == 5:
-                Chosen_game = games.baccarat
+                elif int(game) == 4:
+                    Chosen_game = games.blackjack
 
-            else:
+                elif int(game) == 5:
+                    Chosen_game = games.baccarat
+
+                else:
+                    print()
+                    print("Sorry but that isn't a recognized input!")
+
+                GI = int(game) - 1
+            except ValueError:
                 print()
-                print("Sorry but that isn't a recognized input!")
+                print("That isn't a valid input please input a number or quit!")
+                sleep(3)
+                clear()
+                continue
 
-            GI = int(game) - 1
-        except ValueError:
+            # Initialize game
+
             print()
-            print("That isn't a valid input please input a number or quit!")
+            print(f"You have chosen to play {all_games[GI]}!")
+
+            money, money_betting = bet(money)
             sleep(3)
             clear()
+            money_won, streak, times_won = Chosen_game(money_betting, streak, times_won)
+            sleep(5)
+            money = money + money_won
+            highest_winnings.append(money_won)
+            highest_streak.append(streak)
+
+            save(money, user)
+
+            sleep(3)
+            clear()
+
+            # LOSE
+            if money == 0:
+                print(LOST)
+                print(bye(highest_streak, highest_winnings, times_won))
+                sleep(10)
+                clear()
+                break
+
+            print()
+            print(f"You now have {money}$ and are on a streak of {streak}")
+
+            # Run again in the current profile
+            print()
+            again = input("Play a new game? (y/n): ")
+            if "y" in again:
+                print("Ok! Clearing terminal for easier view!")
+                sleep(3)
+                clear()
+                continue
+            if "n" in again:
+                print()
+                print(f"When you come back next time you will start with {money}$")
+                sleep(3)
+                print(bye(highest_streak, highest_winnings, times_won))
+                sleep(10)
+                clear()
+                break
             continue
 
-        # Initialize game
-
-        print()
-        print(f"You have chosen to play {all_games[GI]}!")
-
-        money, money_betting = bet(money)
+        if "n" not in again:  # only ask to restart the game when the person has lost (has 0 dollars).
+            # Restart the game
+            restart = input("Do you want to restart (on a new profile)? (y/n): ")
+            if "y" in restart:
+                print("Ok! Clearing terminal for easier view!")
+                sleep(3)
+                clear()
+                continue
+        print("Thank you for playing! Have a great day!")
         sleep(3)
         clear()
-        money_won, streak, times_won = Chosen_game(money_betting, streak, times_won)
-        sleep(5)
-        money = money + money_won
-        highest_winnings.append(money_won)
-        highest_streak.append(streak)
+        break
 
-        save(money, user)
+if __name__ == "__main__":
+    main()
 
-        sleep(3)
-        clear()
-
-        # LOSE
-        if money == 0:
-            print(LOST)
-            print(bye(highest_streak, highest_winnings, times_won))
-            sleep(10)
-            clear()
-            break
-
-        print()
-        print(f"You now have {money}$ and are on a streak of {streak}")
-
-        # Run again in the current profile
-        print()
-        again = input("Play a new game? (y/n): ")
-        if "y" in again:
-            print("Ok! Clearing terminal for easier view!")
-            sleep(3)
-            clear()
-            continue
-        if "n" in again:
-            print()
-            print(f"When you come back next time you will start with {money}$")
-            sleep(3)
-            print(bye(highest_streak, highest_winnings, times_won))
-            sleep(10)
-            clear()
-            break
-        continue
-
-    if "n" not in again:  # only ask to restart the game when the person has lost (has 0 dollars).
-        # Restart the game
-        restart = input("Do you want to restart (on a new profile)? (y/n): ")
-        if "y" in restart:
-            print("Ok! Clearing terminal for easier view!")
-            sleep(3)
-            clear()
-            continue
-    print("Thank you for playing! Have a great day!")
-    sleep(3)
-    clear()
-    break
