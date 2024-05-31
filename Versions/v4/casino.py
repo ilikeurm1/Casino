@@ -27,12 +27,13 @@ while 1:
         "Baccarat",
     ]
 
-    money, user = settings_main()
+    money, user = settings_main() # Get the user and their money
     # Inner game loop
     while 1:
         game = input(welcome(user))
 
         if not game:
+            clear()
             continue
 
         if "q" in game:
@@ -122,9 +123,7 @@ while 1:
             sleep(3)
             clear()
             continue
-        if "n" in restart:
-            print("Thank you for playing! Have a great day!")
-            sleep(3)
-            clear()
-            break
-        continue
+    print("Thank you for playing! Have a great day!")
+    sleep(3)
+    clear()
+    break
