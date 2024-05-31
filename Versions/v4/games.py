@@ -207,7 +207,6 @@ def blackjack(money_bet: int, streak: int, times_won: int) -> tuple[int, int, in
         dealer_blackjack = True
 
     while sum(player_hand) < 21:
-        sleep(3)
         print()
         print(f"Your hand: {player_hand}, Total: {sum(player_hand)}")
         print()
@@ -215,15 +214,24 @@ def blackjack(money_bet: int, streak: int, times_won: int) -> tuple[int, int, in
         # print(f"Dealer's hand: {dealer_hand}, Total: {sum(dealer_hand)}")
         print()
 
-        action = input("Do you want to 'hit' or 'stand'? ").lower()
-        if action == "hit":
+        action = input("""What do you want to do?
+
+1. hit
+2. stand
+                       
+Number or action: """).lower()
+        if action in ("hit", "1"):
             player_hand.append(utils.deal_card())
             # Convert 11 to 1 if the total score is over 21
             if 11 in player_hand and sum(player_hand) > 21:
                 player_hand.remove(11)
                 player_hand.append(1)
-        elif action == "stand":
+        elif action in ("stand", "2"):
+            sleep(1)
+            utils.clear()
             break
+        sleep(1)
+        utils.clear()
 
     # Convert 11 to 1 if the total score is over 21
     if 11 in dealer_hand and sum(dealer_hand) > 21:
@@ -259,9 +267,7 @@ def blackjack(money_bet: int, streak: int, times_won: int) -> tuple[int, int, in
     else:
         result = "It's a push (tie). Your bet is returned."
 
-    if (
-        "Blackjack" in result
-    ):  # result == "You win!" or result == "Blackjack! You win!" or result == "Dealer busts! You win!":
+    if "Blackjack" in result:  # result == "You win!" or result == "Blackjack! You win!" or result == "Dealer busts! You win!":
         money_won = money_bet * 10
         streak += 1
         times_won += 1
@@ -269,9 +275,7 @@ def blackjack(money_bet: int, streak: int, times_won: int) -> tuple[int, int, in
         money_won = money_bet * 3
         streak += 1
         times_won += 1
-    elif (
-        "lose" in result
-    ):  # result == "You lose." or result == "Dealer has a blackjack. You lose." or result == "Bust! You lose.":
+    elif "lose" in result:  # result == "You lose." or result == "Dealer has a blackjack. You lose." or result == "Bust! You lose.":
         money_won = 0
         streak = 0
     else:
@@ -388,3 +392,22 @@ def baccarat(money_bet, streak, times_won):
         print("Its a tie, you didnt lose any money!")
 
     return money_won, streak, times_won
+
+
+def main() -> None:
+    """Main function."""
+    mw: int = 100
+    s: int = 100
+    t: int = 0
+    again: str = "y"
+    game = blackjack  # change this to the game you want to test
+    while "y" in again:
+        # Add function to test here
+        mw, s, t = game(mw or 100, s, t)
+        print(f"Money won: {mw}, \nStreak: {s}, \nTimes won: {t}")
+        again = input("Do you want to play again? (y/n): ")
+        utils.clear()
+
+
+if __name__ == "__main__":
+    main()
