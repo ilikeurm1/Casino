@@ -57,11 +57,6 @@ def deobf(s: str) -> int:
     Args:
         s (str): string to be deobfuscated
     """
-    if fixed_obfuscation:
-        for _ in range(obfuscation_max):
-            s = base64.b64decode(s.encode()).decode()
-        return int(s)
-
     try:
         return int(s)  # If the string is a number return it
     except ValueError:  # If the string is not a number
