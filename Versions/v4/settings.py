@@ -45,7 +45,7 @@ def obf(s: str) -> str:
         for _ in range(obfuscation_max):
             s = base64.b64encode(s.encode()).decode()
         return s
-    
+
     for _ in range(randint(1, obfuscation_max)):
         s = base64.b64encode(s.encode()).decode()
     return s
@@ -61,7 +61,7 @@ def deobf(s: str) -> int:
         for _ in range(obfuscation_max):
             s = base64.b64decode(s.encode()).decode()
         return int(s)
-    
+
     try:
         return int(s)  # If the string is a number return it
     except ValueError:  # If the string is not a number
