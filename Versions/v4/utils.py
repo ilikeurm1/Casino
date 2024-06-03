@@ -1,11 +1,11 @@
 """Utility functions for the game"""
 
-import random
 import os
+from random import choice
 from time import sleep
 
 
-def clear():
+def clear() -> None:
     """Clears the conlose"""
     os.system("cls")
 
@@ -69,7 +69,7 @@ def hascolor(x: int) -> str:
     return color
 
 
-def roll(slots):
+def roll(slots: list[int]) -> None:
     """Roll animation
 
     Args:
@@ -82,13 +82,13 @@ def roll(slots):
         sleep(2)
 
 
-def deal_card():
+def deal_card() -> int:
     """Deals a card for Blackjack"""
     cards = [2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10, 11]
-    return cards[random.randint(0, 12)]
+    return choice(cards)
 
 
-def welcome(user):
+def welcome(user) -> str:
     """Welcome message"""
     return f"""
 Welcome to the Casino {user}!
@@ -126,7 +126,7 @@ Red or Black = 2x your bet
 You choose to bet on: """
 
 
-def bye(hs, hw, tw):
+def bye(hs, hw, tw) -> str:
     """Goodbye message"""
     return f"""
 Good bye! Thanks for playing!
