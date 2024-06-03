@@ -45,10 +45,9 @@ def obf(s: str) -> str:
         for _ in range(obfuscation_max):
             s = base64.b64encode(s.encode()).decode()
         return s
-    else:
-        for _ in range(randint(1, obfuscation_max)):
-            s = base64.b64encode(s.encode()).decode()
-        return s
+    for _ in range(randint(1, obfuscation_max)):
+        s = base64.b64encode(s.encode()).decode()
+    return s
 
 
 def deobf(s: str) -> int:
