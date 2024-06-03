@@ -220,13 +220,13 @@ def blackjack(money_bet: int, streak: int, times_won: int) -> tuple[int, int, in
 2. stand
                        
 Number or action: """).lower()
-        if action in ("hit", "1"):
+        if action in ("h", "hit", "1"):
             player_hand.append(utils.deal_card())
             # Convert 11 to 1 if the total score is over 21
             if 11 in player_hand and sum(player_hand) > 21:
                 player_hand.remove(11)
                 player_hand.append(1)
-        elif action in ("stand", "2"):
+        elif action in ("s", "stand", "2"):
             sleep(1)
             utils.clear()
             break
