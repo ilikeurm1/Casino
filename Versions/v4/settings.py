@@ -3,13 +3,18 @@
 import os
 import json
 import base64
+from random import randint
 from time import sleep
 
 
 # CUSTUMIZABLE SETTINGS
-obfuscation_amount: int = (
-    5  # The amount of times the money gets obfuscated | max is 50 -> Memory issues (thanks python)
-)
+
+fixed_obfuscation: bool = False  # If you want to have a fixed obfuscation amount
+
+
+obfuscation_max: int = (
+    5  # Max amount of times the money gets obfuscated | max is 50 -> Memory issues (thanks python)
+) # Also the amount of times the money gets obfuscated if fixed_obfuscation is True
 
 
 main_directory = (  # You can customise this field as you want
@@ -26,7 +31,7 @@ save_file = os.path.join(main_directory, USER_FILE_NAME)  # Used to save users m
 os.makedirs(main_directory, 511, True)
 
 
-def obf(s: str, a: int) -> str:
+def obf(s: str) -> str:
     """recursive function that obfuscates a string a of times
 
     Args:
@@ -36,23 +41,33 @@ def obf(s: str, a: int) -> str:
     Returns:
         str: obfuscated string
     """
-    if a == 0:
+    if fixed_obfuscation:
+        for _ in range(obfuscation_max):
+            s = base64.b64encode(s.encode()).decode()
         return s
-    s = base64.b64encode(s.encode()).decode()
-    return obf(s, a - 1)
+    else:
+        for _ in range(randint(1, obfuscation_max)):
+            s = base64.b64encode(s.encode()).decode()
+        return s
 
 
-def deobf(s: str, a: int):
+def deobf(s: str) -> int:
     """Oppisite of obf() it deobfuscates the string so it gets back the same as it was given
 
     Args:
         s (str): string to be deobfuscated
-        a (int): amount of times it was encoded
     """
-    if a == 0:
-        return s
-    s = base64.b64decode(s.encode()).decode()
-    return deobf(s, a - 1)
+    if fixed_obfuscation:
+        for _ in range(obfuscation_max):
+            s = base64.b64decode(s.encode()).decode()
+        return int(s)
+    else:
+        try:
+            return int(s)  # If the string is a number return it
+        except ValueError:  # If the string is not a number
+            return deobf(
+                base64.b64decode(s.encode()).decode()
+            )  # Decode the string and try again
 
 
 def get_game_profile() -> str:
@@ -76,7 +91,7 @@ def save(to_save: int, gp: str) -> None:
         None
     """
 
-    m = obf(str(to_save), obfuscation_amount)
+    m = obf(str(to_save))
 
     with open(save_file, "r", encoding="utf-8") as rf:
         usrs = json.load(rf)
@@ -112,20 +127,18 @@ def settings_main() -> tuple[int, str]:
                 money = int(
                     input("How much money do u want to start with: ")
                 )  # Ask the user how much money he wants to start with
-                m = obf(str(money), obfuscation_amount)  # Obfuscate the money
+                m = obf(str(money))  # Obfuscate the money
                 users[gp] = {"Money": m}  # Add the user to the users file
                 with open(save_file, "w", encoding="utf-8") as write_file:
                     json.dump(users, write_file, indent=4)  # Save the users file
 
             try:  # If the user has already played
                 m = users[gp]["Money"]  # Get the money of the user
-                money = int(
-                    deobf(m, obfuscation_amount)
-                )  # Decode the money back to a number int
+                money = int(deobf(m))  # Decode the money back to a number int
                 if money == 0:
                     print()
                     money = int(input("How much money do u want to start with: "))
-                    m = obf(str(money), obfuscation_amount)
+                    m = obf(str(money))
                     users[gp]["Money"] = m
                     with open(save_file, "w", encoding="utf-8") as write_file:
                         json.dump(users, write_file, indent=4)
@@ -136,7 +149,7 @@ def settings_main() -> tuple[int, str]:
                 money = int(
                     input("How much money do u want to start with: ")
                 )  # Ask the user how much money he wants to start with
-                m = obf(str(money), obfuscation_amount)  # Obfuscate the money
+                m = obf(str(money))  # Obfuscate the money
                 users[gp] = {"Money": m}  # Add the user to the users file
                 with open(save_file, "w", encoding="utf-8") as write_file:
                     json.dump(users, write_file, indent=4)  # Save the users file
@@ -145,7 +158,7 @@ def settings_main() -> tuple[int, str]:
         money = int(
             input("How much money do u want to start with: ")
         )  # Ask the user how much money he wants to start with
-        m = obf(str(money), obfuscation_amount)  # Obfuscate the money
+        m = obf(str(money))  # Obfuscate the money
         data = {gp: {"Money": m}}  # Add the user to the users file
         with open(save_file, "w", encoding="utf-8") as write_file:
             json.dump(data, write_file, indent=4)
