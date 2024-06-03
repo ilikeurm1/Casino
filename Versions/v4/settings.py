@@ -45,6 +45,7 @@ def obf(s: str) -> str:
         for _ in range(obfuscation_max):
             s = base64.b64encode(s.encode()).decode()
         return s
+    
     for _ in range(randint(1, obfuscation_max)):
         s = base64.b64encode(s.encode()).decode()
     return s
@@ -60,13 +61,13 @@ def deobf(s: str) -> int:
         for _ in range(obfuscation_max):
             s = base64.b64decode(s.encode()).decode()
         return int(s)
-    else:
-        try:
-            return int(s)  # If the string is a number return it
-        except ValueError:  # If the string is not a number
-            return deobf(
-                base64.b64decode(s.encode()).decode()
-            )  # Decode the string and try again
+    
+    try:
+        return int(s)  # If the string is a number return it
+    except ValueError:  # If the string is not a number
+        return deobf(
+            base64.b64decode(s.encode()).decode()
+        )  # Decode the string and try again
 
 
 def get_game_profile() -> str:
