@@ -36,7 +36,6 @@ def obf(s: str) -> str:
 
     Args:
         s (str): string to be obfuscated
-        a (int): amount of times to be obfuscated
 
     Returns:
         str: obfuscated string
@@ -56,6 +55,9 @@ def deobf(s: str) -> int:
 
     Args:
         s (str): string to be deobfuscated
+
+    Returns:
+        s (int): deobfuscated string
     """
     try:
         return int(s)  # If the string is a number return it
