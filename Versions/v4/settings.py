@@ -7,10 +7,10 @@ from random import randint
 from time import sleep
 
 
-# CUSTUMIZABLE SETTINGS
+# region CUSTUMIZABLE SETTINGS
 
+obfuscate: bool = False
 fixed_obfuscation: bool = False  # If you want to have a fixed obfuscation amount
-
 
 obfuscation_max: int = (
     5  # Max amount of times the money gets obfuscated | max is 50 -> Memory issues (thanks python)
@@ -21,6 +21,9 @@ main_directory = (  # You can customise this field as you want
     os.getcwd() + r"\profiles\v4"
 )  # Please try not to change this -> data loss | moving files manually
 
+DEBUG = False  # If you want to see debug messages
+
+# endregion
 
 # Add users file
 USER_FILE_NAME = "Users.json"
@@ -40,13 +43,14 @@ def obf(s: str) -> str:
     Returns:
         str: obfuscated string
     """
-    if fixed_obfuscation:
-        for _ in range(obfuscation_max):
-            s = base64.b64encode(s.encode()).decode()
-        return s
+    if obfuscate:
+        if fixed_obfuscation:
+            for _ in range(obfuscation_max):
+                s = base64.b64encode(s.encode()).decode()
+            return s
 
-    for _ in range(randint(1, obfuscation_max)):
-        s = base64.b64encode(s.encode()).decode()
+        for _ in range(randint(1, obfuscation_max)):
+            s = base64.b64encode(s.encode()).decode()
     return s
 
 
@@ -60,10 +64,10 @@ def deobf(s: str) -> int:
         s (int): deobfuscated string
     """
     try:
-        return int(s)  # If the string is a number return it
-    except ValueError:  # If the string is not a number
+        return int(s)  # If the string is a number
+    except ValueError:
         return deobf(
-            base64.b64decode(s.encode()).decode()
+            base64.b64decode(s.encode()).decode() # Decode the string and try again
         )  # Decode the string and try again
 
 

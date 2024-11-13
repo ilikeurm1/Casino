@@ -7,9 +7,9 @@
 # Added obfuscation to the save function (no more cheating by changing the save file)
 
 from time import sleep
-import games
+from games import init_game, guesser, roulette, slots, blackjack, baccarat
 from utils import welcome, bet, clear, bye, LOST
-from settings import settings_main, save
+from settings import settings_main, save, DEBUG
 
 
 def main() -> None:
@@ -29,8 +29,10 @@ def main() -> None:
             "Blackjack",
             "Baccarat",
         ]
+        
+        # Get the user and their money
+        money, user = settings_main()
 
-        money, user = settings_main() # Get the user and their money
         # Inner game loop
         while 1:
             game = input(welcome(user))
@@ -44,19 +46,19 @@ def main() -> None:
 
             try:
                 if int(game) == 1:
-                    chosen_game = games.guesser
+                    chosen_game = guesser
 
                 elif int(game) == 2:
-                    chosen_game = games.roulette
+                    chosen_game = roulette
 
                 elif int(game) == 3:
-                    chosen_game = games.slots
+                    chosen_game = slots
 
                 elif int(game) == 4:
-                    chosen_game = games.blackjack
+                    chosen_game = blackjack
 
                 elif int(game) == 5:
-                    chosen_game = games.baccarat
+                    chosen_game = baccarat
 
                 else:
                     print()
@@ -78,7 +80,7 @@ def main() -> None:
             money, money_betting = bet(money)
             sleep(3)
             clear()
-            money_won, streak, times_won = chosen_game(money_betting, streak, times_won)
+            money_won, streak, times_won = init_game(chosen_game, money_betting, streak, times_won, DEBUG)
             sleep(5)
             money = money + money_won
             highest_winnings.append(money_won)

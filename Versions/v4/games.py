@@ -4,13 +4,46 @@ from time import sleep
 import random
 import utils
 
+# Colors for the terminal
+class colors:
+    '''
+    Colors class:
+    reset all colors with colors.reset; 
+    use colors.text.colorname;
+    i.e. colors.text.red or colors.text.green;
+    also, the generic bold, disable, underline, reverse, strike through,
+    and invisible work with the main class i.e. colors.bold
+    '''
+    reset = '\033[0m'
+    bold = '\033[01m'
+    disable = '\033[02m'
+    underline = '\033[04m'
+    reverse = '\033[07m'
+    strikethrough = '\033[09m'
+    invisible = '\033[08m'
+ 
+    class text:
+        black = '\033[30m'
+        red = '\033[31m'
+        green = '\033[32m'
+        orange = '\033[33m'
+        blue = '\033[34m'
+        purple = '\033[35m'
+        cyan = '\033[36m'
+        lightgrey = '\033[37m'
+        darkgrey = '\033[90m'
+        lightred = '\033[91m'
+        lightgreen = '\033[92m'
+        yellow = '\033[93m'
+        lightblue = '\033[94m'
+        pink = '\033[95m'
+        lightcyan = '\033[96m'
 
 # Disable line too long for the games as the print statements that explain the game are long
 # pylint: disable=line-too-long
 
-
 # Number Guesser
-def guesser(money_bet: int, streak: int, times_won: int) -> tuple[int, int, int]:
+def guesser(money_bet: int, streak: int, times_won: int, DEBUG: bool) -> tuple[int, int, int]:
     """Number Guesser game
 
     Args:
@@ -32,9 +65,14 @@ def guesser(money_bet: int, streak: int, times_won: int) -> tuple[int, int, int]
             print("You tried! Please enter a minimum of 5")
             continue
         break
-    chosen = int(input("What number is your guess: "))
+
     winning_number = random.randint(1, end)
-    # winning_number = chosen
+    chosen = int(input("What number is your guess: "))
+    
+    if DEBUG:
+        print(f"{colors.bold}{colors.text.red}DEBUG PRINT: The winning number was: {winning_number}{colors.reset}")
+        winning_number = chosen
+    
     if winning_number == chosen:
         money_won = money_bet * 2
         streak += 1
@@ -55,7 +93,7 @@ def guesser(money_bet: int, streak: int, times_won: int) -> tuple[int, int, int]
 
 
 # Roulette
-def roulette(money_bet: int, streak: int, times_won: int) -> tuple[int, int, int]:
+def roulette(money_bet: int, streak: int, times_won: int, DEBUG: bool) -> tuple[int, int, int]:
     """Roulette game
 
     Args:
@@ -69,8 +107,12 @@ def roulette(money_bet: int, streak: int, times_won: int) -> tuple[int, int, int
 
     winning_number = random.randint(0, 36)
     winning_color = utils.hascolor(winning_number)
-    # print(winning_number)
-    # print(winning_color)
+    
+    if DEBUG:
+        print(f"{colors.bold}{colors.text.red}DEBUG PRINT: The winning number was: {winning_number} this had color: {winning_color}{colors.reset}")
+        winning_number = 0
+        winning_color = "g"
+    
     chosen = input(utils.ROULETTE_WELCOME)
     chosen_color = chosen[0].lower()
 
@@ -109,21 +151,21 @@ def roulette(money_bet: int, streak: int, times_won: int) -> tuple[int, int, int
             times_won += 1
             print()
             print(
-                f"Nice! You chose the right color, you have {money_multiplier}x your money bet ({money_bet * money_multiplier}$)!"
+                f"Nice! You chose the right color, (the number was: {winning_number}) you have {money_multiplier}x your money bet ({money_bet * money_multiplier}$)!"
             )
         else:
             money_won = 0
             streak = 0
             print()
             print(
-                f"Sorry! The correct color was {winning_color} and you chose {chosen}, better luck next time!"
+                f"Sorry! The correct color was {winning_color} (number was: {winning_number}) and you chose {chosen}, better luck next time!"
             )
 
     return money_won, streak, times_won
 
 
 # Slot machine
-def slots(money_bet: int, streak: int, times_won: int) -> tuple[int, int, int]:
+def slots(money_bet: int, streak: int, times_won: int, DEBUG: bool) -> tuple[int, int, int]:
     """Slots game
 
     Args:
@@ -136,7 +178,11 @@ def slots(money_bet: int, streak: int, times_won: int) -> tuple[int, int, int]:
     """
 
     slot_machine = [random.randint(1, 9), random.randint(1, 9), random.randint(1, 9)]
-    # slot_machine = [7, 7, 7]
+
+    if DEBUG:
+        print(f"{colors.bold}{colors.text.red}DEBUG PRINT: The slot machine ended at: {slot_machine}{colors.reset}")
+        slot_machine = [7, 7, 7]
+    
     utils.roll(slot_machine)
     if slot_machine[0] == slot_machine[1] == slot_machine[2]:
         if slot_machine[0] == 7:
@@ -177,7 +223,7 @@ def slots(money_bet: int, streak: int, times_won: int) -> tuple[int, int, int]:
 
 
 # Blackjack
-def blackjack(money_bet: int, streak: int, times_won: int) -> tuple[int, int, int]:
+def blackjack(money_bet: int, streak: int, times_won: int, DEBUG: bool) -> tuple[int, int, int]:
     """Blackjack game
 
     Args:
@@ -189,6 +235,23 @@ def blackjack(money_bet: int, streak: int, times_won: int) -> tuple[int, int, in
         tuple[int, int, int]: All the updated argument values
     """
 
+    # Helper func
+    def convert_elevens(hand: list[int]) -> list[int]:
+        """Converts 11 to 1 if the total score is over 21
+
+        Args:
+            hand (list[int]): a hand of cards
+
+        Returns:
+            list[int]: the converted hand
+        """
+        for _ in range(hand.count(11)):
+            if sum(hand) > 21:
+                hand.remove(11)
+                hand.append(1)
+        return hand
+
+    # Initialize the player and dealer hands
     player_hand = []
     dealer_hand = []
     player_blackjack = False
@@ -200,10 +263,15 @@ def blackjack(money_bet: int, streak: int, times_won: int) -> tuple[int, int, in
         player_hand.append(utils.deal_card())
         dealer_hand.append(utils.deal_card())
 
-    if sum(player_hand) == 21 and len(player_hand) == 2:
+    if DEBUG:
+        player_hand = [11, 10]
+        print(f"{colors.bold}{colors.text.red}DEBUG PRINT: Dealer's hand was: {dealer_hand}, Total: {sum(dealer_hand)}{colors.reset}")
+        dealer_hand = [1, 1]
+
+    if sum(player_hand) == 21:
         player_blackjack = True
 
-    if sum(dealer_hand) == 21 and len(dealer_hand) == 2:
+    if sum(dealer_hand) == 21:
         dealer_blackjack = True
 
     while sum(player_hand) < 21:
@@ -211,39 +279,26 @@ def blackjack(money_bet: int, streak: int, times_won: int) -> tuple[int, int, in
         print(f"Your hand: {player_hand}, Total: {sum(player_hand)}")
         print()
         print(f"Dealer's hand: [{dealer_hand[0]}, ?]")
-        # print(f"Dealer's hand: {dealer_hand}, Total: {sum(dealer_hand)}")
         print()
-
-        action = input("""What do you want to do?
-
-1. hit
-2. stand
-                       
-Number or action: """).lower()
+        
+        action = input("""What do you want to do?\n\n1. hit\n2. stand\n\nNumber or action: """).lower()
         if action in ("h", "hit", "1"):
             player_hand.append(utils.deal_card())
             # Convert 11 to 1 if the total score is over 21
-            if 11 in player_hand and sum(player_hand) > 21:
-                player_hand.remove(11)
-                player_hand.append(1)
+            convert_elevens(player_hand)
         elif action in ("s", "stand", "2"):
-            sleep(1)
-            utils.clear()
             break
+        else:
+            utils.clear()
+            continue
+
         sleep(1)
         utils.clear()
-
-    # Convert 11 to 1 if the total score is over 21
-    if 11 in dealer_hand and sum(dealer_hand) > 21:
-        dealer_hand.remove(11)
-        dealer_hand.append(1)
 
     while sum(dealer_hand) < 17:
         dealer_hand.append(utils.deal_card())
         # Convert 11 to 1 if the total score is over 21
-        if 11 in dealer_hand and sum(dealer_hand) > 21:
-            dealer_hand.remove(11)
-            dealer_hand.append(1)
+        convert_elevens(dealer_hand)
 
     print()
     print(f"Your hand: {player_hand}, Total: {sum(player_hand)}")
@@ -267,15 +322,15 @@ Number or action: """).lower()
     else:
         result = "It's a push (tie). Your bet is returned."
 
-    if "Blackjack" in result:  # result == "You win!" or result == "Blackjack! You win!" or result == "Dealer busts! You win!":
+    if "Blackjack" in result: # "Blackjack! You win!"
         money_won = money_bet * 10
         streak += 1
         times_won += 1
-    elif "win" in result:
+    elif "win" in result: # "You win!", "Dealer busts! You win!"
         money_won = money_bet * 3
         streak += 1
         times_won += 1
-    elif "lose" in result:  # result == "You lose." or result == "Dealer has a blackjack. You lose." or result == "Bust! You lose.":
+    elif "lose" in result: # "You lose.", "Dealer has a blackjack. You lose.", "Bust! You lose.":
         money_won = 0
         streak = 0
     else:
@@ -288,7 +343,7 @@ Number or action: """).lower()
 
 
 # Baccarat
-def baccarat(money_bet, streak, times_won):
+def baccarat(money_bet: int, streak: int, times_won: int, DEBUG: bool) -> tuple[int, int, int]:
     """Baccarat game
 
     Args:
@@ -314,6 +369,11 @@ def baccarat(money_bet, streak, times_won):
 
     player_points = sum(card_value(card) for card in player_cards) % 10
     banker_points = sum(card_value(card) for card in banker_cards) % 10
+
+    if DEBUG:
+        print(f"{colors.bold}{colors.text.red}DEBUG PRINT: Player's hand was: {player_cards}, Total: {player_points}{colors.reset}")
+        player_cards = [8,1]
+        banker_cards = [6]
 
     print()
     print(f"Your hand is: {player_cards}")
@@ -359,7 +419,7 @@ def baccarat(money_bet, streak, times_won):
             print()
             print("Banker drew a third card.")
         elif banker_points == 6 and player_cards[2] in [6, 7]:
-            banker_cards.append(random.randint(1, 13)())
+            banker_cards.append(random.randint(1, 13))
             print()
             print("Banker drew a third card.")
     sleep(3)
@@ -394,17 +454,53 @@ def baccarat(money_bet, streak, times_won):
     return money_won, streak, times_won
 
 
+# MAIN INIT FUNCTION
+def init_game(game, money_bet: int, streak: int, times_won: int, DEBUG: bool = False) -> tuple[int, int, int]:
+    """Inits a game also does some logic
+
+    Args:
+        game (function): the game to be played
+        money_bet (int): the amount of money the player has bet
+        streak (int): the current players streak
+        times_won (int): the amount of times the player has won this session
+        DEBUG (bool, optional): Admin toggle to get info prints while playing. Defaults to False.
+
+    Returns:
+        tuple[int, int, int]: returns the updated values of money_bet, streak and times_won
+    """
+
+    print()
+
+
+    return game(money_bet, streak, times_won, DEBUG)
+
+
+
+# Main function for testing
 def main() -> None:
-    """Main function."""
+    """Main function -> for play testing"""
+    
+    # DEBUG bool
+    d: bool = 0 # type: ignore
+
+    # Fake profile setup
     mw: int = 100
     s: int = 100
     t: int = 0
+
+    # Change this to the game you want to test
+    game = blackjack
+
+    # Play again
     again: str = "y"
-    game = blackjack  # change this to the game you want to test
+
+    # Warn print
+    print(f"{colors.bold}{colors.text.red}YOU ARE RUNNING THE GAMES FILE NOT THE MAIN GAME \nTesting game: {game.__name__}\nDebug is set to {d}{colors.reset}")
+
     while "y" in again:
         # Add function to test here
-        mw, s, t = game(mw or 100, s, t)
-        print(f"Money won: {mw}, \nStreak: {s}, \nTimes won: {t}")
+        mw, s, t = init_game(game, mw, s, t, d)
+        print(f"Money won: {mw} \nStreak: {s} \nTimes won: {t}")
         again = input("Do you want to play again? (y/n): ")
         utils.clear()
 
