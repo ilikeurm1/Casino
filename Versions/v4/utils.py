@@ -1,16 +1,16 @@
 """Utility functions for the game"""
 
-import os
 from random import choice
-from time import sleep
-from rich.console import Console
 from rich.text import Text
+from typing import Any
 
-console = Console()
+from settings import sleep, console
+
+# region functions
 
 def clear() -> None:
     """Clears the console"""
-    os.system("cls")
+    console.clear(home=False)
 
 
 def bet(money: int) -> tuple[int, int]:
@@ -91,16 +91,85 @@ def deal_card() -> int:
     return choice(cards)
 
 
+def DEBUG_GAME(DEBUG_MODE: int, game: str, data: dict[str, Any]) -> tuple:
+    """Gives debug info depending on the game and the mode
+
+    Args:
+        DEBUG_MODE (int): the debug mode for now its 1 and 2 (1 is for play testing so it just gives the debug info, 2 is when an admin, so the game always wins)
+        game (str): the game that is being played
+        data (dict[str, str | int]): the data that is being used in the game
+
+    Returns:
+        vals tuple: the debug data with the (non)adjusted values
+    """
+
+    print(data)
+
+    vals: tuple
+
+    if game == "guesser":
+        vals = ()
+        
+    elif game == "roulette":
+        console.print(
+            f"[blue]DEBUG PRINT: The winning number was: {data['winning_number']} this had color: {data['winning_color']}"
+        )
+
+        vals = (                    # Don't change the values if the user is playtesting
+            data["chosen_number"],
+            data["chosen_color"],
+            data["winning_number"],
+            data["winning_color"],
+        ) if DEBUG_MODE == 1 else ( # Set both the chosen and winning number to 0 so the player always wins
+            0,
+            "g",
+            0,
+            "g"
+        ) if DEBUG_MODE == 2 else ( # Debug mode 3 if it comes in the future
+            data["chosen_number"],
+            data["chosen_color"],
+            data["winning_number"],
+            data["winning_color"],
+        )
+    
+    elif game == "slots":
+        vals = ()
+        
+    elif game == "blackjack":
+        vals = ()
+        
+    elif game == "baccarat":
+        vals = ()
+
+    return vals
+
+# endregion
+
+# region strings
 def welcome(user) -> Text:
     """Welcome message"""
-    WELCOME = Text(f"\nWelcome to the Casino {user}!\n\nWhat game do you want to play?\n\n1. Number Guesser | Rewards: 2x\n2. Roulette | Rewards: 2x (Color) 5x (Number) 10x (Green or 0)\n3. Slots | Rewards: 3x (2 of the same) 8x (2x '7') 8x (3 of the same) 100x (3x '7')\n4. Blackjack | Rewards: 10x (Blackjack) 3x (Win)\n5. Baccarat | Rewards: 3x\n\n\n(Type quit to leave the program)\n\nPlease type the number assigned to it: ", style="bold blue")
+    WELCOME = Text(
+        f"\nWelcome to the Casino {user}!\n\nWhat game do you want to play?\n\n1. Number Guesser | Rewards: 2x\n2. Roulette | Rewards: 2x (Color) 5x (Number) 10x (Green or 0)\n3. Slots | Rewards: 3x (2 of the same) 8x (2x '7') 8x (3 of the same) 100x (3x '7')\n4. Blackjack | Rewards: 10x (Blackjack) 3x (Win)\n5. Baccarat | Rewards: 3x\n\n\n(Type quit to leave the program)\n\nPlease type the number assigned to it: ",
+        style="bold blue"
+    )
     return WELCOME
 
 def bye(hs, hw, tw) -> Text:
     """Goodbye message"""
-    BYE = Text(f"\nGood bye! Thanks for playing!\n\nCredits:\n\nProgramming: Matthijs Duhoux, ChatGPT (tiny changes)\n\nFun Facts:\n\nYour highest streak was when you won {max(hs)} time(s) in a row\n\nYour highest winning was {max(hw)}$\n\nIn total you won {tw} time(s)!\n", style="green")
+    BYE = Text(
+        f"\nGood bye! Thanks for playing!\n\nCredits:\n\nProgramming: Matthijs Duhoux, ChatGPT (tiny changes)\n\nFun Facts:\n\nYour highest streak was when you won {max(hs)} time(s) in a row\n\nYour highest winning was {max(hw)}$\n\nIn total you won {tw} time(s)!\n",
+        style="green"
+    )
     return BYE
 
-LOST = Text("\nSorry but you have no money left! You have lost the game!\nYou can start a new game by restarting the program!", style="bold red")
+LOST = Text(
+    "\nSorry but you have no money left! You have lost the game!\nYou can start a new game by restarting the program!",
+    style="bold red"
+)
 
-ROULETTE_WELCOME = Text("What do you guess, pick from:\n\nNumbers: 0 - 36\nColors: Red, Black, Green\n\nPayouts:\n\n0 and Green = 10x your bet\nNumber (1 - 36) = 5x your bet\nRed or Black = 2x your bet\n\nYou choose to bet on: ", style="blue")
+ROULETTE_WELCOME = Text(
+    "What do you want to bet on, pick from:\n\nNumbers: 0 - 36\nColors: Red, Black, Green\n\nPayouts:\n\n0 and Green = 10x your bet\nNumber (1 - 36) = 5x your bet\nRed or Black = 2x your bet\n\nYou choose to bet on",
+    style="green",
+)
+
+# endregion

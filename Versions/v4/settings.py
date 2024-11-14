@@ -6,13 +6,14 @@ import base64
 from random import randint
 from time import sleep
 from rich.console import Console
+from rich.prompt import Prompt, Confirm, IntPrompt 
 
 # region CUSTUMIZABLE SETTINGS
 
 obfuscate: bool = False
 fixed_obfuscation: bool = False  # If you want to have a fixed obfuscation amount
 
-obfuscation_max: int = (
+obf_count: int = (
     5  # Max amount of times the money gets obfuscated | max is 50 -> Memory issues (thanks python)
 ) # Also the amount of times the money gets obfuscated if fixed_obfuscation is True
 
@@ -21,12 +22,12 @@ main_directory = (  # You can customise this field as you want
     os.getcwd() + r"\profiles\v4"
 )  # Please try not to change this -> data loss | moving files manually
 
-DEBUG = False  # If you want to see debug messages
-
 # endregion
 
 
 # region Please dont touch :)
+
+# region misc
 
 # Console settings
 console = Console(color_system="truecolor", tab_size=4)
@@ -39,6 +40,9 @@ save_file = os.path.join(main_directory, USER_FILE_NAME)  # Used to save users m
 # Make the main directory of the game
 os.makedirs(main_directory, 511, True)
 
+# endregion
+
+# region functions
 
 def obf(s: str) -> str:
     """recursive function that obfuscates a string a of times
@@ -51,11 +55,11 @@ def obf(s: str) -> str:
     """
     if obfuscate:
         if fixed_obfuscation:
-            for _ in range(obfuscation_max):
+            for _ in range(obf_count):
                 s = base64.b64encode(s.encode()).decode()
             return s
 
-        for _ in range(randint(1, obfuscation_max)):
+        for _ in range(randint(1, obf_count)):
             s = base64.b64encode(s.encode()).decode()
     return s
 
@@ -88,7 +92,6 @@ def get_game_profile() -> str:
     return gp
 
 
-# Save function
 def save(to_save: int, gp: str) -> None:
     """Function to save the money of the user in the json file.
 
@@ -114,6 +117,14 @@ def save(to_save: int, gp: str) -> None:
                 console.print("[red]Money not saved, unknown user![/]")
 
 
+def is_admin(gp: str) -> int:
+    """Function to check if the user is admin or not."""
+    ADMINS = ("Test", "Admin")
+    return ADMINS.index(gp) + 1 if gp in ADMINS else 0
+
+# endregion
+
+# main
 def settings_main() -> tuple[int, str]:
     """Main function for the settings."""
     console.print()

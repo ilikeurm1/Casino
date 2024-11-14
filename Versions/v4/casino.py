@@ -1,15 +1,21 @@
 """Main Casino File"""
 
 # --> Version 4 Changelog <--
-# Pylinted the code (im not going to do this again, it took me ~3 hours)
-# Added Sleeps to make the game more readable and easier to understand
-# Made the settings file more readable and easier to understand
-# Added obfuscation to the save function (no more cheating by changing the save file)
+# Added:
+# + Added Sleeps to make the game more readable and easier to understand
+# + Made the settings file more readable and easier to understand
+# + Added obfuscation to the save function (no more cheating by changing the save file, even though you still can lmao)
+# + Added colors to the console output
+# + Tried making the overal code more readable and easier to understand
 
-from time import sleep
+
+# Removed:
+# - Pylinted the code (im not going to do this again, it took me ~3 hours) (undo this as i dont care anymore lmfao)
+
+# Importing modules
 from games import init_game, guesser, roulette, slots, blackjack, baccarat
 from utils import welcome, bet, clear, bye, LOST
-from settings import console, settings_main, save, DEBUG
+from settings import console, settings_main, save, sleep, is_admin
 
 def main() -> None:
     """Main function."""
@@ -19,6 +25,7 @@ def main() -> None:
         streak: int = 0
         times_won: int = 0
         again: str = ""
+        DEBUG: bool = False
         highest_streak: list[int] = []
         highest_winnings: list[int] = []
         all_games: list[str] = [
@@ -31,6 +38,9 @@ def main() -> None:
         
         # Get the user and their money
         money, user = settings_main()
+
+        # Check if the user is an admin
+        DEBUG = is_admin(user)
 
         # Inner game loop
         while 1:
@@ -61,12 +71,12 @@ def main() -> None:
 
                 else:
                     console.print()
-                    console.print("[red]Sorry but that isn't a recognized input![/]")
+                    console.print("[red]Sorry but that isn't a recognized input!")
 
                 gi = int(game) - 1
             except ValueError:
                 console.print()
-                console.print("[red]That isn't a valid input please input a number or quit![/]")
+                console.print("[red]That isn't a valid input please input a number or quit!")
                 sleep(3)
                 clear()
                 continue
@@ -74,7 +84,7 @@ def main() -> None:
             # Initialize game
 
             console.print()
-            console.print(f"[blue]You have chosen to play {all_games[gi]}![/]")
+            console.print(f"[blue]You have chosen to play {all_games[gi]}!")
 
             money, money_betting = bet(money)
             sleep(3)
@@ -99,7 +109,7 @@ def main() -> None:
                 break
 
             console.print()
-            console.print(f"[blue]You now have {money}$ and are on a streak of {streak}[/]")
+            console.print(f"[blue]You now have {money}$ and are on a streak of {streak}")
 
             # Run again in the current profile
             console.print()
