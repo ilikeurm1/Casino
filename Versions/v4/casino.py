@@ -9,8 +9,7 @@
 from time import sleep
 from games import init_game, guesser, roulette, slots, blackjack, baccarat
 from utils import welcome, bet, clear, bye, LOST
-from settings import settings_main, save, DEBUG
-
+from settings import console, settings_main, save, DEBUG
 
 def main() -> None:
     """Main function."""
@@ -35,7 +34,7 @@ def main() -> None:
 
         # Inner game loop
         while 1:
-            game = input(welcome(user))
+            game = console.input(welcome(user))
 
             if not game:
                 clear()
@@ -45,37 +44,37 @@ def main() -> None:
                 break
 
             try:
-                if int(game) == 1:
+                if game == "1":
                     chosen_game = guesser
 
-                elif int(game) == 2:
+                elif game == "2":
                     chosen_game = roulette
 
-                elif int(game) == 3:
+                elif game == "3":
                     chosen_game = slots
 
-                elif int(game) == 4:
+                elif game == "4":
                     chosen_game = blackjack
 
-                elif int(game) == 5:
+                elif game == "5":
                     chosen_game = baccarat
 
                 else:
-                    print()
-                    print("Sorry but that isn't a recognized input!")
+                    console.print()
+                    console.print("[red]Sorry but that isn't a recognized input![/]")
 
                 gi = int(game) - 1
             except ValueError:
-                print()
-                print("That isn't a valid input please input a number or quit!")
+                console.print()
+                console.print("[red]That isn't a valid input please input a number or quit![/]")
                 sleep(3)
                 clear()
                 continue
 
             # Initialize game
 
-            print()
-            print(f"You have chosen to play {all_games[gi]}!")
+            console.print()
+            console.print(f"[blue]You have chosen to play {all_games[gi]}![/]")
 
             money, money_betting = bet(money)
             sleep(3)
@@ -93,46 +92,45 @@ def main() -> None:
 
             # LOSE
             if money == 0:
-                print(LOST)
-                print(bye(highest_streak, highest_winnings, times_won))
+                console.print(LOST)
+                console.print(bye(highest_streak, highest_winnings, times_won))
                 sleep(10)
                 clear()
                 break
 
-            print()
-            print(f"You now have {money}$ and are on a streak of {streak}")
+            console.print()
+            console.print(f"[blue]You now have {money}$ and are on a streak of {streak}[/]")
 
             # Run again in the current profile
-            print()
-            again = input("Play a new game? (y/n): ")
+            console.print()
+            again = console.input("[blue]Play a new game? ([green]y[/green]/[red]n[/red]): ")
             if "y" in again:
-                print("Ok! Clearing terminal for easier view!")
+                console.print("[blue]Ok! Clearing terminal for easier view!")
                 sleep(3)
                 clear()
                 continue
             if "n" in again:
-                print()
-                print(f"When you come back next time you will start with {money}$")
+                console.print()
+                console.print(f"[blue]When you come back next time you will start with {money}$")
                 sleep(3)
-                print(bye(highest_streak, highest_winnings, times_won))
+                console.print(bye(highest_streak, highest_winnings, times_won))
                 sleep(10)
                 clear()
                 break
             continue
 
         if "n" not in again: # only ask to restart the game when the person has 0 dollars.
-            # Restart the game
-            restart = input("Do you want to restart (on a new profile)? (y/n): ")
+            # Ask to restart the game
+            restart = console.input("[blue]Do you want to restart (on a new profile for example)? ([green]y[/green]/[red]n[/red]): ")
             if "y" in restart:
-                print("Ok! Clearing terminal for easier view!")
+                console.print("[green]Ok! Clearing terminal for easier view!")
                 sleep(3)
                 clear()
                 continue
-        print("Thank you for playing! Have a great day!")
+        console.print("[blue]Thank you for playing! Have a great day!")
         sleep(3)
         clear()
         break
-
 
 if __name__ == "__main__":
     main()

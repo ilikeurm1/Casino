@@ -3,10 +3,13 @@
 import os
 from random import choice
 from time import sleep
+from rich.console import Console
+from rich.text import Text
 
+console = Console()
 
 def clear() -> None:
-    """Clears the conlose"""
+    """Clears the console"""
     os.system("cls")
 
 
@@ -20,28 +23,28 @@ def bet(money: int) -> tuple[int, int]:
         tuple[int, int]: The money of the player after the bet and the money the player is betting
     """
     while 1:
-        print()
+        console.print()
         try:
             money_betting = int(
-                input(
-                    f"How much do you want to bet (You have {money}$, type '0' to go all in): "
+                console.input(
+                    f"[green]How much do you want to bet (You have {money}$, type '0' to go all in): [/green]"
                 )
             )
         except ValueError:
-            print()
-            print("Please type a number!")
+            console.print()
+            console.print("[red]Please type a number![/red]")
             continue
 
         if money_betting == 0:
             money_betting = money
 
         if money_betting > money:
-            print()
-            print("You dont have that much money!!!")
+            console.print()
+            console.print("[red]You don't have that much money!!![/red]")
 
         else:
-            print()
-            print(f"ok! You are betting {money_betting}$")
+            console.print()
+            console.print(f"[blue]ok! You are betting {money_betting}$[/blue]")
             break
 
     total = money - money_betting
@@ -75,10 +78,10 @@ def roll(slots: list[int]) -> None:
     Args:
         slots (list[int]): The 3 numbers that were rolled.
     """
-    print()
+    console.print()
     sleep(1)
     for i in range(3):
-        print(slots[i], end=" ", flush=True)
+        console.print(slots[i], end=" ", style="b blue")
         sleep(2)
 
 
@@ -88,58 +91,16 @@ def deal_card() -> int:
     return choice(cards)
 
 
-def welcome(user) -> str:
+def welcome(user) -> Text:
     """Welcome message"""
-    return f"""
-Welcome to the Casino {user}!
+    WELCOME = Text(f"\nWelcome to the Casino {user}!\n\nWhat game do you want to play?\n\n1. Number Guesser | Rewards: 2x\n2. Roulette | Rewards: 2x (Color) 5x (Number) 10x (Green or 0)\n3. Slots | Rewards: 3x (2 of the same) 8x (2x '7') 8x (3 of the same) 100x (3x '7')\n4. Blackjack | Rewards: 10x (Blackjack) 3x (Win)\n5. Baccarat | Rewards: 3x\n\n\n(Type quit to leave the program)\n\nPlease type the number assigned to it: ", style="bold blue")
+    return WELCOME
 
-What game do you want to play? 
-
-1. Number Guesser | Rewards: 2x
-2. Roulette | Rewards: 2x (Color) 5x (Number) 10x (Green or 0)
-3. Slots | Rewards: 3x (2 of the same) 8x (2x '7') 8x (3 of the same) 100x (3x '7')
-4. Blackjack | Rewards: 10x (Blackjack) 3x (Win)
-5. Baccarat | Rewards: 3x
-       
-
-(Type quit to leave the program)
-
-Please type the number assigned to it: """
-
-
-LOST = """
-Sorry but you have no money left! You have lost the game! 
-You can start a new game by restarting the program!"""
-
-
-ROULETTE_WELCOME = """What do you guess, pick from:
-                   
-Numbers: 0 - 36
-Colors: Red, Black, Green
-
-Payouts:
-
-0 and Green = 10x your bet
-Number (1 - 36) = 5x your bet
-Red or Black = 2x your bet
-
-You choose to bet on: """
-
-
-def bye(hs, hw, tw) -> str:
+def bye(hs, hw, tw) -> Text:
     """Goodbye message"""
-    return f"""
-Good bye! Thanks for playing!
+    BYE = Text(f"\nGood bye! Thanks for playing!\n\nCredits:\n\nProgramming: Matthijs Duhoux, ChatGPT (tiny changes)\n\nFun Facts:\n\nYour highest streak was when you won {max(hs)} time(s) in a row\n\nYour highest winning was {max(hw)}$\n\nIn total you won {tw} time(s)!\n", style="green")
+    return BYE
 
-Credits:
+LOST = Text("\nSorry but you have no money left! You have lost the game!\nYou can start a new game by restarting the program!", style="bold red")
 
-Programming: Matthijs Duhoux, ChatGPT (tiny changes)
-                  
-Fun Facts:
-
-Your highest streak was when you won {max(hs)} time(s) in a row
-
-Your highest winning was {max(hw)}$
-
-In total you won {tw} time(s)!
-"""
+ROULETTE_WELCOME = Text("What do you guess, pick from:\n\nNumbers: 0 - 36\nColors: Red, Black, Green\n\nPayouts:\n\n0 and Green = 10x your bet\nNumber (1 - 36) = 5x your bet\nRed or Black = 2x your bet\n\nYou choose to bet on: ", style="blue")

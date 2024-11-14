@@ -3,41 +3,7 @@
 from time import sleep
 import random
 import utils
-
-# Colors for the terminal
-class colors:
-    '''
-    Colors class:
-    reset all colors with colors.reset; 
-    use colors.text.colorname;
-    i.e. colors.text.red or colors.text.green;
-    also, the generic bold, disable, underline, reverse, strike through,
-    and invisible work with the main class i.e. colors.bold
-    '''
-    reset = '\033[0m'
-    bold = '\033[01m'
-    disable = '\033[02m'
-    underline = '\033[04m'
-    reverse = '\033[07m'
-    strikethrough = '\033[09m'
-    invisible = '\033[08m'
- 
-    class text:
-        black = '\033[30m'
-        red = '\033[31m'
-        green = '\033[32m'
-        orange = '\033[33m'
-        blue = '\033[34m'
-        purple = '\033[35m'
-        cyan = '\033[36m'
-        lightgrey = '\033[37m'
-        darkgrey = '\033[90m'
-        lightred = '\033[91m'
-        lightgreen = '\033[92m'
-        yellow = '\033[93m'
-        lightblue = '\033[94m'
-        pink = '\033[95m'
-        lightcyan = '\033[96m'
+from settings import console
 
 # Disable line too long for the games as the print statements that explain the game are long
 # pylint: disable=line-too-long
@@ -56,37 +22,37 @@ def guesser(money_bet: int, streak: int, times_won: int, DEBUG: bool) -> tuple[i
     """
 
     while 1:
-        print()
+        console.print()
         end = int(
-            input("The game will pick a number from 1 to x, what is x (minimum '5'): ")
+            console.input("[green]The game will pick a number from 1 to x, what is x (minimum '5'): [/green]")
         )
-        print()
+        console.print()
         if end < 5:
-            print("You tried! Please enter a minimum of 5")
+            console.print("[red]You tried! Please enter a minimum of 5[/red]")
             continue
         break
 
     winning_number = random.randint(1, end)
-    chosen = int(input("What number is your guess: "))
+    chosen = int(console.input("[green]What number is your guess: [/green]"))
     
     if DEBUG:
-        print(f"{colors.bold}{colors.text.red}DEBUG PRINT: The winning number was: {winning_number}{colors.reset}")
+        console.print(f"[blue]DEBUG PRINT: The winning number was: {winning_number}[/blue]")
         winning_number = chosen
     
     if winning_number == chosen:
         money_won = money_bet * 2
         streak += 1
         times_won += 1
-        print()
-        print(
-            f"Nice! You chose the right number, you have doubled your money bet ({money_won}$)!"
+        console.print()
+        console.print(
+            f"[blue]Nice! You chose the right number, you have doubled your money bet ({money_won}$)![/blue]"
         )
     else:
         money_won = 0
         streak = 0
-        print()
-        print(
-            f"Sorry! The correct number was {winning_number} and you chose {chosen}, better luck next time!"
+        console.print()
+        console.print(
+            f"[red]Sorry! The correct number was {winning_number} and you chose {chosen}, better luck next time![/red]"
         )
 
     return money_won, streak, times_won
@@ -109,11 +75,11 @@ def roulette(money_bet: int, streak: int, times_won: int, DEBUG: bool) -> tuple[
     winning_color = utils.hascolor(winning_number)
     
     if DEBUG:
-        print(f"{colors.bold}{colors.text.red}DEBUG PRINT: The winning number was: {winning_number} this had color: {winning_color}{colors.reset}")
+        console.print(f"[blue]DEBUG PRINT: The winning number was: {winning_number} this had color: {winning_color}[/blue]")
         winning_number = 0
         winning_color = "g"
     
-    chosen = input(utils.ROULETTE_WELCOME)
+    chosen = console.input(f"[green]{utils.ROULETTE_WELCOME}[/green]")
     chosen_color = chosen[0].lower()
 
     sleep(3)
@@ -127,16 +93,16 @@ def roulette(money_bet: int, streak: int, times_won: int, DEBUG: bool) -> tuple[
             money_won = money_bet * money_multiplier
             streak += 1
             times_won += 1
-            print()
-            print(
-                f"Nice! You chose the right number, you have {money_multiplier}x your money bet ({money_bet * money_multiplier}$)!"
+            console.print()
+            console.print(
+                f"[blue]Nice! You chose the right number, you have {money_multiplier}x your money bet ({money_bet * money_multiplier}$)![/blue]"
             )
         else:
             money_won = 0
             streak = 0
-            print()
-            print(
-                f"Sorry! The correct number was {winning_number} and you chose {chosen}, better luck next time!"
+            console.print()
+            console.print(
+                f"[red]Sorry! The correct number was {winning_number} and you chose {chosen}, better luck next time![/red]"
             )
 
     except ValueError:  # A color was chosen
@@ -149,16 +115,16 @@ def roulette(money_bet: int, streak: int, times_won: int, DEBUG: bool) -> tuple[
             money_won = money_bet * money_multiplier
             streak += 1
             times_won += 1
-            print()
-            print(
-                f"Nice! You chose the right color, (the number was: {winning_number}) you have {money_multiplier}x your money bet ({money_bet * money_multiplier}$)!"
+            console.print()
+            console.print(
+                f"[blue]Nice! You chose the right color, (the number was: {winning_number}) you have {money_multiplier}x your money bet ({money_bet * money_multiplier}$)![/blue]"
             )
         else:
             money_won = 0
             streak = 0
-            print()
-            print(
-                f"Sorry! The correct color was {winning_color} (number was: {winning_number}) and you chose {chosen}, better luck next time!"
+            console.print()
+            console.print(
+                f"[red]Sorry! The correct color was {winning_color} (number was: {winning_number}) and you chose {chosen}, better luck next time![/red]"
             )
 
     return money_won, streak, times_won
@@ -180,7 +146,7 @@ def slots(money_bet: int, streak: int, times_won: int, DEBUG: bool) -> tuple[int
     slot_machine = [random.randint(1, 9), random.randint(1, 9), random.randint(1, 9)]
 
     if DEBUG:
-        print(f"{colors.bold}{colors.text.red}DEBUG PRINT: The slot machine ended at: {slot_machine}{colors.reset}")
+        console.print(f"[blue]DEBUG PRINT: The slot machine ended at: {slot_machine}[/blue]")
         slot_machine = [7, 7, 7]
     
     utils.roll(slot_machine)
@@ -208,16 +174,16 @@ def slots(money_bet: int, streak: int, times_won: int, DEBUG: bool) -> tuple[int
         money_won = money_bet * money_multiplier
         streak += 1
         times_won += 1
-        print()
-        print(
-            f"Nice! The slot machine ended at {slot_machine[0], slot_machine[1], slot_machine[2]} which means you {money_multiplier}x your bet ({money_bet * money_multiplier}$)"
+        console.print()
+        console.print(
+            f"[blue]Nice! The slot machine ended at {slot_machine[0], slot_machine[1], slot_machine[2]} which means you {money_multiplier}x your bet ({money_bet * money_multiplier}$)[/blue]"
         )
     else:
         money_won = 0
         streak = 0
-        print()
-        print(
-            f"Sorry! The slot machine ended at {slot_machine[0], slot_machine[1], slot_machine[2]} which means you lost your money ({money_bet}$), better luck next time!"
+        console.print()
+        console.print(
+            f"[red]Sorry! The slot machine ended at {slot_machine[0], slot_machine[1], slot_machine[2]} which means you lost your money ({money_bet}$), better luck next time![/red]"
         )
     return money_won, streak, times_won
 
@@ -265,7 +231,7 @@ def blackjack(money_bet: int, streak: int, times_won: int, DEBUG: bool) -> tuple
 
     if DEBUG:
         player_hand = [11, 10]
-        print(f"{colors.bold}{colors.text.red}DEBUG PRINT: Dealer's hand was: {dealer_hand}, Total: {sum(dealer_hand)}{colors.reset}")
+        console.print(f"[blue]DEBUG PRINT: Dealer's hand was: {dealer_hand}, Total: {sum(dealer_hand)}[/blue]")
         dealer_hand = [1, 1]
 
     if sum(player_hand) == 21:
@@ -275,13 +241,13 @@ def blackjack(money_bet: int, streak: int, times_won: int, DEBUG: bool) -> tuple
         dealer_blackjack = True
 
     while sum(player_hand) < 21:
-        print()
-        print(f"Your hand: {player_hand}, Total: {sum(player_hand)}")
-        print()
-        print(f"Dealer's hand: [{dealer_hand[0]}, ?]")
-        print()
+        console.print()
+        console.print(f"[blue]Your hand: {player_hand}, Total: {sum(player_hand)}[/blue]")
+        console.print()
+        console.print(f"[blue]Dealer's hand: [{dealer_hand[0]}, ?][/blue]")
+        console.print()
         
-        action = input("""What do you want to do?\n\n1. hit\n2. stand\n\nNumber or action: """).lower()
+        action = console.input("[green]What do you want to do?\n\n1. hit\n2. stand\n\nNumber or action: [/green]").lower()
         if action in ("h", "hit", "1"):
             player_hand.append(utils.deal_card())
             # Convert 11 to 1 if the total score is over 21
@@ -300,27 +266,27 @@ def blackjack(money_bet: int, streak: int, times_won: int, DEBUG: bool) -> tuple
         # Convert 11 to 1 if the total score is over 21
         convert_elevens(dealer_hand)
 
-    print()
-    print(f"Your hand: {player_hand}, Total: {sum(player_hand)}")
-    print()
-    print(f"Dealer's hand: {dealer_hand}, Total: {sum(dealer_hand)}")
+    console.print()
+    console.print(f"[blue]Your hand: {player_hand}, Total: {sum(player_hand)}[/blue]")
+    console.print()
+    console.print(f"[blue]Dealer's hand: {dealer_hand}, Total: {sum(dealer_hand)}[/blue]")
 
     if player_blackjack and dealer_blackjack:
-        result = "It's a push (tie). Your bet is returned."
+        result = "[blue]It's a push (tie). Your bet is returned.[/blue]"
     elif player_blackjack:
-        result = "Blackjack! You win!"
+        result = "[green]Blackjack! You win![/green]"
     elif dealer_blackjack:
-        result = "Dealer has a blackjack. You lose."
+        result = "[red]Dealer has a blackjack. You lose.[/red]"
     elif sum(player_hand) > 21:
-        result = "Bust! You lose."
+        result = "[red]Bust! You lose.[/red]"
     elif sum(dealer_hand) > 21:
-        result = "Dealer busts! You win!"
+        result = "[green]Dealer busts! You win![/green]"
     elif sum(player_hand) > sum(dealer_hand):
-        result = "You win!"
+        result = "[green]You win![/green]"
     elif sum(player_hand) < sum(dealer_hand):
-        result = "You lose."
+        result = "[red]You lose.[/red]"
     else:
-        result = "It's a push (tie). Your bet is returned."
+        result = "[blue]It's a push (tie). Your bet is returned.[/blue]"
 
     if "Blackjack" in result: # "Blackjack! You win!"
         money_won = money_bet * 10
@@ -336,8 +302,8 @@ def blackjack(money_bet: int, streak: int, times_won: int, DEBUG: bool) -> tuple
     else:
         money_won = money_bet
 
-    print()
-    print(result)
+    console.print()
+    console.print(result)
 
     return money_won, streak, times_won
 
@@ -371,14 +337,12 @@ def baccarat(money_bet: int, streak: int, times_won: int, DEBUG: bool) -> tuple[
     banker_points = sum(card_value(card) for card in banker_cards) % 10
 
     if DEBUG:
-        print(f"{colors.bold}{colors.text.red}DEBUG PRINT: Player's hand was: {player_cards}, Total: {player_points}{colors.reset}")
+        console.print(f"[blue]DEBUG PRINT: Player's hand was: {player_cards}, Total: {player_points}[/blue]")
         player_cards = [8,1]
         banker_cards = [6]
 
-    print()
-    print(f"Your hand is: {player_cards}")
-    print()
-    print(f"Your total is: {player_points}")
+    console.print()
+    console.print(f"[blue]Your hand is: {player_cards} Total: {player_points}[/blue]")
     sleep(3)
 
     # Player's rule
@@ -386,10 +350,10 @@ def baccarat(money_bet: int, streak: int, times_won: int, DEBUG: bool) -> tuple[
         new_card = random.randint(1, 13)
         player_cards.append(new_card)  # Draw a third card
         player_points = sum(card_value(card) for card in player_cards) % 10
-        print()
-        print(f"You drew a third card: {new_card}")
-        print()
-        print(f"Your new total is: {player_points}")
+        console.print()
+        console.print(f"[blue]You drew a third card: {new_card}[/blue]")
+        console.print()
+        console.print(f"[blue]Your new total is: {player_points}[/blue]")
         sleep(3)
 
     # Banker's rule
@@ -397,39 +361,39 @@ def baccarat(money_bet: int, streak: int, times_won: int, DEBUG: bool) -> tuple[
         if banker_points <= 5:
             banker_cards.append(random.randint(1, 13))  # Draw a third card
             banker_points = sum(card_value(card) for card in banker_cards) % 10
-            print()
-            print("Banker drew a third card.")
+            console.print()
+            console.print("[blue]Banker drew a third card.[/blue]")
 
     else:  # Player drew a third card
         # Additional rules for banker when player drew a third card
         if banker_points <= 2:
             banker_cards.append(random.randint(1, 13))
-            print()
-            print("Banker drew a third card.")
+            console.print()
+            console.print("[blue]Banker drew a third card.[/blue]")
         elif banker_points == 3 and player_cards[2] != 8:
             banker_cards.append(random.randint(1, 13))
-            print()
-            print("Banker drew a third card.")
+            console.print()
+            console.print("[blue]Banker drew a third card.[/blue]")
         elif banker_points == 4 and player_cards[2] in [2, 3, 4, 5, 6, 7]:
             banker_cards.append(random.randint(1, 13))
-            print()
-            print("Banker drew a third card.")
+            console.print()
+            console.print("[blue]Banker drew a third card.[/blue]")
         elif banker_points == 5 and player_cards[2] in [4, 5, 6, 7]:
             banker_cards.append(random.randint(1, 13))
-            print()
-            print("Banker drew a third card.")
+            console.print()
+            console.print("[blue]Banker drew a third card.[/blue]")
         elif banker_points == 6 and player_cards[2] in [6, 7]:
             banker_cards.append(random.randint(1, 13))
-            print()
-            print("Banker drew a third card.")
+            console.print()
+            console.print("[blue]Banker drew a third card.[/blue]")
     sleep(3)
 
     banker_points = sum(card_value(card) for card in banker_cards) % 10
 
-    print()
-    print(f"Your cards are: {player_cards} so your total = {player_points}")
-    print()
-    print(f"Bankers cards are: {banker_cards} so their total = {banker_points}")
+    console.print()
+    console.print(f"[blue]Your cards are: {player_cards} so your total = {player_points}[/blue]")
+    console.print()
+    console.print(f"[blue]Bankers cards are: {banker_cards} so their total = {banker_points}[/blue]")
     sleep(3)
 
     # Determine the winner
@@ -437,19 +401,19 @@ def baccarat(money_bet: int, streak: int, times_won: int, DEBUG: bool) -> tuple[
         money_won = money_bet * 3
         streak += 1
         times_won += 1
-        print()
-        print(
-            f"Nice! You won, your bet ({money_bet}$) has been tripled to {money_won}$"
+        console.print()
+        console.print(
+            f"[green]Nice! You won, your bet ({money_bet}$) has been tripled to {money_won}$[/green]"
         )
     elif banker_points > player_points:
         money_won = 0
         streak = 0
-        print()
-        print(f"Sorry! You lost, you lost your bet {money_bet}")
+        console.print()
+        console.print(f"[red]Sorry! You lost, you lost your bet {money_bet}[/red]")
     else:
         money_won = money_bet
-        print()
-        print("Its a tie, you didnt lose any money!")
+        console.print()
+        console.print("[blue]Its a tie, you didnt lose any money![/blue]")
 
     return money_won, streak, times_won
 
@@ -469,7 +433,7 @@ def init_game(game, money_bet: int, streak: int, times_won: int, DEBUG: bool = F
         tuple[int, int, int]: returns the updated values of money_bet, streak and times_won
     """
 
-    print()
+    console.print()
 
 
     return game(money_bet, streak, times_won, DEBUG)
@@ -495,12 +459,12 @@ def main() -> None:
     again: str = "y"
 
     # Warn print
-    print(f"{colors.bold}{colors.text.red}YOU ARE RUNNING THE GAMES FILE NOT THE MAIN GAME \nTesting game: {game.__name__}\nDebug is set to {d}{colors.reset}")
+    console.print(f"[bold red]YOU ARE RUNNING THE GAMES FILE NOT THE MAIN GAME \nTesting game: {game.__name__}\nDebug is set to {d}[/bold red]")
 
     while "y" in again:
         # Add function to test here
         mw, s, t = init_game(game, mw, s, t, d)
-        print(f"Money won: {mw} \nStreak: {s} \nTimes won: {t}")
+        console.print(f"Money won: {mw} \nStreak: {s} \nTimes won: {t}")
         again = input("Do you want to play again? (y/n): ")
         utils.clear()
 
