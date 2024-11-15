@@ -120,7 +120,10 @@ def save(to_save: int, gp: str) -> None:
 def is_admin(gp: str) -> int:
     """Function to check if the user is admin or not."""
     ADMINS = ("Test", "Admin")
-    return ADMINS.index(gp) + 1 if gp in ADMINS else 0
+    debug = ADMINS.index(gp) + 1 if gp in ADMINS else 0
+    console.log(f"You are logged in as admin: {ADMINS[debug - 1]}") if debug else console.log("You are not an admin :)")
+    sleep(2)
+    return debug
 
 # endregion
 
@@ -187,7 +190,7 @@ def settings_main() -> tuple[int, str]:
 
     console.print()
     console.print(f"[blue]You are starting with {money}$, have fun![/]")
-    sleep(1)
+    sleep(3)
     return money, gp
 
 # endregion

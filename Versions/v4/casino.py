@@ -36,11 +36,14 @@ def main() -> None:
             "Baccarat",
         ]
         
+        clear()
+        
         # Get the user and their money
         money, user = settings_main()
 
         # Check if the user is an admin
         DEBUG = is_admin(user)
+        clear()
 
         # Inner game loop
         while 1:
@@ -88,7 +91,6 @@ def main() -> None:
 
             money, money_betting = bet(money)
             sleep(3)
-            clear()
             money_won, streak, times_won = init_game(chosen_game, money_betting, streak, times_won, DEBUG)
             sleep(5)
             money = money + money_won
@@ -98,7 +100,6 @@ def main() -> None:
             save(money, user)
 
             sleep(3)
-            clear()
 
             # LOSE
             if money == 0:
@@ -125,7 +126,6 @@ def main() -> None:
                 sleep(3)
                 console.print(bye(highest_streak, highest_winnings, times_won))
                 sleep(10)
-                clear()
                 break
             continue
 
@@ -139,7 +139,6 @@ def main() -> None:
                 continue
         console.print("[blue]Thank you for playing! Have a great day!")
         sleep(3)
-        clear()
         break
 
 if __name__ == "__main__":

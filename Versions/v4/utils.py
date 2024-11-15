@@ -4,7 +4,7 @@ from random import choice
 from rich.text import Text
 from typing import Any
 
-from settings import sleep, console
+from settings import sleep, console, randint
 
 # region functions
 
@@ -85,11 +85,28 @@ def roll_anim(slots: list[int]) -> None:
     Args:
         slots (list[int]): The 3 numbers that were rolled.
     """
-    console.print()
+    # Can touch but these are good defaults
+    time = 3 # Time the animation should take in seconds (around)
+    frames = 1000 # Number of frames (amount of times the machine will show random numbers)
+    
+    filled = [False, False, False]
+    machine: str = "  _______________\n /_______________\\\n|=================|\n| ({}) | ({}) | ({}) |\n|=================|\n \\_______________/\n"
+    slot_machine_height = machine.count("\n") + 1
+    
     sleep(1)
-    for i in range(3):
-        console.print(slots[i], end=" ", style="b blue")
-        sleep(2)
+    
+    for x in range(frames): # Make it have some length
+        if x == frames // 3:
+            filled[0] = True
+        elif x == 2 * frames // 3:
+            filled[1] = True
+        
+        console.print(machine.format(slots[0] if filled[0] else randint(1,9), slots[1] if filled[1] else randint(1,9), randint(1,9)), style="b magenta")
+        print(f"\033[{slot_machine_height}A", end="")  # Move up `slot_machine_height` lines
+        sleep(time / frames) 
+    
+    console.print(machine.format(slots[0], slots[1], slots[2]), style="b magenta")
+    sleep(2)
 
 
 def deal_card() -> int:
@@ -199,8 +216,8 @@ def DEBUG_GAME(DEBUG_MODE: int, game: str, data: dict[str, Any]) -> tuple:
 def welcome(user) -> Text:
     """Welcome message"""
     WELCOME = Text(
-        f"\nWelcome to the Casino {user}!\n\nWhat game do you want to play?\n\n1. Number Guesser | Rewards: 2x\n2. Roulette | Rewards: 2x (Color) 5x (Number) 10x (Green or 0)\n3. Slots | Rewards: 3x (2 of the same) 8x (2x '7') 8x (3 of the same) 100x (3x '7')\n4. Blackjack | Rewards: 10x (Blackjack) 3x (Win)\n5. Baccarat | Rewards: 3x\n\n\n(Type quit to leave the program)\n\nPlease type the number assigned to it: ",
-        style="bold blue"
+        f"Welcome to the Casino {user}!\n\nWhat game do you want to play?\n\n1. Number Guesser | Rewards: 2x\n2. Roulette | Rewards: 2x (Color) 5x (Number) 10x (Green or 0)\n3. Slots | Rewards: 3x (2 of the same) 8x (2x '7') 8x (3 of the same) 100x (3x '7')\n4. Blackjack | Rewards: 10x (Blackjack) 3x (Win)\n5. Baccarat | Rewards: 3x\n\n\n(Type quit to leave the program)\n\nPlease type the number assigned to it: ",
+        style="green"
     )
     return WELCOME
 

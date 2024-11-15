@@ -467,16 +467,16 @@ def main() -> None:
     game = blackjack
 
     # Play again
-    again: str = "y"
+    again: bool = True
 
     # Warn print
-    console.print(f"[bold red]YOU ARE RUNNING THE GAMES FILE NOT THE MAIN GAME \nTesting game: {game.__name__}\nDebug is set to {d}[/bold red]")
+    console.print(f"[b red]YOU ARE RUNNING THE GAMES FILE NOT THE MAIN GAME \nTesting game: {game.__name__}\nDebug is set to {d}")
 
-    while "y" in again:
+    while again:
         # Add function to test here
-        mw, s, t = init_game(game, mw, s, t, d)
+        mw, s, t = init_game(game, mw or 100, s, t, d)
         console.print(f"Money won: {mw} \nStreak: {s} \nTimes won: {t}")
-        again = Confirm.ask("Do you want to play again?", default="True") # type: ignore
+        again = Confirm.ask("Do you want to play again?") # type: ignore
         clear()
 
 
