@@ -15,7 +15,7 @@
 # Importing modules
 from games import init_game, guesser, roulette, slots, blackjack, baccarat
 from utils import welcome, bet, clear, bye, LOST
-from settings import console, settings_main, save, sleep, is_admin
+from settings import console, Prompt, Confirm, settings_main, save, sleep, is_admin
 
 def main() -> None:
     """Main function."""
@@ -24,7 +24,7 @@ def main() -> None:
         # Initialize the game settings for every new game
         streak: int = 0
         times_won: int = 0
-        again: str = ""
+        again: bool = False
         DEBUG: int = 0
         highest_streak: list[int] = []
         highest_winnings: list[int] = []
@@ -47,7 +47,7 @@ def main() -> None:
 
         # Inner game loop
         while 1:
-            game = console.input(welcome(user))
+            game = Prompt.ask(welcome(user), choices=[str(x) for x in range(1,len(all_games) + 1)] + ["quit"], show_choices=False)
 
             if not game:
                 clear()
@@ -114,25 +114,24 @@ def main() -> None:
 
             # Run again in the current profile
             console.print()
-            again = console.input("[blue]Play a new game? ([green]y[/green]/[red]n[/red]): ")
-            if "y" in again:
+            again = Confirm.ask("[blue]Play a new game?", default=True)
+            if again:
                 console.print("[blue]Ok! Clearing terminal for easier view!")
                 sleep(3)
                 clear()
                 continue
-            if "n" in again:
+            elif not again:
                 console.print()
                 console.print(f"[blue]When you come back next time you will start with {money}$")
                 sleep(3)
                 console.print(bye(highest_streak, highest_winnings, times_won))
                 sleep(10)
                 break
-            continue
 
-        if "n" not in again: # only ask to restart the game when the person has 0 dollars.
+        if money == 0: # only ask to restart the game when the person has 0 dollars.
             # Ask to restart the game
-            restart = console.input("[blue]Do you want to restart (on a new profile for example)? ([green]y[/green]/[red]n[/red]): ")
-            if "y" in restart:
+            restart = Confirm.ask("[blue]Do you want to restart (on a new profile for example)? ([green]y[/green]/[red]n[/red]): ")
+            if restart:
                 console.print("[green]Ok! Clearing terminal for easier view!")
                 sleep(3)
                 clear()
