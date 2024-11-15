@@ -1,6 +1,7 @@
 """All the games"""
+from typing import Any
 
-from utils import clear, deal_card, hascolor, roll, ROULETTE_WELCOME, DEBUG_GAME
+from utils import clear, deal_card, hascolor, find_duplicates, roll_anim, ROULETTE_WELCOME, DEBUG_GAME
 from settings import console, randint, sleep, Prompt, IntPrompt, Confirm
 
 
@@ -32,7 +33,11 @@ def guesser(money_bet: int, streak: int, times_won: int, DEBUG: int) -> tuple[in
     chosen = IntPrompt.ask("[green]What number is your guess")
     
     if DEBUG:
-        DEBUG_GAME(DEBUG, "guesser", winning_number=winning_number, chosen=chosen)
+        data = {
+            "chosen": chosen,
+            "winning_number": winning_number,
+        }
+        chosen, winning_number = DEBUG_GAME(DEBUG, "guesser", data)
     
     if winning_number == chosen:
         money_won = money_bet * 2
@@ -54,9 +59,7 @@ def guesser(money_bet: int, streak: int, times_won: int, DEBUG: int) -> tuple[in
 
 
 # Roulette
-def roulette(
-    money_bet: int, streak: int, times_won: int, DEBUG: int
-) -> tuple[int, int, int]:
+def roulette(money_bet: int, streak: int, times_won: int, DEBUG: int) -> tuple[int, int, int]:
     """Roulette game
 
     Args:
@@ -155,30 +158,24 @@ def slots(money_bet: int, streak: int, times_won: int, DEBUG: int) -> tuple[int,
     slot_machine = [randint(1, 9), randint(1, 9), randint(1, 9)]
 
     if DEBUG:
-        console.print(f"[blue]DEBUG PRINT: The slot machine ended at: {slot_machine}")
-        slot_machine = [7, 7, 7]
+        data = {
+            "slot_machine": slot_machine,
+        }
+        slot_machine = list(DEBUG_GAME(DEBUG, "slots", data))
     
-    roll(slot_machine)
-    if slot_machine[0] == slot_machine[1] == slot_machine[2]:
-        if slot_machine[0] == 7:
+    roll_anim(slot_machine)
+    if slot_machine[0] == slot_machine[1] == slot_machine[2]:   # All the same
+        if slot_machine[0] == 7:                                # All sevens
             money_multiplier = 100
-        else:
+        else:                                                   # Other numbers
             money_multiplier = 8
-    elif (
-        slot_machine[0] == slot_machine[1]
-        or slot_machine[1] == slot_machine[2]
-        or slot_machine[0] == slot_machine[2]
-    ):
-        if (
-            (slot_machine[0] != 7 and slot_machine[1] != 7)
-            or (slot_machine[1] != 7 and slot_machine[2] != 7)
-            or (slot_machine[0] != 7 and slot_machine[2] != 7)
-        ):
-            money_multiplier = 3
-        else:
+    elif (len(set(slot_machine)) == 2):                         # Two the same
+        if find_duplicates(slot_machine) == 7:                  # Two sevens
             money_multiplier = 8
+        else:
+            money_multiplier = 3                                # Other numbers
     else:
-        money_multiplier = 0
+        money_multiplier = 0                                    # Nothing is the same
     if money_multiplier != 0:
         money_won = money_bet * money_multiplier
         streak += 1
@@ -239,9 +236,12 @@ def blackjack(money_bet: int, streak: int, times_won: int, DEBUG: int) -> tuple[
         dealer_hand.append(deal_card())
 
     if DEBUG:
-        player_hand = [11, 10]
-        console.print(f"[blue]DEBUG PRINT: Dealer's hand was: {dealer_hand}, Total: {sum(dealer_hand)}")
-        dealer_hand = [1, 1]
+        data = {
+            "player_hand": player_hand,
+            "dealer_hand": dealer_hand,
+        }
+        player_hand, dealer_hand = DEBUG_GAME(DEBUG, "blackjack", data)
+        
 
     if sum(player_hand) == 21:
         player_blackjack = True
@@ -346,9 +346,11 @@ def baccarat(money_bet: int, streak: int, times_won: int, DEBUG: int) -> tuple[i
     banker_points = sum(card_value(card) for card in banker_cards) % 10
 
     if DEBUG:
-        console.print(f"[blue]DEBUG PRINT: Player's hand was: {player_cards}, Total: {player_points}")
-        player_cards = [8,1]
-        banker_cards = [6]
+        data = {
+            "player_cards": player_cards,
+            "banker_cards": banker_cards,
+        }
+        player_cards, banker_cards = DEBUG_GAME(DEBUG, "baccarat", data)
 
     console.print()
     console.print(f"[blue]Your hand is: {player_cards} Total: {player_points}")
@@ -474,7 +476,7 @@ def main() -> None:
         # Add function to test here
         mw, s, t = init_game(game, mw, s, t, d)
         console.print(f"Money won: {mw} \nStreak: {s} \nTimes won: {t}")
-        again = Confirm.ask("Do you want to play again?", default=True)
+        again = Confirm.ask("Do you want to play again?", default="True") # type: ignore
         clear()
 
 

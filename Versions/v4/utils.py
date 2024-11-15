@@ -72,7 +72,14 @@ def hascolor(x: int) -> str:
     return color
 
 
-def roll(slots: list[int]) -> None:
+def find_duplicates(slots: list[int]) -> int:
+    for x in slots[:len(slots) - 1]:
+        if slots.count(x) == 2:
+            return x
+    return 0
+
+
+def roll_anim(slots: list[int]) -> None:
     """Roll animation
 
     Args:
@@ -108,7 +115,20 @@ def DEBUG_GAME(DEBUG_MODE: int, game: str, data: dict[str, Any]) -> tuple:
     vals: tuple
 
     if game == "guesser":
-        vals = ()
+        console.print(
+            f"[blue]DEBUG PRINT: The winning number was: {data['winning_number']}"
+        )
+        
+        vals = (
+            data["chosen"],
+            data["winning_number"]
+        ) if DEBUG_MODE == 1 else (
+            69,
+            69
+        ) if DEBUG_MODE == 2 else (
+            data["chosen"],
+            data["winning_number"]
+        )
         
     elif game == "roulette":
         console.print(
@@ -133,13 +153,43 @@ def DEBUG_GAME(DEBUG_MODE: int, game: str, data: dict[str, Any]) -> tuple:
         )
     
     elif game == "slots":
-        vals = ()
+        console.print(f"[blue]DEBUG PRINT: The slot machine ended at: {data["slot_machine"]}")
+        
+        vals = (
+            data["slot_machine"]
+        ) if DEBUG_MODE == 1 else (
+            7, 7, 7
+        ) if DEBUG_MODE == 2 else (
+            data["slot_machine"]
+        )
         
     elif game == "blackjack":
-        vals = ()
+        console.print(f"[blue]DEBUG PRINT: Dealer's hand was: {data["dealer_hand"]}, Total: {sum(data["dealer_hand"])}")
+        
+        vals = (
+            data["player_hand"],
+            data["dealer_hand"]
+        ) if DEBUG_MODE == 1 else (
+            [10, 11],
+            [10, 10, 2]
+        ) if DEBUG_MODE == 2 else (
+            data["player_hand"],
+            data["dealer_hand"]
+        )
         
     elif game == "baccarat":
-        vals = ()
+        console.print(f"[blue]DEBUG PRINT: Player's hand was: {data["player_cards"]}, Banker's hand was: {data["banker_cards"]}")
+        
+        vals = (
+            data["player_cards"],
+            data["banker_cards"]
+        ) if DEBUG_MODE == 1 else (
+            [8,1],
+            [6]
+        ) if DEBUG_MODE == 2 else (
+            data["player_cards"],
+            data["banker_cards"]
+        )
 
     return vals
 

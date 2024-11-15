@@ -25,7 +25,7 @@ def main() -> None:
         streak: int = 0
         times_won: int = 0
         again: str = ""
-        DEBUG: bool = False
+        DEBUG: int = 0
         highest_streak: list[int] = []
         highest_winnings: list[int] = []
         all_games: list[str] = [
