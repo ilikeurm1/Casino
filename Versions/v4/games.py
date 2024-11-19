@@ -1,12 +1,21 @@
 """All the games"""
-from typing import Any
 
-from utils import clear, deal_card, hascolor, find_duplicates, roll_anim, ROULETTE_WELCOME, DEBUG_GAME
-from settings import console, randint, sleep, Prompt, IntPrompt, Confirm
+from utils import (
+    clear,
+    deal_card,
+    hascolor,
+    find_duplicates,
+    roll_anim,
+    ROULETTE_WELCOME,
+    DEBUG_GAME,
+)
+from settings import os, console, Prompt, IntPrompt, Confirm, randint, sleep, music
 
 
 # Number Guesser
-def guesser(money_bet: int, streak: int, times_won: int, DEBUG: int) -> tuple[int, int, int]:
+def guesser(
+    money_bet: int, streak: int, times_won: int, DEBUG: int
+) -> tuple[int, int, int]:
     """Number Guesser game
 
     Args:
@@ -21,7 +30,8 @@ def guesser(money_bet: int, streak: int, times_won: int, DEBUG: int) -> tuple[in
     while 1:
         console.print()
         end = IntPrompt.ask(
-            "[green]The game will pick a number from [b]1[/b] to [b]x[/b], what is x (minimum '5')", default=5
+            "[green]The game will pick a number from [b]1[/b] to [b]x[/b], what is x (minimum '5')",
+            default=5,
         )
         console.print()
         if end < 5:
@@ -30,15 +40,19 @@ def guesser(money_bet: int, streak: int, times_won: int, DEBUG: int) -> tuple[in
         break
 
     winning_number = randint(1, end)
-    chosen = IntPrompt.ask("[green]What number is your guess")
-    
+    chosen = IntPrompt.ask(
+        "[green]What number is your guess",
+        choices=[str(x) for x in range(1, end + 1)],
+        show_choices=False,
+    )
+
     if DEBUG:
         data = {
             "chosen": chosen,
             "winning_number": winning_number,
         }
         chosen, winning_number = DEBUG_GAME(DEBUG, "guesser", data)
-    
+
     if winning_number == chosen:
         money_won = money_bet * 2
         streak += 1
@@ -59,7 +73,9 @@ def guesser(money_bet: int, streak: int, times_won: int, DEBUG: int) -> tuple[in
 
 
 # Roulette
-def roulette(money_bet: int, streak: int, times_won: int, DEBUG: int) -> tuple[int, int, int]:
+def roulette(
+    money_bet: int, streak: int, times_won: int, DEBUG: int
+) -> tuple[int, int, int]:
     """Roulette game
 
     Args:
@@ -143,7 +159,9 @@ def roulette(money_bet: int, streak: int, times_won: int, DEBUG: int) -> tuple[i
 
 
 # Slot machine
-def slots(money_bet: int, streak: int, times_won: int, DEBUG: int) -> tuple[int, int, int]:
+def slots(
+    money_bet: int, streak: int, times_won: int, DEBUG: int
+) -> tuple[int, int, int]:
     """Slots game
 
     Args:
@@ -162,20 +180,25 @@ def slots(money_bet: int, streak: int, times_won: int, DEBUG: int) -> tuple[int,
             "slot_machine": slot_machine,
         }
         slot_machine = list(DEBUG_GAME(DEBUG, "slots", data))
-    
+
     roll_anim(slot_machine)
-    if slot_machine[0] == slot_machine[1] == slot_machine[2]:   # All the same
-        if slot_machine[0] == 7:                                # All sevens
+    if slot_machine[0] == slot_machine[1] == slot_machine[2]:  # All the same
+        music.load(os.path.join(os.getcwd(), "Versions/v4/Sounds/slotmachine.mp3"))
+        music.play()
+        while music.get_busy():  # wait for music to finish playing
+            sleep(0.1)
+        
+        if slot_machine[0] == 7:  # All sevens
             money_multiplier = 100
-        else:                                                   # Other numbers
+        else:  # Other numbers
             money_multiplier = 8
-    elif (len(set(slot_machine)) == 2):                         # Two the same
-        if find_duplicates(slot_machine) == 7:                  # Two sevens
+    elif len(set(slot_machine)) == 2:  # Two the same
+        if find_duplicates(slot_machine) == 7:  # Two sevens
             money_multiplier = 8
         else:
-            money_multiplier = 3                                # Other numbers
+            money_multiplier = 3  # Other numbers
     else:
-        money_multiplier = 0                                    # Nothing is the same
+        money_multiplier = 0  # Nothing is the same
     if money_multiplier != 0:
         money_won = money_bet * money_multiplier
         streak += 1
@@ -195,7 +218,9 @@ def slots(money_bet: int, streak: int, times_won: int, DEBUG: int) -> tuple[int,
 
 
 # Blackjack
-def blackjack(money_bet: int, streak: int, times_won: int, DEBUG: int) -> tuple[int, int, int]:
+def blackjack(
+    money_bet: int, streak: int, times_won: int, DEBUG: int
+) -> tuple[int, int, int]:
     """Blackjack game
 
     Args:
@@ -241,7 +266,6 @@ def blackjack(money_bet: int, streak: int, times_won: int, DEBUG: int) -> tuple[
             "dealer_hand": dealer_hand,
         }
         player_hand, dealer_hand = DEBUG_GAME(DEBUG, "blackjack", data)
-        
 
     if sum(player_hand) == 21:
         player_blackjack = True
@@ -255,8 +279,11 @@ def blackjack(money_bet: int, streak: int, times_won: int, DEBUG: int) -> tuple[
         console.print()
         console.print(f"[blue]Dealer's hand: [{dealer_hand[0]}, ?]")
         console.print()
-        
-        action = Prompt.ask("[green]What do you want to do?\n\n1. hit\n2. stand\n\nNumber or action: ").lower()
+
+        action = Prompt.ask(
+            "[green]What do you want to do?\n\n1. hit\n2. stand\n\nNumber or action",
+            choices=["1", "2", "hit", "stand", "h", "s"],
+        ).lower()
         if action in ("h", "hit", "1"):
             player_hand.append(deal_card())
             # Convert 11 to 1 if the total score is over 21
@@ -297,15 +324,17 @@ def blackjack(money_bet: int, streak: int, times_won: int, DEBUG: int) -> tuple[
     else:
         result = "[blue]It's a push (tie). Your bet is returned."
 
-    if "Blackjack" in result: # "Blackjack! You win!"
+    if "Blackjack" in result:  # "Blackjack! You win!"
         money_won = money_bet * 10
         streak += 1
         times_won += 1
-    elif "win" in result: # "You win!", "Dealer busts! You win!"
+    elif "win" in result:  # "You win!", "Dealer busts! You win!"
         money_won = money_bet * 3
         streak += 1
         times_won += 1
-    elif "lose" in result: # "You lose.", "Dealer has a blackjack. You lose.", "Bust! You lose.":
+    elif (
+        "lose" in result
+    ):  # "You lose.", "Dealer has a blackjack. You lose.", "Bust! You lose.":
         money_won = 0
         streak = 0
     else:
@@ -318,7 +347,9 @@ def blackjack(money_bet: int, streak: int, times_won: int, DEBUG: int) -> tuple[
 
 
 # Baccarat
-def baccarat(money_bet: int, streak: int, times_won: int, DEBUG: int) -> tuple[int, int, int]:
+def baccarat(
+    money_bet: int, streak: int, times_won: int, DEBUG: int
+) -> tuple[int, int, int]:
     """Baccarat game
 
     Args:
@@ -402,9 +433,13 @@ def baccarat(money_bet: int, streak: int, times_won: int, DEBUG: int) -> tuple[i
     banker_points = sum(card_value(card) for card in banker_cards) % 10
 
     console.print()
-    console.print(f"[blue]Your cards are: {player_cards} so your total = {player_points}")
+    console.print(
+        f"[blue]Your cards are: {player_cards} so your total = {player_points}"
+    )
     console.print()
-    console.print(f"[blue]Bankers cards are: {banker_cards} so their total = {banker_points}")
+    console.print(
+        f"[blue]Bankers cards are: {banker_cards} so their total = {banker_points}"
+    )
     sleep(3)
 
     # Determine the winner
@@ -430,7 +465,9 @@ def baccarat(money_bet: int, streak: int, times_won: int, DEBUG: int) -> tuple[i
 
 
 # MAIN INIT FUNCTION
-def init_game(game, money_bet: int, streak: int, times_won: int, DEBUG: int = False) -> tuple[int, int, int]:
+def init_game(
+    game, money_bet: int, streak: int, times_won: int, DEBUG: int = False
+) -> tuple[int, int, int]:
     """Inits a game also does some logic
 
     Args:
@@ -446,17 +483,15 @@ def init_game(game, money_bet: int, streak: int, times_won: int, DEBUG: int = Fa
 
     console.print()
 
-
     return game(money_bet, streak, times_won, DEBUG)
-
 
 
 # Main function for testing
 def main() -> None:
     """Main function -> for play testing"""
-    
+
     # DEBUG bool
-    d: int = 0 # 0 for player 1 for play tester 2 for admin
+    d: int = 0  # 0 for player 1 for play tester 2 for admin
 
     # Fake profile setup
     mw: int = 100
@@ -470,13 +505,15 @@ def main() -> None:
     again: bool = True
 
     # Warn print
-    console.print(f"[b red]YOU ARE RUNNING THE GAMES FILE NOT THE MAIN GAME \nTesting game: {game.__name__}\nDebug is set to {d}")
+    console.print(
+        f"[b red]YOU ARE RUNNING THE GAMES FILE NOT THE MAIN GAME \nTesting game: {game.__name__}\nDebug is set to {d}"
+    )
 
     while again:
         # Add function to test here
         mw, s, t = init_game(game, mw or 100, s, t, d)
         console.print(f"Money won: {mw} \nStreak: {s} \nTimes won: {t}")
-        again = Confirm.ask("Do you want to play again?") # type: ignore
+        again = Confirm.ask("Do you want to play again?", default=False)
         clear()
 
 
