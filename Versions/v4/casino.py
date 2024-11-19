@@ -14,7 +14,7 @@
 
 # Importing modules
 from games import init_game, guesser, roulette, slots, blackjack, baccarat
-from utils import welcome, bet, clear, bye, LOST
+from utils import welcome, bet, clear, bye, LOST, run_random_events
 from settings import console, Prompt, Confirm, settings_main, save, sleep, is_admin
 
 def main() -> None:
@@ -97,7 +97,7 @@ def main() -> None:
             highest_winnings.append(money_won)
             highest_streak.append(streak)
 
-            save(money, user)
+            save(user, money) # Save the users money
 
             sleep(3)
 
@@ -111,6 +111,9 @@ def main() -> None:
 
             console.print()
             console.print(f"[blue]You now have {money}$ and are on a streak of {streak}")
+            
+            # Try to run a random event
+            run_random_events(user, money)
 
             # Run again in the current profile
             console.print()
@@ -130,7 +133,7 @@ def main() -> None:
 
         if money == 0: # only ask to restart the game when the person has 0 dollars.
             # Ask to restart the game
-            restart = Confirm.ask("[blue]Do you want to restart (on a new profile for example)? ([green]y[/green]/[red]n[/red]): ")
+            restart = Confirm.ask("[blue]Do you want to restart (on a new profile for example)")
             if restart:
                 console.print("[green]Ok! Clearing terminal for easier view!")
                 sleep(3)
