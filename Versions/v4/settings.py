@@ -6,7 +6,7 @@ import base64
 from random import randint
 from time import sleep
 from rich.console import Console
-from rich.prompt import Prompt, Confirm, IntPrompt 
+from rich.prompt import Prompt, Confirm, IntPrompt, FloatPrompt
 
 # region CUSTUMIZABLE SETTINGS
 
@@ -14,7 +14,7 @@ obfuscate: bool = False
 fixed_obfuscation: bool = False  # If you want to have a fixed obfuscation amount
 
 obf_count: int = (
-    5  # Max amount of times the money gets obfuscated | max is 50 -> Memory issues (thanks python)
+    5  # Max amount of times the money gets obfuscated | max is 50 -> Memory issues (thanks laptop)
 ) # Also the amount of times the money gets obfuscated if fixed_obfuscation is True
 
 
@@ -39,6 +39,15 @@ save_file = os.path.join(main_directory, USER_FILE_NAME)  # Used to save users m
 
 # Make the main directory of the game
 os.makedirs(main_directory, 511, True)
+
+# Sound settings
+os.environ["PYGAME_HIDE_SUPPORT_PROMPT"] = "1"
+
+from pygame import mixer
+
+mixer.init()
+
+music = mixer.music
 
 # endregion
 
@@ -77,7 +86,7 @@ def deobf(s: str) -> int:
         return int(s)  # If the string is a number
     except ValueError:
         return deobf(
-            base64.b64decode(s.encode()).decode() # Decode the string and try again
+            base64.b64decode(s.encode()).decode()  # Decode the string and try again
         )  # Decode the string and try again
 
 
@@ -85,112 +94,108 @@ def get_game_profile() -> str:
     """Function to get the game profile of the user."""
     console.print()
     console.print()
-    gp = console.input(
-        "[blue]What is your username: [/]"
-    ).capitalize()  # If you have already played put in your exact name! ex. Admin
+    spelled_correctly: bool = False
+    while not spelled_correctly:
+        gp = Prompt.ask(
+            "[blue]What is your username: "
+        ).capitalize()  # If you have already played put in your exact name! ex. Admin
+
+        spelled_correctly = Confirm.ask(f"[blue]Is this correct: {gp}", default=True)
 
     return gp
 
 
-def save(to_save: int, gp: str) -> None:
-    """Function to save the money of the user in the json file.
+def save(user: str, to_save: int):
+    """An awesome save function that takes the user and their money and adds it to the save file
 
     Args:
-        to_save (int): The amount of money to save.
-
-    Returns:
-        None
+        user (str): the users name
+        to_save (int): the amount of money to be saved
     """
-
-    with console.status("Saving money...", spinner="aesthetic") as status:
-        m = obf(str(to_save))
-
-        with open(save_file, "r", encoding="utf-8") as rf:
-            usrs = json.load(rf)
+    
+    encoded = obf(str(to_save))                                 # Obfuscate the money
+    data: dict = {user: {"Money": encoded}}                     # Create the data dict in case of non existing
+    with console.status("Saving money...", spinner="aesthetic"):
+        with open(save_file, 'r', encoding='utf-8') as rf:      # Open the file
             try:
-                usrs[gp]["Money"] = m
-                with open(save_file, "w", encoding="utf-8") as wf:
-                    json.dump(usrs, wf, indent=4)
-                console.print()
-                console.print(f"[blue]Saved money as: {to_save}$[/]")
-            except KeyError:
-                console.print("[red]Money not saved, unknown user![/]")
+                data = json.load(rf)                            # Get all the players (overwriting line 143)
+                data[user]["Money"] = encoded                   # Update the current players value or write a new value for the user
+            except json.JSONDecodeError:                        # File is empty
+                console.print(
+                    "[red]The users file is empty (it shouldn't be), making first entry..."
+                )
+            except KeyError:                                    # The user is new and isn't in the save file yet
+                console.print("[blue]Unknown user, creating an entry for you :)")
+                data[user] = {"Money": encoded}                 # Add the user to the users file
+
+    with open(save_file, 'w', encoding='utf-8') as wf:          # Open the file
+        json.dump(data, wf, indent=4)                           # Save the users file
+    
+    console.print()
+    console.print(f"[blue]Saved money as: {to_save}$")
 
 
 def is_admin(gp: str) -> int:
     """Function to check if the user is admin or not."""
-    ADMINS = ("Test", "Admin")
-    debug = ADMINS.index(gp) + 1 if gp in ADMINS else 0
-    console.log(f"You are logged in as admin: {ADMINS[debug - 1]}") if debug else console.log("You are not an admin :)")
+    ADMINS: dict[str, int] = {
+        "Admin": 2, 
+        "Test": 1
+    }
+    debug = ADMINS[gp] if gp in ADMINS.keys() else 0
+    (
+        console.log(f"You are logged in as the debugger: {gp}")
+        if debug
+        else console.log("You do not have permission for debugging :)")
+    )
     sleep(2)
     return debug
 
+
+def get_users_money(user: str) -> int:
+    """Function to get the users money
+
+    Args:
+        user (str): the user to get the money from
+
+    Returns:
+        m (int): the users money
+    """
+    if os.path.exists(save_file):                           # If the file exists
+        with open(save_file, "r", encoding="utf-8") as rf:  # Open the file
+            try:                        
+                users = json.load(rf)                       # Load the users
+              
+                m = users[user]["Money"]                    # Get the money of the user
+                money = deobf(m)                            # Decode the money back to a number int
+                if money != 0:                              # If the user didn't lose their money
+                    return money                            # Decode the money back to a number int
+
+            except (
+                KeyError,                                   # The user is new and isn't in the save file yet 
+                json.JSONDecodeError                        # The file is empty
+                ):
+                pass                                        # We have to ask the user how much money they want to start with
+    
+    m = IntPrompt.ask("[blue]How much money do u want to start with")
+    return m
+
 # endregion
 
-# main
+# main function
 def settings_main() -> tuple[int, str]:
     """Main function for the settings."""
-    console.print()
-    console.print(f"[blue]Storing game files in path: {main_directory}[/]")
     gp = get_game_profile()
-    if os.path.exists(save_file):  # If the file exists
-        console.print()
-        console.print(f"[magenta]Hello {gp}[/]")
-        with open(save_file, "r", encoding="utf-8") as read_file:  # Open the file
-            try:  # Try to load the users
-                users = json.load(read_file)
-            except (
-                json.decoder.JSONDecodeError,
-                PermissionError,
-            ):  # If the users file is empty (somehow)
-                console.print(
-                    "[red]The users file is empty (it shouldn't be), creating a new one...[/]"
-                )
-                users = {}
-                money = int(
-                    console.input("[blue]How much money do u want to start with: [/]")
-                )  # Ask the user how much money he wants to start with
-                m = obf(str(money))  # Obfuscate the money
-                users[gp] = {"Money": m}  # Add the user to the users file
-                with open(save_file, "w", encoding="utf-8") as write_file:
-                    json.dump(users, write_file, indent=4)  # Save the users file
-
-            try:  # If the user has already played
-                m = users[gp]["Money"]  # Get the money of the user
-                money = int(deobf(m))  # Decode the money back to a number int
-                if money == 0:
-                    console.print()
-                    money = int(
-                        console.input("[blue]How much money do u want to start with: [/]")
-                    )
-                    m = obf(str(money))
-                    users[gp]["Money"] = m
-                    with open(save_file, "w", encoding="utf-8") as write_file:
-                        json.dump(users, write_file, indent=4)
-
-            except (
-                KeyError
-            ):  # Someones has already played but a new user is trying to play
-                money = int(
-                    console.input("[blue]How much money do u want to start with: [/]")
-                )  # Ask the user how much money he wants to start with
-                m = obf(str(money))  # Obfuscate the money
-                users[gp] = {"Money": m}  # Add the user to the users file
-                with open(save_file, "w", encoding="utf-8") as write_file:
-                    json.dump(users, write_file, indent=4)  # Save the users file
-
-    else:  # New game file
-        money = int(
-            console.input("[blue]How much money do u want to start with: [/]")
-        )  # Ask the user how much money he wants to start with
-        m = obf(str(money))  # Obfuscate the money
-        data = {gp: {"Money": m}}  # Add the user to the users file
-        with open(save_file, "w", encoding="utf-8") as write_file:
-            json.dump(data, write_file, indent=4)
+    
+    console.print()
+    console.print(f"[magenta]Hello {gp}")
+    
+    money = get_users_money(gp)
+    
+    save(gp, money)
 
     console.print()
-    console.print(f"[blue]You are starting with {money}$, have fun![/]")
-    sleep(3)
+    console.print(f"[blue]You are starting with {money}$, have fun!")
+    # sleep(3)
     return money, gp
 
 # endregion
