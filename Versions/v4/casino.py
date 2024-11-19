@@ -128,7 +128,7 @@ def main() -> None:
                 console.print(f"[blue]When you come back next time you will start with {money}$")
                 sleep(3)
                 console.print(bye(highest_streak, highest_winnings, times_won))
-                sleep(10)
+                sleep(5)
                 break
 
         if money == 0: # only ask to restart the game when the person has 0 dollars.

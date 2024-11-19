@@ -283,6 +283,7 @@ def blackjack(
         action = Prompt.ask(
             "[green]What do you want to do?\n\n1. hit\n2. stand\n\nNumber or action",
             choices=["1", "2", "hit", "stand", "h", "s"],
+            show_choices=False
         ).lower()
         if action in ("h", "hit", "1"):
             player_hand.append(deal_card())
