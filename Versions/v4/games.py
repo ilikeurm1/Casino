@@ -341,7 +341,7 @@ def blackjack(
             elif action in ("s", "stand", "2"):
                 break
 
-            sleep(1)
+            sleep(2)
             clear()
 
         # Dealer's turn
