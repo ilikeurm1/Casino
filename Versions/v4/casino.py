@@ -175,9 +175,9 @@ def main() -> None:
 if __name__ == "__main__":
     try:
         main()
-        print(f"Program exited successfully\nexit code: 0")
+        console.print("[green]Program exited successfully\nexit code: 0")
 
     except Exception as e:
-        print(f"An error occurred: {e}\nexit code: you choose lmao 1 ig?")
+        console.print(f"[red]An error occurred: {e}\nexit code: you choose lmao 1 ig?")
 
 # endregion
