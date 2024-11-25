@@ -9,7 +9,7 @@ from settings import (
     randint, # random
     console, Prompt, IntPrompt, Confirm, # rich
     music, USE_SOUND # pygame mixer
-)
+    )
 
 from utils import (
     # Funcs
@@ -21,7 +21,7 @@ from utils import (
     DEBUG_GAME,
     # Strings
     ROULETTE_WELCOME,
-)
+    )
 
 # endregion
 

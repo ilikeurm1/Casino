@@ -11,15 +11,7 @@ from settings import (
     console, Text, FloatPrompt, # rich
     # Consts
     ANIM_TIME
-)
-
-from events import (
-    # Well... the events
-    drunk_hobo, 
-    random_money_on_floor, 
-    tax_evasion,
-    weird_substance
-)
+    )
 
 # endregion
 
@@ -160,67 +152,6 @@ def deal_card() -> int:
     #        2  3  4  5  6  7  8  9  10  J   Q   K   A
     cards = [2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10, 11]
     return choice(cards)
-
-def run_random_event(user: str, money: int) -> int:
-    """A function that tries to run a random event 
-
-    Args:
-        user (str): the users name
-        money (int): the money they have when the event starts
-
-    Returns:
-        money (int): the money the user has after the event is over
-    """
-    console.print()
-    
-    # chances dictionary that stores how rare each event should be
-    chances: dict[str, int] = {
-        # Syntax:
-        # "Name_game": chance 
-        # chance = 1 in this number
-        "drunk_hobo": 20,
-        "random_money_on_floor": 10,
-        "tax_evasion": 100,
-        "weird_substance": 50,
-    }
-    
-    possible_events: list = []
-    
-    # Generate the random chances
-    hobo_chance = randint(1, chances["drunk_hobo"])                      # 5%
-    random_money_chance = randint(1, chances["random_money_on_floor"])   # 10%
-    taxevasion_chance = randint(1, chances["tax_evasion"])               # 1%
-    weird_substance_chance = randint(1, chances["weird_substance"])      # 2%
-    
-    # Add all the possible events to the possible events list 
-    # the numbers that they have to be equal to are just some I picked out... I didn't want all them to just say 1
-    if hobo_chance == 14:
-        possible_events.append(drunk_hobo)
-    
-    if random_money_chance == 3:
-        possible_events.append(random_money_on_floor)
-    
-    if taxevasion_chance == 86:
-        possible_events.append(tax_evasion)
-    
-    if weird_substance_chance == 23:
-        possible_events.append(weird_substance)
-        
-    # If the possible events list contains at least 1 event
-    if possible_events:
-        # Tell the user an event is happening
-        console.print(f"[b magenta]{user}! YOU HAVE TRIGGERED A SPECIAL EVENT:", end=" ")
-        # Sort the possible events list according to the rarity (so if a 1% triggers it will run above the 10% which may also have been possible) 
-        possible_events.sort(key=lambda f: chances[f.__name__])
-        # Choose the rarest event
-        event = possible_events[0]
-        # Tell the user which event they are running
-        console.print(event.__name__)
-        # Run it
-        return event(money)
-    
-    # No event = no change in money
-    return money
 
 def DEBUG_GAME(DEBUG_MODE: int, game: str, data: dict[str, Any]) -> tuple:
     """Gives debug info depending on the game and the mode

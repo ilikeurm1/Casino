@@ -22,18 +22,17 @@ from settings import (
     settings_main, 
     save, 
     is_admin
-)
+    )
 
 from utils import (
     # Funcs
-    run_random_event,
     clear,
     bet,
     # Strings
     welcome,
     bye,
     LOST,
-)
+    )
 
 from games import (
     # Well... the games
@@ -45,7 +44,9 @@ from games import (
     baccarat,
     # Consts
     AMOUNT_OF_GAMES
-)
+    )
+
+from events import run_random_event
 
 # endregion
 
