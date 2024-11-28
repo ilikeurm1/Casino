@@ -9,7 +9,12 @@ from settings import (
     console, Prompt, Confirm, # rich
     )
 
-from utils import random_style
+from utils import (
+    # Funcs
+    random_style,
+    # Strings
+    BLUE_GRINCH
+    )
 
 # endregion
 
@@ -153,13 +158,18 @@ def tax_evasion(money: int) -> int:
 
 def weird_substance(money: int) -> int:
     console.print("[blue]A weird man looking an awful lot like Walter offers you a weird substance")
-    take = Confirm.ask("[green]Do you want to take it?")
+    take = Confirm.ask("[green]Do you want to take it?", default=True)
     if take:
         bad_trip = fifty_fifty()
         action = Prompt.ask("[green]You take the substance, what do you want to do with it?", choices=["eat", "sniff"], case_sensitive=False)
         if action == "eat":
             if bad_trip:
-                console.print("[blue]You eat the stuff and start tripping balls")
+                for _ in range(100):
+                    console.print("You eat the stuff and start tripping balls", style=random_style(), end="\r")
+                    sleep(.02)
+
+                console.print("You eat the stuff and start tripping balls", style=random_style())
+                
                 sleep(1)
                 console.print("[blue]You lose 20% of your money due to your horrible plays")
                 money -= round(money * .2)
@@ -173,10 +183,20 @@ def weird_substance(money: int) -> int:
             if bad_trip:
                 wait = fifty_fifty()
                 if not wait:
-                    console.print("[blue]You sniff it and start having a horrible trip you lose 40% of your money due to bad plays in the casino")
+                    for _ in range(100):
+                        console.print("You sniff it and start having a horrible trip you lose 40% of your money due to bad plays in the casino", style=random_style(), end="\r")
+                        sleep(.02)
+                    
+                    console.print("You sniff it and start having a horrible trip you lose 40% of your money due to bad plays in the casino", style=random_style())
+
                     money -= round(money * .4)
                 else:
-                    console.print("[blue]You sniff the substance and have a bad trip")
+                    for _ in range(100):
+                        console.print("You sniff the substance and have a bad trip", style=random_style(), end="\r")
+                        sleep(.02)
+                    
+                    console.print("You sniff the substance and have a bad trip", style=random_style())
+                        
                     sleep(1)
                     console.print("[blue]Instead of continuing to gamble you go sit down and wait till everything is over")
 
@@ -212,6 +232,12 @@ def joe(money: int) -> int:
     console.print("[green]He took 90% of your money, womp womp")
 
     money -= round(money * .9)
+    return money
+
+
+def knee_surgery(money: int) -> int:
+    """Yea this is happening"""
+
     return money
 
 # endregion
