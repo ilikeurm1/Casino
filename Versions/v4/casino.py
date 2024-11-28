@@ -17,10 +17,10 @@
 from settings import (
     # 3rd party
     sleep, # time
-    console, Prompt, Confirm, # rich 
+    console, Prompt, Confirm, # rich
     # Self-made
-    settings_main, 
-    save, 
+    settings_main,
+    save,
     is_admin
     )
 
@@ -36,11 +36,11 @@ from utils import (
 
 from games import (
     # Well... the games
-    init_game, 
-    guesser, 
-    roulette, 
-    slots, 
-    blackjack, 
+    init_game,
+    guesser,
+    roulette,
+    slots,
+    blackjack,
     baccarat,
     # Consts
     AMOUNT_OF_GAMES
@@ -63,15 +63,15 @@ def main() -> None:
         DEBUG: int = 0
         highest_streak: list[int] = []
         earnings: list[int] = []
-        
+
         clear()
-        
+
         # Get the user and their money
         money, user = settings_main()
 
         # Check if the user is an admin
         DEBUG = is_admin(user)
-        
+
         sleep(3)
         clear()
 
@@ -124,7 +124,7 @@ def main() -> None:
 
             # Try to run a random event
             money = run_random_event(user, money)
-            
+
             # Save the users money
             save(user, money) # Save the users money
 
@@ -141,7 +141,7 @@ def main() -> None:
             # Otherwise continue with the game
             console.print()
             console.print(f"[blue]You now have {money}$ and are on a streak of {streak}")
-            
+
 
             # Ask to run again in the current profile
             console.print()

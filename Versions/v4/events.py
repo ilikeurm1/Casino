@@ -122,7 +122,7 @@ def tax_evasion(money: int) -> int:
                 console.print("[blue]They fine you 60% of your money for the tax evasion and another 30% extra for running away")
                 money -= round(money * .9)
 
-            else:    
+            else:
                 console.print("[blue]You run to the window, smash it and look out")
                 sleep(3)
                 # Spawn a random umbrella?
@@ -185,7 +185,7 @@ def weird_substance(money: int) -> int:
                 sleep(1)
                 console.print("[blue]You win 20% of your money")
                 money += round(money * .2)
-    
+
     else:
         console.print("[blue]You don't take the substance and ")
 
@@ -195,22 +195,22 @@ def joe(money: int) -> int:
     who_str = "who?"
     sleep(1)
     console.print("[green]Joe? Joe", end=" ")
-    
+
     for x in range(4):
         getch()
         console.print(f"[green]{who_str[x]}", end="")
-        
+
     sleep(.5)
-    
+
     console.print("")
-    
+
     for _ in range(20):
         console.print("JOE MAMA", style=random_style())
         sleep(.1)
-        
+
     sleep(1)
     console.print("[green]He took 90% of your money, womp womp")
-    
+
     money -= round(money * .9)
     return money
 
@@ -219,7 +219,7 @@ def joe(money: int) -> int:
 # region main event function
 
 def run_random_event(user: str, money: int) -> int:
-    """A function that tries to run a random event 
+    """A function that tries to run a random event
 
     Args:
         user (str): the users name
@@ -233,7 +233,7 @@ def run_random_event(user: str, money: int) -> int:
     # chances dictionary that stores how rare each event should be
     chances: dict[str, int] = {
         # Syntax:
-        # "Name_game": chance 
+        # "Name_game": chance
         # chance = 1 in chance
         "drunk_hobo": 20,
         "random_money_on_floor": 10,
@@ -251,7 +251,7 @@ def run_random_event(user: str, money: int) -> int:
     weird_substance_chance = randint(1, chances["weird_substance"])      # 2%
     joe_chance = randint(1, chances["joe"])
 
-    # Add all the possible events to the possible events list 
+    # Add all the possible events to the possible events list
     # the numbers that they have to be equal to are just some I picked out... I didn't want all them to just say 1
     if hobo_chance == 14:
         possible_events.append(drunk_hobo)
@@ -272,7 +272,7 @@ def run_random_event(user: str, money: int) -> int:
     if possible_events:
         # Tell the user an event is happening
         console.print(f"[b magenta]{user}! YOU HAVE TRIGGERED A SPECIAL EVENT:", end=" ")
-        # Sort the possible events list according to the rarity (so if a 1% triggers it will run above the 10% which may also have been possible) 
+        # Sort the possible events list according to the rarity (so if a 1% triggers it will run above the 10% which may also have been possible)
         possible_events.sort(key=lambda f: chances[f.__name__])
         # Choose the rarest event
         event = possible_events[0]

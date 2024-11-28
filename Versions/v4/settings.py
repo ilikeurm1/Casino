@@ -101,7 +101,7 @@ def deobf(s: str) -> int:
     except ValueError:
         return deobf( # Decode the string and try again
             base64.b64decode(s.encode()).decode()
-        ) 
+        )
 
 def get_game_profile() -> str:
     """Function to get the game profile of the user."""
@@ -120,12 +120,12 @@ def get_game_profile() -> str:
 def is_admin(gp: str) -> int:
     """Function to check if the user is admin or not."""
     ADMINS: dict[str, int] = {
-        "Admin": 2, 
+        "Admin": 2,
         "Test": 1
     }
-    
+
     debug = ADMINS[gp] if gp in ADMINS.keys() else 0
-    
+
     if debug:
         console.log(f"You are logged in as the debugger: {gp}")
     else:
@@ -211,7 +211,7 @@ def settings_main() -> tuple[int, str]:
 
     console.print()
     console.print(f"[blue]You are starting with {money}$, have fun!")
-    
+
     return money, gp
- 
+
 # endregion

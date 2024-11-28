@@ -110,8 +110,8 @@ def roulette(
 
     # Define the color names:
     color_names = {
-        "r": "red", 
-        "b": "black", 
+        "r": "red",
+        "b": "black",
         "g": "green"
     }
 
@@ -138,9 +138,9 @@ def roulette(
         chosen_number, chosen_color, winning_number, winning_color = DEBUG_GAME(
             DEBUG, "roulette", data
         )
-    
+
     sleep(2)
-    
+
     # Winning logic
     try:  # A number was chosen
         chosen_number = int(chosen_number)  # type: ignore
@@ -150,7 +150,7 @@ def roulette(
                 money_multiplier = 10
             else:
                 money_multiplier = 5
-            
+
             money_won = money_bet * money_multiplier
             streak += 1
             times_won += 1
@@ -217,7 +217,7 @@ def slots(
 
     # Do the roll animation
     roll_anim(slot_machine)
-    
+
     # Winning logic
     if slot_machine[0] == slot_machine[1] == slot_machine[2]:  # All the same
         # Play the winning sound
@@ -227,7 +227,7 @@ def slots(
             # wait for music to finish playing
             while music.get_busy():
                 sleep(0.1)
-        
+
         if slot_machine[0] == 7:  # All sevens
             money_multiplier = 100
         else:  # Other numbers
@@ -238,7 +238,7 @@ def slots(
             money_multiplier = 8
         else:
             money_multiplier = 3  # Other numbers
-    
+
     else:
         money_multiplier = 0  # Nothing is the same
     if money_multiplier != 0:
@@ -422,7 +422,7 @@ def baccarat(
     for _ in range(2):
         player_hand.append(randint(1, 13))
         banker_hand.append(randint(1, 13))
-    
+
     # Calculate each players points
     player_points = sum(card_value(card) for card in player_hand) % 10
     banker_points = sum(card_value(card) for card in banker_hand) % 10

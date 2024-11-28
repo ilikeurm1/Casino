@@ -98,7 +98,7 @@ def find_duplicates(slots: list[int]) -> int:
     for x in slots[: len(slots) - 1]:
         if slots.count(x) == 2:
             return x
-    
+
     return 0
 
 def roll_anim(slots: list[int]) -> None:
@@ -136,13 +136,13 @@ def roll_anim(slots: list[int]) -> None:
             ),
             style="b magenta",                            # Make it very visible as the numbers are green
         )
-        
+
         print(
             f"\033[{slot_machine_height}A", end=""
         )  # Move up `slot_machine_height` lines and don't add another newline (end="")
-        
+
         # Sleep for the correct amount of time to reach a total of ~`ANIM_TIME` seconds in the end
-        sleep(ANIM_TIME / frames)  
+        sleep(ANIM_TIME / frames)
 
     # Print the full machine when done so in the end the player looks at the correct list
     console.print(machine.format(slots[0], slots[1], slots[2]), style="b magenta")
@@ -155,7 +155,7 @@ def deal_card() -> int:
 
 def random_style() -> str:
     colors = ["red", "green", "blue", "yellow", "magenta", "cyan"]
-    effects = ["bold", "italic", "underline", "blink", "reverse", "strike"]    
+    effects = ["bold", "italic", "underline", "blink", "reverse", "strike"]
     return f"{choice(colors)} {choice(effects)}"
 
 def DEBUG_GAME(DEBUG_MODE: int, game: str, data: dict[str, Any]) -> tuple:
@@ -186,9 +186,9 @@ def DEBUG_GAME(DEBUG_MODE: int, game: str, data: dict[str, Any]) -> tuple:
 
         vals = (
             (data["chosen"], data["winning_number"]) if DEBUG_MODE == 1
-            
+
             else (69, 69) if DEBUG_MODE == 2
-            
+
             else (data["chosen"], data["winning_number"])
         )
 
@@ -205,9 +205,9 @@ def DEBUG_GAME(DEBUG_MODE: int, game: str, data: dict[str, Any]) -> tuple:
                 data["winning_number"],
                 data["winning_color"],
             ) if DEBUG_MODE == 1
-            
+
             else (0, "g", 0, "g",) if DEBUG_MODE == 2
-            
+
             else (
                 data["chosen_number"],
                 data["chosen_color"],
@@ -224,9 +224,9 @@ def DEBUG_GAME(DEBUG_MODE: int, game: str, data: dict[str, Any]) -> tuple:
 
         vals = (
             (data["slot_machine"]) if DEBUG_MODE == 1
-            
-            else (7, 7, 7) if DEBUG_MODE == 2 
-            
+
+            else (7, 7, 7) if DEBUG_MODE == 2
+
             else (data["slot_machine"])
         )
 
@@ -238,9 +238,9 @@ def DEBUG_GAME(DEBUG_MODE: int, game: str, data: dict[str, Any]) -> tuple:
 
         vals = (
             (data["player_hand"], data["dealer_hand"]) if DEBUG_MODE == 1
-            
+
             else ([10, 11], [10, 10, 2]) if DEBUG_MODE == 2
-            
+
             else (data["player_hand"], data["dealer_hand"])
         )
 
@@ -252,7 +252,7 @@ def DEBUG_GAME(DEBUG_MODE: int, game: str, data: dict[str, Any]) -> tuple:
 
         vals = (
             (data["player_hand"], data["banker_hand"]) if DEBUG_MODE == 1
-            
+
             else ([8, 1], [6]) if DEBUG_MODE == 2
 
             else (data["player_hand"], data["banker_hand"])
