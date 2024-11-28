@@ -6,10 +6,12 @@ from typing import Any
 
 from settings import (
     # 3rd party
+    os, # os
     sleep, # time
     choice, randint, # random
     console, Text, FloatPrompt, # rich
     # Consts
+    UTILS_DIR,
     ANIM_TIME
     )
 
@@ -290,5 +292,16 @@ ROULETTE_WELCOME = Text(
     "What do you want to bet on, pick from:\n\nNumbers: 0 - 36\nColors: Red, Black, Green\n\nPayouts:\n\n0 and Green = 10x your bet\nNumber (1 - 36) = 5x your bet\nRed or Black = 2x your bet\n\nYou choose to bet on",
     style="green"
 )
+
+# Get the location of the blue grinch file
+blue_grinch_file = UTILS_DIR + r"\imgs\Bluegrinch.txt"
+
+# Read the blue grinch string
+with open(blue_grinch_file, "r") as rf:
+    blue_grinch_text = rf.read()
+
+# Create a nice text object 
+BLUE_GRINCH = Text.from_ansi(blue_grinch_text, style="b rgb(10,142,214)", justify="center", no_wrap=True)
+# That rgb value is from the real picture lmao
 
 # endregion
