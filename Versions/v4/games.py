@@ -8,7 +8,9 @@ from settings import (
     sleep, # time
     randint, # random
     console, Prompt, IntPrompt, Confirm, # rich
-    music, USE_SOUND # pygame mixer
+    music, USE_SOUND, # pygame mixer
+    # Self-made
+    UTILS_DIR
     )
 
 from utils import (
@@ -222,7 +224,7 @@ def slots(
     if slot_machine[0] == slot_machine[1] == slot_machine[2]:  # All the same
         # Play the winning sound
         if USE_SOUND:
-            music.load(os.path.join(os.getcwd(), "Versions/v4/Sounds/slotmachine.mp3"))
+            music.load(UTILS_DIR + r"\sounds\slotmachine.mp3")
             music.play()
             # wait for music to finish playing
             while music.get_busy():

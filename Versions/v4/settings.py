@@ -16,11 +16,15 @@ from rich.text import Text
 
 # region CUSTUMIZABLE SETTINGS
 
-# The main directory of the game
+# The main directories of the game
 # Please try not to change this -> data loss | moving files manually
-main_directory = (
-    os.getcwd() + r"\profiles\v4"
-)
+MAIN_DIR = os.getcwd()
+
+VERSION_DIR = MAIN_DIR + r"\Versions\v4"
+
+SAVE_DIR = MAIN_DIR + r"\profiles\v4"
+
+UTILS_DIR = VERSION_DIR + r"\Utils"
 
 # Obfuscation settings
 obfuscate: bool = False
@@ -31,7 +35,7 @@ obf_count: int = (
 )
 
 # Misc
-USE_SOUND: bool = False  # If you want to use sound or not
+USE_SOUND: bool = True  # If you want to use sound or not
 ANIM_TIME: int = 3 # Seconds the animations for the game should take (about)
 
 # endregion
@@ -47,10 +51,10 @@ console = Console(color_system="truecolor", tab_size=4)
 # Add users file
 USER_FILE_NAME = "Users.json"
 
-save_file = os.path.join(main_directory, USER_FILE_NAME)  # Used to save users money
+save_file = os.path.join(SAVE_DIR, USER_FILE_NAME)  # Used to save users money
 
 # Make the main directory of the game
-os.makedirs(main_directory, 511, True)
+os.makedirs(SAVE_DIR, 511, True)
 
 # Sound settings
 os.environ["PYGAME_HIDE_SUPPORT_PROMPT"] = "1"
