@@ -153,6 +153,11 @@ def deal_card() -> int:
     cards = [2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10, 11]
     return choice(cards)
 
+def random_style() -> str:
+    colors = ["red", "green", "blue", "yellow", "magenta", "cyan"]
+    effects = ["bold", "italic", "underline", "blink", "reverse", "strike"]    
+    return f"{choice(colors)} {choice(effects)}"
+
 def DEBUG_GAME(DEBUG_MODE: int, game: str, data: dict[str, Any]) -> tuple:
     """Gives debug info depending on the game and the mode
 

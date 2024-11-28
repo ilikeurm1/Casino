@@ -9,6 +9,8 @@ from settings import (
     console, Prompt, Confirm, # rich
     )
 
+from utils import random_style
+
 # endregion
 
 # region Helper funcs
@@ -28,7 +30,7 @@ def drunk_hobo(money: int) -> int:
     if gave:
         console.print("[blue]You gave the hobo 5% of you money")
         money -= round(money * 0.05)
-    
+
     # The user doesn't give the hobo any money
     else:
         console.print("[blue]You didn't give the hobo any money")
@@ -102,13 +104,7 @@ def tax_evasion(money: int) -> int:
     if surrender:
         chill_feds = fifty_fifty()
         if chill_feds:
-            console.print("The feds really appreciate your honesty and let you of with a warning")
-            pay_feds = Confirm.ask("[green]Do you want to give the feds some money to show your gratitude?", default=True, show_default=False)
-            if pay_feds:
-                console.print("You pay the feds 5% of your money and they leave")
-                money -= round(money * .05)
-            else:
-                console.print("The feds leave")
+            console.print("[blue]The feds really appreciate your honesty and let you of with a warning")
         else:
             # The feds aren't nice and takwe 60% of the users money
             console.print("[blue]You give yourself up and they charge you 60% of your total money")
@@ -125,7 +121,7 @@ def tax_evasion(money: int) -> int:
                 sleep(3)
                 console.print("[blue]They fine you 60% of your money for the tax evasion and another 30% extra for running away")
                 money -= round(money * .9)
-                
+
             else:    
                 console.print("[blue]You run to the window, smash it and look out")
                 sleep(3)
@@ -142,7 +138,7 @@ def tax_evasion(money: int) -> int:
 
         elif hiding_place == "vip lounge":
             if cought:
-                console.print("[blue]You run to the lounge as fast as you can but the feds are fast and catch you.")
+                console.print("[blue]You run to the lounge as fast as you can but the feds are fast and catch you")
                 sleep(3)
                 console.print("[blue]They fine you 60% of your money for the tax evasion and another 30% extra for running away")
                 money -= round(money * .9)
@@ -172,7 +168,7 @@ def weird_substance(money: int) -> int:
                 sleep(1)
                 console.print("[blue]You gain 20% of your money due to your excellent gambling skills")
                 money += round(money * .2)
-        
+
         elif action == "sniff":
             if bad_trip:
                 wait = fifty_fifty()
@@ -183,7 +179,7 @@ def weird_substance(money: int) -> int:
                     console.print("[blue]You sniff the substance and have a bad trip")
                     sleep(1)
                     console.print("[blue]Instead of continuing to gamble you go sit down and wait till everything is over")
-            
+
             else:
                 console.print("[blue]You sniff the substance and win a bunch of money due to you locking in")
                 sleep(1)
@@ -196,22 +192,24 @@ def weird_substance(money: int) -> int:
     return money
 
 def joe(money: int) -> int:
-    who_str = "who"
-    console.print("[blue]Joe approaches you, he's looking hungry for 90% of your money")
+    who_str = "who?"
     sleep(1)
     console.print("[green]Joe? Joe", end=" ")
     
-    for x in range(3):
+    for x in range(4):
         getch()
         console.print(f"[green]{who_str[x]}", end="")
         
-    console.print("[green]?")
+    sleep(.5)
     
-    sleep(2)
+    console.print("")
     
-    for _ in range(18):
-        console.print("JOE MAMA", style="i b magenta")
+    for _ in range(20):
+        console.print("JOE MAMA", style=random_style())
         sleep(.1)
+        
+    sleep(1)
+    console.print("[green]He took 90% of your money, womp womp")
     
     money -= round(money * .9)
     return money
@@ -231,7 +229,7 @@ def run_random_event(user: str, money: int) -> int:
         money (int): the money the user has after the event is over
     """
     console.print()
-    
+
     # chances dictionary that stores how rare each event should be
     chances: dict[str, int] = {
         # Syntax:
@@ -243,33 +241,33 @@ def run_random_event(user: str, money: int) -> int:
         "weird_substance": 50,
         "joe": 1000,
     }
-    
+
     possible_events: list = []
-    
+
     # Generate the random chances
     hobo_chance = randint(1, chances["drunk_hobo"])                      # 5%
     random_money_chance = randint(1, chances["random_money_on_floor"])   # 10%
     taxevasion_chance = randint(1, chances["tax_evasion"])               # 1%
     weird_substance_chance = randint(1, chances["weird_substance"])      # 2%
     joe_chance = randint(1, chances["joe"])
-    
+
     # Add all the possible events to the possible events list 
     # the numbers that they have to be equal to are just some I picked out... I didn't want all them to just say 1
     if hobo_chance == 14:
         possible_events.append(drunk_hobo)
-    
+
     if random_money_chance == 3:
         possible_events.append(random_money_on_floor)
-    
+
     if taxevasion_chance == 86:
         possible_events.append(tax_evasion)
-    
+
     if weird_substance_chance == 23:
         possible_events.append(weird_substance)
-        
+
     if joe_chance == 827:
         possible_events.append(joe)
-        
+
     # If the possible events list contains at least 1 event
     if possible_events:
         # Tell the user an event is happening
@@ -282,7 +280,7 @@ def run_random_event(user: str, money: int) -> int:
         console.print(event.__name__)
         # Run it
         return event(money)
-    
+
     # No event = no change in money
     return money
 
@@ -295,10 +293,10 @@ def main() -> int:
     def clear() -> None:
         """Clears the console"""
         console.clear(home=False)
-    
+
     try:
         again = True
-        
+
         events = [
             drunk_hobo,
             random_money_on_floor,
@@ -306,22 +304,22 @@ def main() -> int:
             weird_substance,
             joe,
         ]
-        
+
         while again:
             clear()
             money = 1000
-            random = Confirm.ask("[green]Do you want to run a random event?", default=True)
-            if random:
+            chosen = Confirm.ask("[green]Do you want to choose an event?", default=True)
+            if not chosen:
                 event = choice(events)
-                
-                console.print(f"Your money before the event: {money}")
+
+                # console.print(f"Your money before the event: {money}")
                 money = event(money)
-                console.print(f"Your money after the event: {money}")
+                # console.print(f"Your money after the event: {money}")
                 sleep(4)
                 clear()
             else:
-                chosen = Prompt.ask(f"[green]choose which event (number in list starting with 1): {[f.__name__ for f in events]}",choices=[str(x) for x in range(1, len(events) + 1)])
-                event = events[int(chosen) - 1]
+                index = Prompt.ask(f"[green]choose which event (number in list starting with 1): {[f.__name__ for f in events]}",choices=[str(x) for x in range(1, len(events) + 1)])
+                event = events[int(index) - 1]
                 console.print(f"Your money before the event: {money}")
                 money = event(money)
                 console.print(f"Your money after the event: {money}")
