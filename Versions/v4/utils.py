@@ -149,6 +149,12 @@ def roll_anim(slots: list[int]) -> None:
     # Print the full machine when done so in the end the player looks at the correct list
     console.print(machine.format(slots[0], slots[1], slots[2]), style="b magenta")
 
+def ascii_art_anim(ascii_art: list[Text]) -> None:
+    frames = len(ascii_art)  # Number of frames (lines the ascii_art has)
+    for line in ascii_art:
+        console.print(line, end="")
+        sleep(ANIM_TIME / frames)
+
 def deal_card() -> int:
     """Deals a card for Blackjack"""
     #        2  3  4  5  6  7  8  9  10  J   Q   K   A
@@ -293,15 +299,69 @@ ROULETTE_WELCOME = Text(
     style="green"
 )
 
+# region ascii art
+
+# BLUE GRINCH:
+
 # Get the location of the blue grinch file
 blue_grinch_file = UTILS_DIR + r"\imgs\Bluegrinch.txt"
 
 # Read the blue grinch string
 with open(blue_grinch_file, "r") as rf:
-    blue_grinch_text = rf.read()
+    BLUE_GRINCH: list[Text] = []
+    for line in rf.readlines():
+        BLUE_GRINCH.append(Text(line, "b rgb(10,142,214)", justify="center", no_wrap=True))
 
-# Create a nice text object 
-BLUE_GRINCH = Text.from_ansi(blue_grinch_text, style="b rgb(10,142,214)", justify="center", no_wrap=True)
-# That rgb value is from the real picture lmao
+# Sans
+
+# Get the location of the sans file
+sans_file = UTILS_DIR + r"\imgs\Sans.txt"
+
+# Read the sans string
+with open(sans_file, "r") as rf:
+    SANS: list[Text] = []
+    for line in rf.readlines():
+        SANS.append(Text(line, "b rgb(255,255,255)", justify="center", no_wrap=True))
+
+# Freddy
+
+# Get the location of the freddy file
+freddy_file = UTILS_DIR + r"\imgs\Freddy.txt"
+
+# Read the freddy string
+with open(freddy_file, "r") as rf:
+    FREDDY: list[Text] = []
+    for line in rf.readlines():
+        FREDDY.append(Text(line, "b rgb(166,96,34)", justify="center", no_wrap=True))
+
+# endregion
+
+# endregion
+
+
+# region main
+
+def main() -> None:
+    """Main function."""
+    Chars = [
+        BLUE_GRINCH,
+        SANS,
+        FREDDY,
+    ]
+
+    # 0 = Blue Grinch, 1 = Sans, 2 = Freddy
+    chosen = 1
+
+    Char = Chars[chosen]
+
+    ascii_art_anim(Char)
+
+if __name__ == "__main__":
+    try:
+        main()
+        print(f"Program exited successfully\nexit code: 0")
+
+    except Exception as e:
+        print(f"An error occurred: {e}\nexit code: you choose lmao 1 ig?")
 
 # endregion

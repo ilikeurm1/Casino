@@ -12,8 +12,11 @@ from settings import (
 from utils import (
     # Funcs
     random_style,
+    ascii_art_anim,
     # Strings
-    BLUE_GRINCH
+    BLUE_GRINCH,
+    SANS,
+    FREDDY
     )
 
 # endregion
@@ -169,7 +172,7 @@ def weird_substance(money: int) -> int:
                     sleep(.02)
 
                 console.print("You eat the stuff and start tripping balls", style=random_style())
-                
+
                 sleep(1)
                 console.print("[blue]You lose 20% of your money due to your horrible plays")
                 money -= round(money * .2)
@@ -186,7 +189,7 @@ def weird_substance(money: int) -> int:
                     for _ in range(100):
                         console.print("You sniff it and start having a horrible trip you lose 40% of your money due to bad plays in the casino", style=random_style(), end="\r")
                         sleep(.02)
-                    
+
                     console.print("You sniff it and start having a horrible trip you lose 40% of your money due to bad plays in the casino", style=random_style())
 
                     money -= round(money * .4)
@@ -194,9 +197,9 @@ def weird_substance(money: int) -> int:
                     for _ in range(100):
                         console.print("You sniff the substance and have a bad trip", style=random_style(), end="\r")
                         sleep(.02)
-                    
+
                     console.print("You sniff the substance and have a bad trip", style=random_style())
-                        
+
                     sleep(1)
                     console.print("[blue]Instead of continuing to gamble you go sit down and wait till everything is over")
 
@@ -234,22 +237,64 @@ def joe(money: int) -> int:
     money -= round(money * .9)
     return money
 
-
 def knee_surgery(money: int) -> int:
     """Yea this is happening"""
+    console.print("[blue]A nearby gambler loses all his life savings on by them on black")
+    sleep(3)
+    console.print("[blue]He is so angy he throws his chair at you and hits you in the knee")
+    sleep(3)
+    console.print("[blue]You have to go to the hospital and get knee surgery")
+    sleep(3)
+    console.print("[blue]You start having a certain feeling")
+    sleep(3)
+    console.print("[blue]It must be...")
+    sleep(3)
+    console.print("[blue]That feeling when knee surgery is tomorrow")
+    sleep(3)
+    ascii_art_anim(BLUE_GRINCH)
+    sleep(3)
+    console.print("[blue]You have to pay 30% of your money for the surgery")
+    money -= round(money * .3)
 
     return money
 
+def sans(money: int) -> int:
+    console.print("[blue]You've got a feeling like you're going to have a bad time...")
+    sleep(4)
+    ascii_art_anim(SANS)
+    console.print("[blue]Sans: Hey, kid. You know that gambling is an addiction right?")
+    sleep(3)
+    action = Prompt.ask("[green]What do you want to do?", choices=["fight", "act", "mercy"], case_sensitive=False)
+    if action == "fight":
+        console.print("[blue]You try to fight Sans but he dodges all your attacks")
+        sleep(3)
+        console.print("[blue]He hits you with a bone and you lose 50% of your money")
+        money -= round(money * .5)
+    elif action == "act":
+        console.print("[blue]You tell Sans a pun, and he leaves you alone")
+
+    elif action == "mercy":
+        console.print("[blue]There is no mercy with an addiction kid!")
+        sleep(3)
+        console.print("[blue]He hits you with his BIG bone and you lose 50% of your money")
+        money -= round(money * .5)
+
+    return money
+
+def freddy(money: int) -> int:
+
+    return money
 # endregion
 
 # region main event function
 
-def run_random_event(user: str, money: int) -> int:
+def run_random_event(user: str, money: int, DEBUG: int) -> int:
     """A function that tries to run a random event
 
     Args:
         user (str): the users name
         money (int): the money they have when the event starts
+        DEBUG (int): the debug level
 
     Returns:
         money (int): the money the user has after the event is over
@@ -266,6 +311,9 @@ def run_random_event(user: str, money: int) -> int:
         "tax_evasion": 100,
         "weird_substance": 50,
         "joe": 1000,
+        "knee_surgery": 20,
+        "sans": 50,
+        "freddy": 50
     }
 
     possible_events: list = []
@@ -275,7 +323,10 @@ def run_random_event(user: str, money: int) -> int:
     random_money_chance = randint(1, chances["random_money_on_floor"])   # 10%
     taxevasion_chance = randint(1, chances["tax_evasion"])               # 1%
     weird_substance_chance = randint(1, chances["weird_substance"])      # 2%
-    joe_chance = randint(1, chances["joe"])
+    joe_chance = randint(1, chances["joe"])                              # 0.1%
+    knee_surgery_chance = randint(1, chances["knee_surgery"])            # 5%
+    sans_chance = randint(1, chances["sans"])                            # 2%
+    freddy_chance = randint(1, chances["freddy"])                        # 2%
 
     # Add all the possible events to the possible events list
     # the numbers that they have to be equal to are just some I picked out... I didn't want all them to just say 1
@@ -294,16 +345,26 @@ def run_random_event(user: str, money: int) -> int:
     if joe_chance == 827:
         possible_events.append(joe)
 
+    if knee_surgery_chance == 6:
+        possible_events.append(knee_surgery)
+
+    if sans_chance == 39:
+        possible_events.append(sans)
+
+    if freddy_chance == 95:
+        possible_events.append(freddy)
+
     # If the possible events list contains at least 1 event
     if possible_events:
-        # Tell the user an event is happening
-        console.print(f"[b magenta]{user}! YOU HAVE TRIGGERED A SPECIAL EVENT:", end=" ")
         # Sort the possible events list according to the rarity (so if a 1% triggers it will run above the 10% which may also have been possible)
         possible_events.sort(key=lambda f: chances[f.__name__])
+
         # Choose the rarest event
         event = possible_events[0]
-        # Tell the user which event they are running
-        console.print(event.__name__)
+        if DEBUG:
+            # Tell the user an event is happening
+            console.print(f"[b magenta]{user}! YOU HAVE TRIGGERED A SPECIAL EVENT: {event.__name__}")
+
         # Run it
         return event(money)
 
@@ -329,6 +390,9 @@ def main() -> int:
             tax_evasion,
             weird_substance,
             joe,
+            knee_surgery,
+            sans,
+            freddy
         ]
 
         while again:

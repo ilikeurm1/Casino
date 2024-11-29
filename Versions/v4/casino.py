@@ -123,7 +123,7 @@ def main() -> None:
             highest_streak.append(streak)
 
             # Try to run a random event
-            money = run_random_event(user, money)
+            money = run_random_event(user, money, DEBUG)
 
             # Save the users money
             save(user, money) # Save the users money
