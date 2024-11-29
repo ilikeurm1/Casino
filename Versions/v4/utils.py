@@ -292,12 +292,12 @@ def bye(hs, hw, tw) -> Text:
 LOST = Text(
     "\nSorry but you have no money left! You have lost the game!\nYou can start a new game by restarting the program!",
     style="b red"
-)
+    )
 
 ROULETTE_WELCOME = Text(
     "What do you want to bet on, pick from:\n\nNumbers: 0 - 36\nColors: Red, Black, Green\n\nPayouts:\n\n0 and Green = 10x your bet\nNumber (1 - 36) = 5x your bet\nRed or Black = 2x your bet\n\nYou choose to bet on",
     style="green"
-)
+    )
 
 # region ascii art
 

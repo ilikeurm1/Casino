@@ -361,7 +361,7 @@ def run_random_event(user: str, money: int, DEBUG: int) -> int:
 
         # Choose the rarest event
         event = possible_events[0]
-        
+
         if DEBUG:
             # Tell the user an event is happening
             console.print(f"[b magenta]{user.upper()}! YOU HAVE TRIGGERED A SPECIAL EVENT: {event.__name__}")
