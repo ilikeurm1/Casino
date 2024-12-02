@@ -1,6 +1,12 @@
+# misc
 __pycache__
 .vscode
 
+# Folders
 profiles
 Betas
 Webapp
+
+# Files
+# test txt file for ascii art
+test.* 
