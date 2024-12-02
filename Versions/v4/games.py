@@ -4,7 +4,7 @@
 
 from settings import (
     # 3rd party
-    os, # os
+    # os, # os
     sleep, # time
     randint, # random
     console, Prompt, IntPrompt, Confirm, # rich

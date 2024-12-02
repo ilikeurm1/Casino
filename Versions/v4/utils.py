@@ -6,7 +6,6 @@ from typing import Any
 
 from settings import (
     # 3rd party
-    os, # os
     sleep, # time
     choice, randint, # random
     console, Text, FloatPrompt, # rich
@@ -44,7 +43,7 @@ def bet(money: int) -> tuple[int, int]:
 
         # Tell the player to bet a serious amount
         if money_betting > money:  # Invalid money amount
-            console.print(f"[prompt.invalid]You don't have that much money!!!")
+            console.print("[prompt.invalid]You don't have that much money!!!")
             continue
 
         # All-in
@@ -334,6 +333,16 @@ with open(freddy_file, "r") as rf:
     for line in rf.readlines():
         FREDDY.append(Text(line, "b rgb(166,96,34)", justify="center", no_wrap=True))
 
+# Get the location of the freddy jumpscare file
+Freddy_jumpscare_file = UTILS_DIR + r"\imgs\Freddy_jumpscare.txt"
+
+# Read the freddy jumpscare string
+with open(Freddy_jumpscare_file, "r") as rf:
+    FREDDY_JUMPSCARE: list[Text] = []
+    for line in rf.readlines():
+        FREDDY_JUMPSCARE.append(Text(line, "b rgb(166,96,34)", justify="center", no_wrap=True))
+
+
 # endregion
 
 # endregion
@@ -359,7 +368,7 @@ def main() -> None:
 if __name__ == "__main__":
     try:
         main()
-        print(f"Program exited successfully\nexit code: 0")
+        print("Program exited successfully\nexit code: 0")
 
     except Exception as e:
         print(f"An error occurred: {e}\nexit code: you choose lmao 1 ig?")
