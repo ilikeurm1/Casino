@@ -7,6 +7,9 @@ from settings import (
     sleep, # time
     randint, choice, # random
     console, Prompt, Confirm, # rich
+    music, USE_SOUND, # Pygame
+    # Consts
+    UTILS_DIR,
     )
 
 from utils import (
@@ -16,7 +19,8 @@ from utils import (
     # Strings
     BLUE_GRINCH,
     SANS,
-    FREDDY
+    FREDDY,
+    FREDDY_JUMPSCARE,
     )
 
 # endregion
@@ -260,9 +264,18 @@ def knee_surgery(money: int) -> int:
 
 def sans(money: int) -> int:
     console.print("[blue]You've got a feeling like you're going to have a bad time...")
-    sleep(4)
+    sleep(3)
     ascii_art_anim(SANS)
-    console.print("[blue]Sans: Hey, kid. You know that gambling is an addiction right?")
+    Sans_dialog = "Sans: Hey, kid. You know that gambling is an addiction right?"
+    for i, c in enumerate(Sans_dialog):
+        console.print(f"[blue]{c}", end="")
+        if USE_SOUND:
+            music.load(UTILS_DIR + r"\sounds\sans_speaking.mp3")
+            music.play()
+        sleep(.075)
+
+    console.print()
+
     sleep(3)
     action = Prompt.ask("[green]What do you want to do?", choices=["fight", "act", "mercy"], case_sensitive=False)
     if action == "fight":
@@ -282,8 +295,89 @@ def sans(money: int) -> int:
     return money
 
 def freddy(money: int) -> int:
+    console.print("[blue]You're starting to get a little hungry")
+    sleep(2)
+    console.print("[blue]You go to the pizza place to try and order a pizza")
+    sleep(2)
+    console.print("[blue]Suddenly what seems to be an mechanical bear approaches you")
+    sleep(2)
+    ascii_art_anim(FREDDY)
+    console.print("Freddy: Hey there you look hungry, want some of my pizza?")
+    pizza = Confirm.ask("[green]Do you a piece of freddy's the pizza?", default=True)
+    if pizza:
+        poison = fifty_fifty()
+        console.print("[blue]You take a slice of his pizza and start eating it")
+        sleep(3)
+        if poison:
+            freaky = fifty_fifty()
+            console.print("[blue]You start feeling a little weird")
+            sleep(2)
+            console.print("[blue]You start feeling a really weird")
+            sleep(2)
+            console.print("[blue]You turn to ask Freddy what's on the pizza but it's too late...", end=' ')
+            sleep(2)
+            console.print("[blue]You are already asleep...")
+            sleep(5)
+            if freaky:
+                console.print("[blue]You wake up feeling a sharp continuing pain in your rear")
+                if USE_SOUND:
+                    console.print("[blue]You suddenly notice the loud sound coming from behind you")
+                    music.load(UTILS_DIR + r"/sounds/freddy_smash.mp3")
+                    music.play()
+                sleep(2)
+                console.print("[blue]You beg Freddy to stop but he keeps going...")
+                sleep(2)
+                console.print("[blue]After hes done he tells you you're a good boy...")
+                sleep(2)
+                console.print("[blue]Freddy pays you 50% of your money to keep your mouth shut")
+                money += round(money * .5)
+
+            else:
+                console.print("[blue]You find yourself in a dark cellar after having just woken up")
+                sleep(2)
+                console.print("[blue]Your entire body hurts")
+                sleep(2)
+                console.print("[blue]You wonder what Freddy did to you")
+                sleep(2)
+                console.print("[blue]Freddy comes out of the corner and tells you he will let you free unless you tell people")
+                sleep(3)
+                console.print("[blue]You swear you won't tell and he lets you out")
+                sleep(2)
+                console.print("[blue]For some reason right before you go, Freddy gives you some money...")
+                sleep(2)
+                console.print("[blue]You really start to wonder what happened while you were asleep")
+                money += round(money * .3)
+
+        else:
+            console.print("[blue]You really like it and tell Freddy who is happy to hear it")
+            sleep(3)
+            console.print("[blue]You finish your slice, thank Freddy and go back to gambling")
+
+    else:
+        console.print("[blue]You don't take Freddy's pizza and turn to go continue gambling")
+        angy = fifty_fifty()
+        if angy:
+            console.print("[blue]But Freddy stops you... he looks a little mad ")
+            sleep(4)
+            console.print("[b megenta]JUMPSCARE TIME :)")
+            if USE_SOUND:
+                music.set_volume(1)
+                music.load(UTILS_DIR + r"\sounds\freddy_scream.mp3")
+                music.play()
+            for line in FREDDY_JUMPSCARE:
+                console.print(line, end="")
+
+            sleep(2)
+            console.print("[blue]You lose 50% of your money")
+            money -= round(money * .5)
+
+        else:
+            console.print("[blue]Freddy stops you and tells you he wants a thanks")
+            sleep(2)
+            console.print("[blue]You say thanks and get out of there... feeling a little disturbed by Freddy's attitude")
 
     return money
+
 # endregion
 
 # region main event function
