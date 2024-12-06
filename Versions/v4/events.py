@@ -220,12 +220,13 @@ def weird_substance(money: int) -> int:
 
 def joe(money: int) -> int:
     who_str = "who?"
-    sleep(1)
+    console.print("[blue]You see a guy named Joe.")
+    sleep(3)
     console.print("[green]Joe? Joe", end=" ")
 
-    for x in range(4):
+    for c in who_str:
         getch()
-        console.print(f"[green]{who_str[x]}", end="")
+        console.print(f"[green]{c}", end="")
 
     sleep(.5)
 
@@ -236,19 +237,21 @@ def joe(money: int) -> int:
         sleep(.1)
 
     sleep(1)
-    console.print("[green]He took 90% of your money, womp womp")
+    console.print("[green]He took 70% of your money, womp womp")
 
-    money -= round(money * .9)
+    money -= round(money * .7)
     return money
 
 def knee_surgery(money: int) -> int:
     """Yea this is happening"""
-    console.print("[blue]A nearby gambler loses all his life savings on by them on black")
+    console.print("[blue]A nearby gambler loses all his life savings on black")
     sleep(3)
     console.print("[blue]He is so angy he throws his chair at you and hits you in the knee")
     sleep(3)
-    console.print("[blue]You have to go to the hospital and get knee surgery")
+    console.print("[blue]You have to go to the hospital to get examined")
     sleep(3)
+    console.print("[blue]The doctor tells you you will have to get a knee surgery, but you're very lucky! There is an open spot tomorrow!")
+    sleep(5)
     console.print("[blue]You start having a certain feeling")
     sleep(3)
     console.print("[blue]It must be...")
