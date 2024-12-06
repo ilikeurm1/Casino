@@ -5,7 +5,7 @@
 import os
 import json
 import base64
-from random import randint, choice
+from random import randint, choice, random
 from time import sleep
 
 from rich.console import Console

@@ -5,7 +5,7 @@ from msvcrt import getch
 from settings import (
     # 3rd party
     sleep, # time
-    randint, choice, # random
+    randint, choice, random, # random
     console, Prompt, Confirm, # rich
     music, USE_SOUND, # Pygame
     # Consts
@@ -27,8 +27,8 @@ from utils import (
 
 # region Helper funcs
 
-def fifty_fifty() -> int:
-    return randint(0,1)
+def fifty_fifty() -> bool:
+    return random() <= .5
 
 # endregion
 
@@ -267,7 +267,7 @@ def sans(money: int) -> int:
     sleep(3)
     ascii_art_anim(SANS)
     Sans_dialog = "Sans: Hey, kid. You know that gambling is an addiction right?"
-    for i, c in enumerate(Sans_dialog):
+    for c in Sans_dialog:
         console.print(f"[blue]{c}", end="")
         if USE_SOUND:
             music.load(UTILS_DIR + r"\sounds\sans_speaking.mp3")
