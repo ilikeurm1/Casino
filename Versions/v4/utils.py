@@ -8,10 +8,13 @@ from settings import (
     # 3rd party
     sleep, # time
     choice, randint, # random
-    console, Text, FloatPrompt, # rich
+    console, Text, Prompt, Confirm, # rich
+    music, # pygame
+    # Self-made
+    # Funcs
+    convert_number_to_string,
     # Consts
     UTILS_DIR,
-    ANIM_TIME
     )
 
 # endregion
@@ -21,6 +24,79 @@ from settings import (
 def clear() -> None:
     """Clears the console"""
     console.clear(home=False)
+
+def get_money_from_string(s: str, m: int) -> int:
+    """Converts a string typed by the user to an int
+
+    An example of the input could be:
+        "999k": 999000
+        "10m": 10000000
+        "10b": 10000000000
+        "10b 10m": 10010000000
+
+    Args:
+        s (str): the string that is in the format of a number
+        m (int): the users money, this is needed for some comparisons
+
+    Returns:
+        int: the number that the string represents
+    """
+
+    VALS: dict[str, int] = {
+        "k": 10**3,
+        "m": 10**6,
+        "b": 10**9,
+        "t": 10**12,
+        "quad": 10**15,
+        "quint": 10**18,
+        "sext": 10**21,
+        "sept": 10**24,
+        "o": 10**27,
+        "n": 10**30,
+        "d": 10**33,
+    }
+
+    n: int = 0
+
+    # Lower the string so we can check for the keys
+    s = s.lower()
+
+    # Split the string into the number and the suffix
+    parts = s.split()
+
+    # All-in / Half in check
+    if len(parts) == 1:
+        if s == "0":
+            return m
+        elif s in (".5", "0.5"):
+            return m // 2
+
+    # Go through the parts and add the number to the total
+    for part in parts:
+        # If the part is a digit, add it to the total
+        if part.isdigit():
+            n += int(part)
+        else:
+            # Go through the dictionary and find the key that matches the suffix
+            for key, value in VALS.items():
+                # If the last character of the part is the key
+                if part[-1] == key:
+                    # Add the number to the total
+                    count = int(part[:-1]) if part[:-1].isdigit() else 1
+                    n += count * value
+                    break
+
+    # Checks
+    # Tell the player to bet a serious amount
+    if n > m:  # Invalid money amount
+        console.print("[prompt.invalid]You don't have that much money!!!")
+        return 0
+
+    if n < 1: # Invalid
+        console.print("[prompt.invalid]You can't bet less than 1$")
+        return 0
+
+    return n
 
 def bet(money: int) -> tuple[int, int]:
     """Bet function
@@ -34,38 +110,34 @@ def bet(money: int) -> tuple[int, int]:
 
     # While an invalid amount is given
     while 1:
-        console.print()
-
         # Ask for the bet amount
-        money_betting = FloatPrompt.ask(
-            f"[green]How much do you want to bet (You have {money}$, type '0' to go all in and '0.5' to bet half)",
+        m = Prompt.ask(
+            f"[green]How much do you want to bet?\n"
+            f"You have {money}$, that is: {convert_number_to_string(money)}\n"
+            "Type '0' to go all in and '0.5' to bet half)"
         )
 
-        # Tell the player to bet a serious amount
-        if money_betting > money:  # Invalid money amount
-            console.print("[prompt.invalid]You don't have that much money!!!")
-            continue
+        # Get the money the user has bet through the string alg
+        money_betting = get_money_from_string(m, money)
 
-        # All-in
+        # See if an invalid amount was given
         if money_betting == 0:
-            money_betting = money
-
-        elif money_betting == 0.5:  # Half
-            money_betting = money // 2
-
-        elif money_betting < 1:
-            console.print("[prompt.invalid]You can't bet less than 1$")
             continue
 
-        # Any other valid number
-        money_betting = int(money_betting)
-        console.print()
-        console.print(f"[blue]ok! You are betting {money_betting}$")
-        break
+        # Check if the person really wants to bet this amount
+        if Confirm.ask(
+            f"[blue]This means you will be betting {convert_number_to_string(money_betting)}\n"
+            f"That will leave you with {money - money_betting}$ ({convert_number_to_string(money - money_betting)})\n\n"
+            "Are you sure this is what you want to bet?",
+            default=True):
+            break
 
-    total = money - money_betting
+    # Valid number
+    console.print()
+    console.print(f"[blue]ok! You are betting {money_betting}$")
+    console.print()
 
-    return total, money_betting
+    return money - money_betting, money_betting
 
 def hascolor(x: int) -> str:
     """returns if a number has a color
@@ -108,11 +180,11 @@ def roll_anim(slots: list[int]) -> None:
     Args:
         slots (list[int]): The 3 numbers that were rolled.
     """
-    # Can touch but these is a good default
+    # Can touch but this is a good default
     frames = 1000  # Number of frames
 
     # Filled list to keep track of how far along we are in animation
-    filled = [False, False, False]
+    filled = [False, False, False] # Third one not needed but is nice to show what this means
     # The string that we will insert the numbers into
     machine: str = (
         "  _______________\n /_______________\\\n|=================|\n| ({}) | ({}) | ({}) |\n|=================|\n \\_______________/\n"
@@ -142,17 +214,38 @@ def roll_anim(slots: list[int]) -> None:
             f"\033[{slot_machine_height}A", end=""
         )  # Move up `slot_machine_height` lines and don't add another newline (end="")
 
-        # Sleep for the correct amount of time to reach a total of ~`ANIM_TIME` seconds in the end
-        sleep(ANIM_TIME / frames)
+        # Sleep for the correct amount of time to reach a total of ~3 seconds in the end
+        sleep(3 / frames)
 
     # Print the full machine when done so in the end the player looks at the correct list
     console.print(machine.format(slots[0], slots[1], slots[2]), style="b magenta")
 
-def ascii_art_anim(ascii_art: list[Text]) -> None:
+def ascii_art_anim(ascii_art: list[Text], t: int = 3) -> None:
+    """An asciiart animation that goes on for ~t seconds
+
+    Args:
+        ascii_art (list[Text]): The list of strings that make up the ascii art
+        t (int, optional): The time the animation should take in seconds. Defaults to 3.
+    """
     frames = len(ascii_art)  # Number of frames (lines the ascii_art has)
     for line in ascii_art:
         console.print(line, end="")
-        sleep(ANIM_TIME / frames)
+        sleep(t / frames)
+
+def play_sound(f: str, v: float = .5, wait: bool=False):
+    """Plays the sound with name f at volume v
+
+    Args:
+        f (str): the name of the file *ONLY NEED THE FILE NAME NO MP3* and no \\
+        v (float, optional): Volume to be played at. Defaults to .5.
+        wait (bool, optional): If the program should wait until the sound is done playing. Defaults to False
+    """
+    music.set_volume(v)
+    music.load(UTILS_DIR + "\\sounds\\" + f + ".mp3")
+    music.play()
+    if wait:
+        while music.get_busy():
+            sleep(0.1)
 
 def deal_card() -> int:
     """Deals a card for Blackjack"""
@@ -275,7 +368,20 @@ def DEBUG_GAME(DEBUG_MODE: int, game: str, data: dict[str, Any]) -> tuple:
 def welcome(user) -> Text:
     """Welcome message"""
     WELCOME = Text(
-        f"Welcome to the Casino {user}!\n\nWhat game do you want to play?\n\n1. Number Guesser | Rewards: 2x\n2. Roulette | Rewards: 2x (Color) | 5x (Number) | 10x (Green or 0)\n3. Slots | Rewards: 3x (2 of the same) | 8x (2x '7') | 8x (3 of the same) | 100x (3x '7')\n4. Blackjack | Rewards: 3x (Win) | 10x (Blackjack)\n5. Baccarat | Rewards: 3x\n\n\n(Type quit to leave the program)\n\nPlease type the number assigned to it",
+        f"Welcome to the Casino {user}!\n"
+        "\n"
+        "What game do you want to play?\n"
+        "\n"
+        "1. Number Guesser | Rewards: 2x\n"
+        "2. Roulette | Rewards: 2x (Color) | 5x (Number) | 10x (Green or 0)\n"
+        "3. Slots | Rewards: 3x (2 of the same) | 8x (2x '7') | 8x (3 of the same) | 100x (3x '7')\n"
+        "4. Blackjack | Rewards: 3x (Win) | 10x (Blackjack)\n"
+        "5. Baccarat | Rewards: 3x\n"
+        "\n"
+        "\n"
+        "(Type quit to leave the program)\n"
+        "\n"
+        "Please type the number assigned to it",
         style="green"
     )
     return WELCOME
@@ -283,7 +389,7 @@ def welcome(user) -> Text:
 def bye(hs, hw, tw) -> Text:
     """Goodbye message"""
     BYE = Text(
-        f"\nGood bye! Thanks for playing!\n\nCredits:\n\nProgramming: Matthijs Duhoux\n\nFun Facts:\nYour highest streak was when you won {max(hs)} time(s) in a row\n\nYour highest winning was {max(hw)}$\n\nIn total you won {tw} time(s)!\n",
+        f"\nGood bye! Thanks for playing!\n\nCredits:\n\nProgramming: Matthijs Duhoux\n\nFun Facts:\nYour highest streak was when you won {hs} time(s) in a row\n\nYour highest winning was {hw}$\n\nIn total you won {tw} time(s)!\n",
         style="green"
     )
     return BYE
@@ -301,57 +407,38 @@ ROULETTE_WELCOME = Text(
 # region ascii art
 
 # BLUE GRINCH:
-
-# Get the location of the blue grinch file
-blue_grinch_file = UTILS_DIR + r"\imgs\Bluegrinch.txt"
-
-# Read the blue grinch string
-with open(blue_grinch_file, "r") as rf:
+with open(UTILS_DIR + r"\imgs\Bluegrinch.txt", "r") as rf:
     BLUE_GRINCH: list[Text] = []
     for line in rf.readlines():
         BLUE_GRINCH.append(Text(line, "b rgb(10,142,214)", justify="center", no_wrap=True))
 
 # Sans
-
-# Get the location of the sans file
-sans_file = UTILS_DIR + r"\imgs\Sans.txt"
-
-# Read the sans string
-with open(sans_file, "r") as rf:
+with open(UTILS_DIR + r"\imgs\Sans.txt", "r") as rf:
     SANS: list[Text] = []
     for line in rf.readlines():
         SANS.append(Text(line, "b rgb(255,255,255)", justify="center", no_wrap=True))
 
 # Freddy
-
-# Get the location of the freddy file
-freddy_file = UTILS_DIR + r"\imgs\Freddy.txt"
-
-# Read the freddy string
-with open(freddy_file, "r") as rf:
+with open(UTILS_DIR + r"\imgs\Freddy.txt", "r") as rf:
     FREDDY: list[Text] = []
     for line in rf.readlines():
         FREDDY.append(Text(line, "b rgb(166,96,34)", justify="center", no_wrap=True))
 
-# Get the location of the freddy jumpscare file
-Freddy_jumpscare_file = UTILS_DIR + r"\imgs\Freddy_jumpscare.txt"
-
-# Read the freddy jumpscare string
-with open(Freddy_jumpscare_file, "r") as rf:
+# Freddy jumpscare
+with open(UTILS_DIR + r"\imgs\Freddy_jumpscare.txt", "r") as rf:
     FREDDY_JUMPSCARE: list[Text] = []
     for line in rf.readlines():
         FREDDY_JUMPSCARE.append(Text(line, "b rgb(166,96,34)", justify="center", no_wrap=True))
 
-
 # endregion
 
 # endregion
-
 
 # region main
 
 def main() -> None:
     """Main function."""
+
     Chars = [
         BLUE_GRINCH,
         SANS,

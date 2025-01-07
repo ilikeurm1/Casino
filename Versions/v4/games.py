@@ -8,18 +8,20 @@ from settings import (
     sleep, # time
     randint, # random
     console, Prompt, IntPrompt, Confirm, # rich
-    music, USE_SOUND, # pygame mixer
     # Self-made
-    UTILS_DIR
+    # Consts
+    USE_SOUND,
     )
 
 from utils import (
     # Funcs
     clear,
+    bet,
     deal_card,
     hascolor,
     find_duplicates,
     roll_anim,
+    play_sound,
     DEBUG_GAME,
     # Strings
     ROULETTE_WELCOME,
@@ -33,18 +35,15 @@ AMOUNT_OF_GAMES = 5
 # region Games
 
 # Number Guesser
-def guesser(
-    money_bet: int, streak: int, times_won: int, DEBUG: int
-    ) -> tuple[int, int, int]:
+def guesser(money_bet: int, DEBUG: int) -> int:
     """Number Guesser game
 
     Args:
         money_bet (int): The money the player has bet
-        streak (int): The players current streak
-        times_won (int): The amount of times the player has won this session
+        DEBUG (int): debug level of user
 
     Returns:
-        vals (tuple[int, int, int]): All the updated argument values
+        money_won (int): The money the user won
     """
     # While the input isn't above 5
     while 1:
@@ -79,35 +78,27 @@ def guesser(
     # Winning logic
     if winning_number == chosen:
         money_won = money_bet * 2
-        streak += 1
-        times_won += 1
         console.print()
-        console.print(
-            f"[blue]Nice! You chose the right number, you have doubled your money bet ({money_won}$)!"
-        )
+        console.print(f"[blue]Nice! You chose the right number, you have doubled your money bet ({money_won}$)!")
     else:
         money_won = 0
-        streak = 0
         console.print()
         console.print(
             f"[red]Sorry! The correct number was {winning_number} and you chose {chosen}, better luck next time!"
         )
 
-    return money_won, streak, times_won
+    return money_won
 
 # Roulette
-def roulette(
-    money_bet: int, streak: int, times_won: int, DEBUG: int
-    ) -> tuple[int, int, int]:
+def roulette(money_bet: int, DEBUG: int) -> int:
     """Roulette game
 
     Args:
         money_bet (int): The money the player has bet
-        streak (int): The players current streak
-        times_won (int): The amount of times the player has won this session
+        DEBUG (int): debug level of user
 
     Returns:
-        vals (tuple[int, int, int]): All the updated argument values
+        money_won (int): The money the user won
     """
 
     # Define the color names:
@@ -154,15 +145,12 @@ def roulette(
                 money_multiplier = 5
 
             money_won = money_bet * money_multiplier
-            streak += 1
-            times_won += 1
             console.print()
             console.print(
                 f"[blue]Nice! You chose the right number, you have {money_multiplier}x your money bet ({money_bet * money_multiplier}$)!"
             )
         else:
             money_won = 0
-            streak = 0
             console.print()
             console.print(
                 f"[red]Sorry! The correct number was {winning_number} and you chose {chosen_number}, better luck next time!"
@@ -176,35 +164,29 @@ def roulette(
 
         if chosen_color == winning_color:
             money_won = money_bet * money_multiplier
-            streak += 1
-            times_won += 1
             console.print()
             console.print(
                 f"[blue]Nice! You chose the right color ({winning_color}), (the number was: {winning_number}) you have {money_multiplier}x your money bet ({money_bet * money_multiplier}$)!"
             )
         else:
             money_won = 0
-            streak = 0
             console.print()
             console.print(
-                f"[red]Sorry! The correct color was {color_names[winning_color]} (number was: {winning_number}) and you chose {color_names[chosen_number]}, better luck next time!"
+                f"[red]Sorry! The correct color was {color_names[winning_color]} (number was: {winning_number}) and you chose {color_names[chosen_color]}, better luck next time!"
             )
 
-    return money_won, streak, times_won
+    return money_won
 
 # Slot machine
-def slots(
-    money_bet: int, streak: int, times_won: int, DEBUG: int
-    ) -> tuple[int, int, int]:
+def slots(money_bet: int, DEBUG: int) -> int:
     """Slots game
 
     Args:
         money_bet (int): The money the player has bet
-        streak (int): The players current streak
-        times_won (int): The amount of times the player has won this session
+        DEBUG (int): debug level of user
 
     Returns:
-        vals (tuple[int, int, int]): All the updated argument values
+        money_won (int): The money the user won
     """
 
     # Generate a slotmachine
@@ -224,11 +206,7 @@ def slots(
     if slot_machine[0] == slot_machine[1] == slot_machine[2]:  # All the same
         # Play the winning sound
         if USE_SOUND:
-            music.load(UTILS_DIR + r"\sounds\slotmachine.mp3")
-            music.play()
-            # wait for music to finish playing
-            while music.get_busy():
-                sleep(0.1)
+            play_sound("slotmachine", .5, True)
 
         if slot_machine[0] == 7:  # All sevens
             money_multiplier = 100
@@ -243,37 +221,32 @@ def slots(
 
     else:
         money_multiplier = 0  # Nothing is the same
+
     if money_multiplier != 0:
         money_won = money_bet * money_multiplier
-        streak += 1
-        times_won += 1
         console.print()
         console.print(
             f"[blue]Nice! The slot machine ended at {slot_machine[0], slot_machine[1], slot_machine[2]} which means you {money_multiplier}x your bet ({money_bet * money_multiplier}$)"
         )
     else:
         money_won = 0
-        streak = 0
         console.print()
         console.print(
             f"[red]Sorry! The slot machine ended at {slot_machine[0], slot_machine[1], slot_machine[2]} which means you lost your money ({money_bet}$), better luck next time!"
         )
 
-    return money_won, streak, times_won
+    return money_won
 
 # Blackjack
-def blackjack(
-    money_bet: int, streak: int, times_won: int, DEBUG: int
-    ) -> tuple[int, int, int]:
+def blackjack(money_bet: int, DEBUG: int) -> int:
     """Blackjack game
 
     Args:
         money_bet (int): The money the player has bet
-        streak (int): The players current streak
-        times_won (int): The amount of times the player has won this session
+        DEBUG (int): debug level of user
 
     Returns:
-        vals (tuple[int, int, int]): All the updated argument values
+        money_won (int): The money the user won
     """
 
     # Helper func
@@ -378,38 +351,29 @@ def blackjack(
     # Winning logic
     if "Blackjack" in result:  # "Blackjack! You win!"
         money_won = money_bet * 10
-        streak += 1
-        times_won += 1
     elif "win" in result:  # "You win!", "Dealer busts! You win!"
         money_won = money_bet * 3
-        streak += 1
-        times_won += 1
-    elif (
-        "lose" in result
-    ):  # "You lose.", "Dealer has a blackjack. You lose.", "Bust! You lose.":
+
+    elif ("lose" in result):  # "You lose.", "Dealer has a blackjack. You lose.", "Bust! You lose.":
         money_won = 0
-        streak = 0
     else:
         money_won = money_bet # "It's a push (tie). Your bet is returned."
 
     console.print()
     console.print(result)
 
-    return money_won, streak, times_won
+    return money_won
 
 # Baccarat
-def baccarat(
-    money_bet: int, streak: int, times_won: int, DEBUG: int
-    ) -> tuple[int, int, int]:
+def baccarat(money_bet: int, DEBUG: int) -> int:
     """Baccarat game
 
     Args:
         money_bet (int): The money the player has bet
-        streak (int): The players current streak
-        times_won (int): The amount of times the player has won this session
+        DEBUG (int): debug level of user
 
     Returns:
-        vals (tuple[int, int, int]): All the updated argument values
+        money_won (int): The money the user won
     """
 
     # Determine the point values of the cards
@@ -498,15 +462,12 @@ def baccarat(
     # Winning logic
     if player_points > banker_points:
         money_won = money_bet * 3
-        streak += 1
-        times_won += 1
         console.print()
         console.print(
             f"[green]Nice! You won, your bet ({money_bet}$) has been tripled to {money_won}$"
         )
     elif banker_points != player_points:
         money_won = 0
-        streak = 0
         console.print()
         console.print(f"[red]Sorry! You lost, you lost your bet {money_bet}")
     else:
@@ -514,32 +475,57 @@ def baccarat(
         console.print()
         console.print("[blue]Its a tie, you didnt lose any money!")
 
-    return money_won, streak, times_won
+    return money_won
 
 # Game init function
 def init_game(
-    game, money_bet: int, streak: int, times_won: int, DEBUG: int = False
-    ) -> tuple[int, int, int]:
+    game, money: int, tw: int, cur_s: int, max_s: int, max_earn: int, DEBUG: int
+    ) -> tuple[int, int, int, int, int]:
     """Inits a game also does some logic
 
     Args:
-        game (function): the game to be played
-        money_bet (int): the amount of money the player has bet
-        streak (int): the current players streak
-        times_won (int): the amount of times the player has won this session
-        DEBUG (bool, optional): Admin toggle to get info prints while playing. Defaults to False.
+        game (function): The game function that the user chose
+        money (int): The users money
+        tw (int): The amount of times the users has won
+        cur_s (int): The users current streak
+        max_s (int): The users highest streak
+        max_earn (int): The maximum amount of money the user has earned in one game
+        DEBUG (int): DEBUG LVL
 
     Returns:
-        vals (tuple[int, int, int]): returns the updated values of money_bet, streak and times_won
+        tuple[int, int, int, int, int]: Accordingly updated values in format
+        t: money, times_won, streak, max_s, max_earn
     """
 
-    console.print()
+    # Get the users bet
+    money, money_betting = bet(money)
 
-    return game(money_bet, streak, times_won, DEBUG)
+    sleep(3)
+
+    # Initialize a game
+    money_won = game(money_betting, DEBUG)
+
+    # Add the money won to the users money
+    money += money_won
+
+    # Update all the variables accordingly
+
+    # If the user won nothing
+    if money_won == 0:
+        cur_s = 0
+
+    # The user won money
+    elif money_won != money_betting:
+        cur_s += 1
+        tw += 1
+        # See if the user has a new highscore
+        max_earn = money_won if money_won > max_earn else max_earn
+        max_s = cur_s if cur_s > max_s else max_s
+
+
+    return money, tw, cur_s, max_s, max_earn
 
 # endregion
-
-
 
 # region TESTING
 
@@ -552,8 +538,10 @@ def main() -> None:
 
     # Fake profile setup
     mw: int = 100
-    s: int = 100
-    t: int = 0
+    tw: int = 0
+    cur_s: int = 100
+    max_s: int = 5
+    max_earn: int = 2
 
     # Change this to the game you want to test
     game = slots
@@ -566,14 +554,17 @@ def main() -> None:
         f"[b red]YOU ARE RUNNING THE GAMES FILE NOT THE MAIN GAME \nTesting game: {game.__name__}\nDebug is set to {d}"
     )
 
+    console.print(
+        f"[b magenta]The starting values are as follows:\n\nMoney: {mw or 100}\nTimes won: {tw}\nStreak: {cur_s}\nMax Streak: {max_s}\nMax earnings: {max_earn}"
+    )
+
     while again:
         # Add function to test here
-        mw, s, t = init_game(game, mw or 100, s, t, d)
-        console.print(f"Money won: {mw} \nStreak: {s} \nTimes won: {t}")
+        mw, tw, cur_s, max_s, max_earn = init_game(game, mw or 100, tw, cur_s, max_s, max_earn, d)
+        console.print(f"Money won: {mw} \nTimes won: {tw}\nStreak: {cur_s}\nMax Streak: {max_s}\nHighest Earning: {max_earn}")
         again = Confirm.ask("Do you want to play again?", default=False)
         if again: # Only clear when testing another game
             clear()
-
 
 if __name__ == "__main__":
     main()

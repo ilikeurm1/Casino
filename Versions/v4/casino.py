@@ -8,6 +8,7 @@
 # + Added colors to the console output
 # + Tried making the overal code more readable and easier to understand
 # + Events that can happen randomly
+# + Added Readability function for large numbers
 
 # Removed:
 # - Pylinted the code (im not going to do this again, it took me ~3 hours) (undoing this as i dont care anymore lmfao)
@@ -27,7 +28,6 @@ from settings import (
 from utils import (
     # Funcs
     clear,
-    bet,
     # Strings
     welcome,
     bye,
@@ -60,9 +60,9 @@ def main() -> None:
         again: bool = False
         streak: int = 0
         times_won: int = 0
+        highest_streak: int = 0
+        highest_earning: int = 0
         DEBUG: int = 0
-        highest_streak: list[int] = []
-        earnings: list[int] = []
 
         clear()
 
@@ -108,22 +108,25 @@ def main() -> None:
             # Conformation print
             console.print()
             console.print(f"[blue]You have chosen to play {chosen_game.__name__}!")
+            console.print()
 
             # Initialization process
-            # Get the users bet
-            money, money_betting = bet(money)
-            sleep(3)
-            # Initialize a game
-            money_won, streak, times_won = init_game(chosen_game, money_betting, streak, times_won, DEBUG)
+            money, times_won, streak, highest_streak, highest_earning = init_game(
+                chosen_game,
+                money,
+                times_won,
+                streak,
+                highest_streak,
+                highest_earning,
+                DEBUG
+            )
+
             sleep(5)
-            # Add the money won to the users money
-            money += money_won
-            # Add the the players earnings and streak to corresponding the lists
-            earnings.append(money_won)
-            highest_streak.append(streak)
 
             # Try to run a random event
             money = run_random_event(user, money, DEBUG)
+            
+            sleep(3)
 
             # Save the users money
             save(user, money) # Save the users money
@@ -133,13 +136,12 @@ def main() -> None:
             # If the person lost (the persons money == 0)
             if money == 0:
                 console.print(LOST) # Print the lost string
-                console.print(bye(highest_streak, earnings, times_won)) # Print the bye string
+                console.print(bye(highest_streak, highest_earning, times_won)) # Print the bye string
                 sleep(10) # Give the person enough time to read the paragraphs that are these strings
                 clear() # Clear cuz why not
                 break # Stop the casino to ask for a restart or quit
 
             # Otherwise continue with the game
-            console.print()
             console.print(f"[blue]You now have {money}$ and are on a streak of {streak}")
 
 
@@ -155,7 +157,7 @@ def main() -> None:
                 console.print()
                 console.print(f"[blue]When you come back next time you will start with {money}$")
                 sleep(3)
-                console.print(bye(highest_streak, earnings, times_won))
+                console.print(bye(highest_streak, highest_earning, times_won))
                 sleep(5)
                 break
 
@@ -174,11 +176,10 @@ def main() -> None:
         break
 
 if __name__ == "__main__":
-    try:
-        main()
-        console.print("[green]Program exited successfully\nexit code: 0")
-
-    except Exception as e:
-        console.print(f"[red]An error occurred: {e}\nexit code: you choose lmao 1 ig?")
+    main()
+    console.print("[green]Program exited successfully\nexit code: 0")
+    sleep(2)
+    clear()
+    exit(0)
 
 # endregion

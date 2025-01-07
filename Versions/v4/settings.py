@@ -36,10 +36,9 @@ obf_count: int = (
 
 # Misc
 USE_SOUND: bool = True  # If you want to use sound or not
-ANIM_TIME: int = 3 # Seconds the animations for the game should take (about)
+# ANIM_TIME: int = 3 # Seconds the animations for the game should take (about)
 
 # endregion
-
 
 # region Please dont touch :)
 
@@ -60,7 +59,7 @@ os.makedirs(SAVE_DIR, 511, True)
 os.environ["PYGAME_HIDE_SUPPORT_PROMPT"] = "1"
 
 # Import the mixer
-from pygame import mixer
+from pygame import mixer  # noqa: E402
 
 # Initialize the mixer
 mixer.init()
@@ -71,6 +70,81 @@ music = mixer.music
 # endregion
 
 # region functions
+
+def convert_number_to_string(n: int) -> str:
+    """Converts a large number to a readable format so the user knows how much they have.
+
+    Args:
+        n (int): number to convert to a string
+
+    Returns:
+        str: the number in a readable string
+    """
+
+    number_strings = {
+        1: "$",
+        10**2: "hundred",
+        10**3: "thousand",
+        10**6: "million",
+        10**9: "billion",
+        10**12: "trillion",
+        10**15: "quadrillion",
+        10**18: "quintillion",
+        10**21: "sextillion",
+        10**24: "septillion",
+        10**27: "octillion",
+        10**30: "nonillion",
+        10**33: "decillion",
+    }
+
+    end_string = ""
+
+    if n < 100:
+        return f"{n}$"
+
+    for value, name in sorted(number_strings.items(), reverse=True):
+        count = n // value
+        if count > 0:
+            end_string += f"{count} {name} "
+            n -= count * value
+
+    return end_string.strip()
+
+def convert_string_to_number(s: str) -> int:
+    """Undoes the convert_number_to_string function and turns a string back into an int
+
+    Args:
+        s (str): the string to be reconverted to an int
+
+    Returns:
+        int: the string in the form of an int
+    """
+
+    string_numbers = {
+        "$": 1,
+        "hundred": 10**2,
+        "thousand": 10**3,
+        "million": 10**6,
+        "billion": 10**9,
+        "trillion": 10**12,
+        "quadrillion": 10**15,
+        "quintillion": 10**18,
+        "sextillion": 10**21,
+        "septillion": 10**24,
+        "octillion": 10**27,
+        "nonillion": 10**30,
+        "decillion": 10**33,
+    }
+
+    end_number = 0
+    parts = s.split(" ")
+
+    for i in range(0, len(parts), 2):
+        num = int(parts[i])
+        unit = parts[i + 1]
+        end_number += num * string_numbers[unit]
+
+    return end_number
 
 def obf(s: str) -> str:
     """recursive function that obfuscates a string a of times
@@ -109,12 +183,11 @@ def deobf(s: str) -> int:
 
 def get_game_profile() -> str:
     """Function to get the game profile of the user."""
-    console.print()
-    console.print()
+    console.print("\n")
     spelled_correctly: bool = False
     while not spelled_correctly:
         gp = Prompt.ask(
-            "[blue]What is your username: "
+            "[blue]What is your username"
         ).capitalize()  # If you have already played put in your exact name! ex. Admin
 
         spelled_correctly = Confirm.ask(f"[blue]Is this correct: {gp}", default=True)
@@ -122,7 +195,14 @@ def get_game_profile() -> str:
     return gp
 
 def is_admin(gp: str) -> int:
-    """Function to check if the user is admin or not."""
+    """Function to check if the user is admin or not.
+    
+    Args:
+        gp (str): The users name
+
+    Returns:
+        int: Admin level
+    """
     ADMINS: dict[str, int] = {
         "Admin": 2,
         "Test": 1
@@ -163,7 +243,13 @@ def get_users_money(user: str) -> int:
                 ):
                 pass  # We have to ask the user how much money they want to start with
 
-    m = IntPrompt.ask("[blue]How much money do u want to start with")
+    correct_amount: bool = False
+    
+    while not correct_amount:
+        m = IntPrompt.ask("[blue]How much money do u want to start with")
+
+        correct_amount = Confirm.ask(f"[blue]This means you will start with: {convert_number_to_string(m)}\nIs this correct?", default=True)
+
     return m
 
 def save(user: str, to_save: int):
@@ -189,16 +275,19 @@ def save(user: str, to_save: int):
                 console.print("[blue]Unknown user, creating an entry for you :)")
                 data[user] = {"Money": encoded}  # Add the user to the users file
 
-    with open(save_file, "w", encoding="utf-8") as wf:  # Open the file
-        json.dump(data, wf, indent=4)  # Save the users file
+        with open(save_file, "w", encoding="utf-8") as wf:  # Open the file
+            json.dump(data, wf, indent=4)  # Save the users file
 
-    console.print()
-    console.print(f"[blue]Saved money as: {to_save}$")
+        sleep(1.5) # add artificial lag show the nice spinner :)
+
+        console.print()
+        console.print(f"[blue]Saved money as: {to_save}$")
+        console.print()
 
 # endregion
 
-
 # Main settings function
+
 def settings_main() -> tuple[int, str]:
     """Main function for the settings."""
     # Get the users username
@@ -213,8 +302,8 @@ def settings_main() -> tuple[int, str]:
     # Save the persons money so if they're new they are now in the file
     save(gp, money)
 
-    console.print()
     console.print(f"[blue]You are starting with {money}$, have fun!")
+    console.print()
 
     return money, gp
 
