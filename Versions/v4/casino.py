@@ -44,7 +44,6 @@ from games import (
     blackjack,
     baccarat,
     # Consts
-    AMOUNT_OF_GAMES
     )
 
 from events import run_random_event
@@ -83,7 +82,7 @@ def main() -> None:
             console.print("--------------- CASINO ---------------", style="bold rgb(191,84,8)")
             console.print()
             # Ask which game the user wants to play (allow the empty string for code below)
-            game = Prompt.ask(welcome(user), choices=[str(x) for x in range(1, AMOUNT_OF_GAMES + 1)] + ["quit", ""], show_choices=False)
+            game = Prompt.ask(welcome(user), choices=[str(x) for x in range(1, 5 + 1)] + ["quit", ""], show_choices=False)
 
             # If they press enter on accident clear the screen as it can get crowded
             if not game:

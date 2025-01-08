@@ -29,9 +29,6 @@ from utils import (
 
 # endregion
 
-# Consts to keep track of amount of games
-AMOUNT_OF_GAMES = 5
-
 # region Games
 
 # Number Guesser
