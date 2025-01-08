@@ -114,6 +114,25 @@ def bet(money: int) -> tuple[int, int]:
         m = Prompt.ask(
             f"[green]How much do you want to bet?\n"
             f"You have {money}$, that is: {convert_number_to_string(money)}\n"
+            "Value dict (use the keys):\n"
+            "VALS: dict[str, int] = {\n"
+            "    'k':     'thousand',\n"
+            "    'm':     'million',\n"
+            "    'b':     'billion',\n"
+            "    't':     'trillion',\n"
+            "    'quad':  'quadrillion',\n"
+            "    'quint': 'quintillion',\n"
+            "    'sext':  'sextillion',\n"
+            "    'sept':  'septillion',\n"
+            "    'o':     'octillion',\n"
+            "    'n':     'nonillion',\n"
+            "    'd':     'decillion',\n"
+            "}\n"
+            "\n"
+            "You are not required to input anything from small to big\n"
+            "You can also input multiple values multiple times\n"
+            "So this means you can put in '7t 1t 5m 123 10k 9sept 5000' :)\n"
+            "\n"
             "Type '0' to go all in and '0.5' to bet half)"
         )
 
@@ -439,18 +458,7 @@ with open(UTILS_DIR + r"\imgs\Freddy_jumpscare.txt", "r") as rf:
 def main() -> None:
     """Main function."""
 
-    Chars = [
-        BLUE_GRINCH,
-        SANS,
-        FREDDY,
-    ]
-
-    # 0 = Blue Grinch, 1 = Sans, 2 = Freddy
-    chosen = 1
-
-    Char = Chars[chosen]
-
-    ascii_art_anim(Char)
+    k, v = bet(10000000000000)
 
 if __name__ == "__main__":
     try:
