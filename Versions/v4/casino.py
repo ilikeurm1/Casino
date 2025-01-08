@@ -77,6 +77,10 @@ def main() -> None:
 
         # Inner game loop
         while 1: # While the user is playing
+            # Casino title
+            console.print()
+            console.print("--------------- CASINO ---------------", style="bold rgb(191,84,8)")
+            console.print()
             # Ask which game the user wants to play (allow the empty string for code below)
             game = Prompt.ask(welcome(user), choices=[str(x) for x in range(1, AMOUNT_OF_GAMES + 1)] + ["quit", ""], show_choices=False)
 
@@ -108,7 +112,6 @@ def main() -> None:
             # Conformation print
             console.print()
             console.print(f"[blue]You have chosen to play {chosen_game.__name__}!")
-            console.print()
 
             # Initialization process
             money, times_won, streak, highest_streak, highest_earning = init_game(

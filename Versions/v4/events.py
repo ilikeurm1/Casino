@@ -539,7 +539,7 @@ def run_random_event(user: str, money: int, DEBUG: int) -> int:
             # Extremely long, unnecessary, but nice looking :)
             console.print("[b]    " + f"{name}: " + " " * tuple_offset + f"({stats[0]}," + " " * bool_offset + f"{stats[1]}," + " " * to_hit_offset + f"{stats[2]}" + ")[/b]")
 
-        console.print("]\n")
+        console.print("[b magenta]][/]\n")
 
         if possible_events:
             # Tell the admin an event is happening

@@ -162,6 +162,7 @@ def obf(s: str) -> str:
 
         for _ in range(randint(1, obf_count)):
             s = base64.b64encode(s.encode()).decode()
+
     return s
 
 def deobf(s: str) -> int:
@@ -182,7 +183,6 @@ def deobf(s: str) -> int:
 
 def get_game_profile() -> str:
     """Function to get the game profile of the user."""
-    console.print("\n")
     spelled_correctly: bool = False
     while not spelled_correctly:
         gp = Prompt.ask(
@@ -289,6 +289,10 @@ def save(user: str, to_save: int):
 
 def settings_main() -> tuple[int, str]:
     """Main function for the settings."""
+    # Title print
+    console.print()
+    console.print("--------------- LOGIN ---------------", style="bold rgb(191,84,8)")
+    console.print()
     # Get the users username
     gp = get_game_profile()
 

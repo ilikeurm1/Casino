@@ -498,6 +498,11 @@ def init_game(
     money, money_betting = bet(money)
 
     sleep(3)
+    
+    # Section for the game
+    console.print()
+    console.print("--------------- GAME ---------------", style="bold rgb(191,84,8)")
+    console.print()
 
     # Initialize a game
     money_won = game(money_betting, DEBUG)

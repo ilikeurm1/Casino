@@ -107,6 +107,11 @@ def bet(money: int) -> tuple[int, int]:
     Returns:
         bet (tuple[int, int]): The money of the player after the bet and the money the player is betting
     """
+    
+    # Spacing prints:
+    console.print()
+    console.print("--------------- BETTING ---------------", style="bold rgb(191,84,8)")
+    console.print()
 
     # While an invalid amount is given
     while 1:
@@ -156,7 +161,6 @@ def bet(money: int) -> tuple[int, int]:
     # Valid number
     console.print()
     console.print(f"[blue]ok! You are betting {money_betting}$")
-    console.print()
 
     return money - money_betting, money_betting
 
