@@ -47,7 +47,6 @@ def guesser(money_bet: int, DEBUG: int) -> int:
     """
     # While the input isn't above 5
     while 1:
-        console.print()
         end = IntPrompt.ask(
             "[green]The game will pick a number from [b]1[/b] to [b]x[/b], what is x (minimum '5')",
             default=5,
@@ -295,7 +294,6 @@ def blackjack(money_bet: int, DEBUG: int) -> int:
     if not player_blackjack and not dealer_blackjack:
         # Players turn
         while sum(player_hand) < 21:
-            console.print()
             console.print(f"[blue]Your hand: {player_hand}, Total: {sum(player_hand)}")
             console.print()
             console.print(f"[blue]Dealer's hand: [{dealer_hand[0]}, ?]")
@@ -401,7 +399,6 @@ def baccarat(money_bet: int, DEBUG: int) -> int:
         }
         player_hand, banker_hand = DEBUG_GAME(DEBUG, "baccarat", data)
 
-    console.print()
     console.print(f"[blue]Your hand is: {player_hand} Total: {player_points}")
     sleep(3)
 
