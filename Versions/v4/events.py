@@ -124,7 +124,7 @@ def random_money_on_floor(money: int) -> int:
 
         money += percent_of(money, 10)
 
-    console.print(f" and now have {money}$")
+    console.print(f"[blue] and now have [b]{money}$[/]")
 
     return money
 
@@ -549,12 +549,13 @@ def run_random_event(user: str, money: int, DEBUG: int) -> int:
             # Tell the user no event is happening
             console.print(f"[b magenta]DEBUG: {user}! no special event this time")
 
-        sleep(5)
+        console.print("\nPress a button to continue :)")
+        getch()
 
     # If the possible events list contains at least 1 event
     if possible_events:
-        # Sort the possible events list according to the rarity (so if a 1% triggers it will run above the 10% which may also have been triggered)
-        possible_events.sort(key=lambda e: chances[e.__name__])
+        # Sort the possible events list according to the rarity (so if a 1 in 100 triggers it will run above the 1 in 10 which may also have been triggered)
+        possible_events.sort(key=lambda e: chances[e.__name__][0], reverse=True)
 
         # Choose the rarest event
         event = possible_events[0]
@@ -598,7 +599,7 @@ def main() -> int:
                 # console.print(f"Your money before the event: {money}")
                 money = run_random_event("events.py", money, d)
                 # console.print(f"Your money after the event: {money}")
-                sleep(4)
+                # sleep(4) FIXME
                 clear()
             else:
                 index = Prompt.ask(f"[green]choose which event (number in list starting with 1): {[f.__name__ for f in events]}", choices=[str(x) for x in range(1, len(events) + 1)])
