@@ -208,7 +208,12 @@ def roll_anim(slots: list[int]) -> None:
     filled = [False, False, False] # Third one not needed but is nice to show what this means
     # The string that we will insert the numbers into
     machine: str = (
-        "  _______________\n /_______________\\\n|=================|\n| ({}) | ({}) | ({}) |\n|=================|\n \\_______________/\n"
+        "  _______________\n"
+        " /_______________\\\n"
+        "|=================|\n"
+        "| ({}) | ({}) | ({}) |\n"
+        "|=================|\n"
+        " \\_______________/\n"
     )
     # The height of this string
     slot_machine_height = machine.count("\n") + 1
@@ -460,7 +465,7 @@ with open(UTILS_DIR + r"\imgs\Freddy_jumpscare.txt", "r") as rf:
 def main() -> None:
     """Main function."""
 
-    k, v = bet(10000000000000)
+    roll_anim([1,5,6])
 
 if __name__ == "__main__":
     try:
