@@ -210,7 +210,7 @@ def is_admin(gp: str) -> int:
     debug = ADMINS[gp] if gp in ADMINS.keys() else 0
 
     if debug:
-        console.log(f"You are logged in as the debugger: {gp}")
+        console.log(f"You are logged in as the debugger: {gp} (debug level: {debug})")
     else:
         console.log("You do not have permission for debugging :)")
 
