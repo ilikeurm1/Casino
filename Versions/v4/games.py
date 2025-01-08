@@ -48,12 +48,12 @@ def guesser(money_bet: int, DEBUG: int) -> int:
     # While the input isn't above 5
     while 1:
         end = IntPrompt.ask(
-            "[green]The game will pick a number from [b]1[/b] to [b]x[/b], what is x (minimum '5')",
+            "[green]The game will pick a number from [b]1[/b] to [b]x[/b], what is x (min 5, max 1000)",
             default=5,
         )
         console.print()
-        if end < 5:
-            console.print("[prompt.invalid]:pile_of_poo: number must be atleast 5")
+        if end < 5 or end > 1000:
+            console.print("[prompt.invalid]:pile_of_poo: number must be atleast 5 and at most 1000")
             continue
         break
 

@@ -148,18 +148,20 @@ def tax_evasion(money: int) -> int:
             money -= percent_of(money, 60)
 
     else:
-        # Ask where the user wants to go
-        hiding_place = Prompt.ask("[green]You dont give yourself up and start running where do you go?", case_sensitive=False, choices=hiding_places)
         # Determine if the user is gonna get cought
         cought = fifty_fifty()
+        # Ask where the user wants to go
+        hiding_place = Prompt.ask("[green]You dont give yourself up and start running where do you go?", case_sensitive=False, choices=hiding_places)
         # The user chooses to go to the window
         if hiding_place == "window":
             if cought:
                 console.print("[blue]You try to run to the window but get shot in the leg")
                 sleep(3)
-                console.print("[blue]They fine you 60% of your money for the tax evasion and another 30% extra for running away")
+                console.print("[blue]They fine you 90% of your money: 60% of your money for the tax evasion and another 30% extra for running away")
                 sleep(3)
-                console.print(f"[blue]You stare at them in disbelief when they tell you to hand over {convert_number_to_string(percent_of(money, 90))}\nBut you do because you don't want any more trouble")
+                console.print(f"[blue]You stare at them in disbelief when they tell you to hand over {convert_number_to_string(percent_of(money, 90))}\n")
+                sleep(3)
+                console.print("But you do because you don't want any more trouble")
 
                 money -= percent_of(money, 90)
 

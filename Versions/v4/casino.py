@@ -28,6 +28,7 @@ from settings import (
 from utils import (
     # Funcs
     clear,
+    convert_number_to_string,
     # Strings
     welcome,
     bye,
@@ -145,7 +146,7 @@ def main() -> None:
                 break # Stop the casino to ask for a restart or quit
 
             # Otherwise continue with the game
-            console.print(f"[blue]You now have {money}$ and are on a streak of {streak}")
+            console.print(f"[blue]You now have {convert_number_to_string(money)}$ and are on a streak of {streak}")
 
 
             # Ask to run again in the current profile
