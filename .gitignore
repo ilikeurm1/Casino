@@ -1,11 +1,10 @@
 # misc
-__pycache__
 .vscode
+__pycache__
 
 # Folders
 profiles
 Betas
-Webapp
 
 # Files
 # test files
