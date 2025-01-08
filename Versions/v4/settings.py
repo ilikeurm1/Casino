@@ -35,8 +35,7 @@ obf_count: int = (
 )
 
 # Misc
-USE_SOUND: bool = True  # If you want to use sound or not
-# ANIM_TIME: int = 3 # Seconds the animations for the game should take (about)
+USE_SOUND: bool = False  # If you want to use sound or not
 
 # endregion
 
