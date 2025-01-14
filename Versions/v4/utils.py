@@ -395,7 +395,7 @@ def DEBUG_GAME(DEBUG_MODE: int, game: str, data: dict[str, Any]) -> tuple:
 
 # region strings
 
-def welcome(user) -> Text:
+def welcome(user: str) -> Text:
     """Welcome message"""
     WELCOME = Text(
         f"Welcome to the Casino {user}!\n"
@@ -416,13 +416,9 @@ def welcome(user) -> Text:
     )
     return WELCOME
 
-def bye(hs, hw, tw) -> Text:
+def bye(hs: int, hw: int, tw: int) -> str:
     """Goodbye message"""
-    BYE = Text(
-        f"\nGood bye! Thanks for playing!\n\nCredits:\n\nProgramming: Matthijs Duhoux\n\nFun Facts:\nYour highest streak was when you won {hs} time(s) in a row\n\nYour highest winning was {hw}$\n\nIn total you won {tw} time(s)!\n",
-        style="green"
-    )
-    return BYE
+    return f"[green][b]\nGood bye! Thanks for playing!\n\nCredits:[/b]\nProgramming: Matthijs\nEvent Ideas: Sus, Kjel (both of them mentally challenged)\n\n[b]Fun Facts:[/b]\nYour highest streak was when you won {hs} time(s) in a row\nYour highest winning was {hw}$\nIn total you won {tw} time(s)!\n"
 
 LOST = Text(
     "\nSorry but you have no money left! You have lost the game!\nYou can start a new game by restarting the program!",
@@ -435,6 +431,12 @@ ROULETTE_WELCOME = Text(
     )
 
 # region ascii art
+
+# 99 percent of gamblers quit before they win big (meme)
+with open(UTILS_DIR + r"\imgs\99_percent.txt", "r") as rf:
+    NINETY_NINE_PERCENT: list[Text] = []
+    for line in rf.readlines():
+        NINETY_NINE_PERCENT.append(Text(line, "b rgb(255,255,255)", justify="center", no_wrap=True))
 
 # BLUE GRINCH:
 with open(UTILS_DIR + r"\imgs\Bluegrinch.txt", "r") as rf:

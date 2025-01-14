@@ -35,7 +35,7 @@ obf_count: int = (
 )
 
 # Misc
-USE_SOUND: bool = False  # If you want to use sound or not
+USE_SOUND: bool = True  # If you want to use sound or not
 
 # endregion
 

@@ -29,10 +29,12 @@ from utils import (
     # Funcs
     clear,
     convert_number_to_string,
+    ascii_art_anim,
     # Strings
     welcome,
     bye,
     LOST,
+    NINETY_NINE_PERCENT,
     )
 
 from games import (
@@ -127,7 +129,8 @@ def main() -> None:
             sleep(5)
 
             # Try to run a random event
-            money = run_random_event(user, money, DEBUG)
+            if money > 0:
+                money = run_random_event(user, money, DEBUG)
             
             sleep(3)
 
@@ -147,7 +150,6 @@ def main() -> None:
             # Otherwise continue with the game
             console.print(f"[blue]You now have {convert_number_to_string(money)}$ and are on a streak of {streak}")
 
-
             # Ask to run again in the current profile
             console.print()
             again = Confirm.ask("[blue]Play a new game?", default=True)
@@ -157,6 +159,19 @@ def main() -> None:
                 clear()
                 continue
             else: # Have the else here for readability (I know it's not needed)
+                # Print the dumb 99 percent meme cuz sus is a retard :)
+                console.print("[red]ARE YOU SURE???")
+                sleep(2)
+                ascii_art_anim(NINETY_NINE_PERCENT, 1)
+                sleep(3)
+                
+                sure = Confirm.ask("[blue]Do you really want to quit???", default=False)
+                if not sure:
+                    console.print("[blue]Ok! Clearing terminal for easier view!")
+                    sleep(3)
+                    clear()
+                    continue
+
                 console.print()
                 console.print(f"[blue]When you come back next time you will start with {money}$")
                 sleep(3)
