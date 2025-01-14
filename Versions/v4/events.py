@@ -43,7 +43,7 @@ def percent_of(x: int, p: int) -> int:
         p (int): Percentage to take
 
     Returns:
-        int: p% of x
+        int: x * p // 100 (p percent of x)
     """
     return x * p // 100
 
