@@ -77,12 +77,19 @@ def get_money_from_string(s: str, m: int) -> int:
         if part.isdigit():
             n += int(part)
         else:
+            # Get the length of the number part of part (if it exists)
+            num_len = 0
+            for c in part:
+                if c.isdigit():
+                    num_len += 1
+                else:
+                    break
             # Go through the dictionary and find the key that matches the suffix
             for key, value in VALS.items():
-                # If the last character of the part is the key
-                if part[-1] == key:
+                # If the last characters of the part is the key
+                if part[num_len:] == key:
                     # Add the number to the total
-                    count = int(part[:-1]) if part[:-1].isdigit() else 1
+                    count = int(part[:num_len]) if part[:num_len].isdigit() else 1
                     n += count * value
                     break
 
