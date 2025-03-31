@@ -7,12 +7,10 @@ from settings import (
     sleep, # time
     randint, random, # random
     console, Prompt, Confirm, # rich
-    music, # pygame
     # Self-made
     # Funcs
     convert_number_to_string,
     # Consts
-    UTILS_DIR,
     USE_SOUND,
     )
 
@@ -52,7 +50,7 @@ def percent_of(x: int, p: int) -> int:
 # region events
 
 def drunk_hobo(money: int) -> int:
-    console.print("You find a drunk hobo in the corner of the room, he asks you for some money")
+    console.print("[blue]You find a drunk hobo in the corner of the room, he asks you for some money")
     # Ask the player if they want to give him some money
     gave = Confirm.ask("[green]Do you want to give him some money?")
     # If the user agrees they give the hobo 5% if their money
@@ -161,7 +159,7 @@ def tax_evasion(money: int) -> int:
                 sleep(3)
                 console.print(f"[blue]You stare at them in disbelief when they tell you to hand over {convert_number_to_string(percent_of(money, 90))}\n")
                 sleep(3)
-                console.print("But you do because you don't want any more trouble")
+                console.print("[blue]But you do because you don't want any more trouble")
 
                 money -= percent_of(money, 90)
 
@@ -188,9 +186,9 @@ def tax_evasion(money: int) -> int:
                 money -= percent_of(money, 70)
 
             else:
-                console.print("You run to the VIP lounge and pay the bouncer 10% of your money")
+                console.print("[blue]You run to the VIP lounge and pay the bouncer 10% of your money")
                 sleep(3)
-                console.print("The feds don't find you and you manage to escape")
+                console.print("[blue]The feds don't find you and you manage to escape")
 
                 money -= percent_of(money, 10)
 
@@ -311,9 +309,9 @@ def sans(money: int) -> int:
     ascii_art_anim(SANS)
 
     Sans_dialog = "Sans: Hey, kid. You know that gambling is an addiction right?"
-    for c in Sans_dialog:
-        console.print(f"[blue]{c}", end="")
-        if USE_SOUND:
+    for i, c in enumerate(Sans_dialog):
+        console.print(f"[magenta]{c}", end="")
+        if USE_SOUND and c.isalpha() and i > 4: # Make sans only talk on letters
             play_sound("sans_speaking")
         sleep(.075)
 
@@ -348,7 +346,7 @@ def freddy(money: int) -> int:
     console.print("[blue]Suddenly what seems to be an mechanical bear approaches you")
     sleep(2)
     ascii_art_anim(FREDDY)
-    console.print("Freddy: Hey there you look hungry, want some of my pizza?")
+    console.print("[magenta]Freddy: Hey there you look hungry, want some of my pizza?")
     pizza = Confirm.ask("[green]Do you a piece of freddy's the pizza?", default=True)
     if pizza:
         poison = fifty_fifty()
@@ -356,7 +354,11 @@ def freddy(money: int) -> int:
         sleep(3)
         if poison:
             freaky = fifty_fifty()
-            console.print("[blue]You start feeling a little weird")
+            console.print("[blue]You start feeling a little weird", end="")
+            for _ in range(3):
+                sleep(.75)
+                console.print("[blue]."*_, end="")
+            console.print("[blue].")
             sleep(2)
             console.print("[blue]You start feeling a really weird")
             sleep(2)
@@ -369,8 +371,6 @@ def freddy(money: int) -> int:
                 if USE_SOUND:
                     console.print("[blue]You suddenly notice the loud sound coming from behind you")
                     play_sound("freddy_smash", .7)
-                    music.load(UTILS_DIR + r"/sounds/freddy_smash.mp3")
-                    music.play()
                 sleep(2)
                 console.print("[blue]Freddy is hitting you from the back!")
                 sleep(2)
