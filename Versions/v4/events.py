@@ -623,7 +623,7 @@ def run_random_event(user: str, money: int, DEBUG: int) -> int:
 
         if possible_events:
             # Tell the admin an event is happening
-            console.print(f"[b magenta]DEBUG: {user.upper()}! YOU HAVE TRIGGERED A SPECIAL EVENT: {sorted(possible_events, key=lambda f: chances[f.__name__])[0].__name__}")
+            console.print(f"[b magenta]DEBUG: {user.upper()}! YOU HAVE TRIGGERED A SPECIAL EVENT: {sorted(possible_events, key=lambda f: chances[f.__name__], reverse=True)[0].__name__}")
 
         else:
             # Tell the user no event is happening
@@ -637,7 +637,7 @@ def run_random_event(user: str, money: int, DEBUG: int) -> int:
         # Sort the possible events list according to the rarity (so if a 1 in 100 triggers it will run above the 1 in 10 which may also have been triggered)
         possible_events.sort(key=lambda e: chances[e.__name__][0], reverse=True)
 
-        # Choose the rarest event
+        # Choose the rarest event (the first one in the sorted list)
         event = possible_events[0]
 
         # Run it
