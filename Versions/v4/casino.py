@@ -114,6 +114,7 @@ def main() -> None:
                 chosen_game = baccarat
                 
             else:
+                console.print("How did you get here!")
                 continue
 
             # Conformation print
