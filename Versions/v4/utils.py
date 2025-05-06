@@ -115,6 +115,8 @@ def bet(money: int) -> tuple[int, int]:
         bet (tuple[int, int]): The money of the player after the bet and the money the player is betting
     """
     
+    money_betting: int = 0
+    
     # Spacing prints:
     console.print()
     console.print("--------------- BETTING ---------------", style="bold rgb(191,84,8)")
@@ -437,7 +439,7 @@ ROULETTE_WELCOME = Text(
     style="green"
     )
 
-# region ascii art
+# ascii art
 
 # 99 percent of gamblers quit before they win big (meme)
 with open(UTILS_DIR + r"\imgs\99_percent.txt", "r") as rf:
@@ -469,7 +471,11 @@ with open(UTILS_DIR + r"\imgs\Freddy_jumpscare.txt", "r") as rf:
     for line in rf.readlines():
         FREDDY_JUMPSCARE.append(Text(line, "b rgb(166,96,34)", justify="center", no_wrap=True))
 
-# endregion
+# Lobotomy
+with open(UTILS_DIR + r"imgs\lobotomy.txt", "r") as rf:
+    LOBOTOMY: list[Text] = []
+    for line in rf.readlines():
+        LOBOTOMY.append(Text(line, "b rgb(255,0,0)", justify="center", no_wrap=True))
 
 # endregion
 

@@ -24,6 +24,7 @@ from utils import (
     SANS,
     FREDDY,
     FREDDY_JUMPSCARE,
+    LOBOTOMY,
     )
 
 # endregion
@@ -506,6 +507,11 @@ def freddy(money: int) -> int:
 
     return money
 
+def lobotomy(money: int) -> int:
+    console.print("")
+    
+    return money
+
 # endregion
 
 # region main event function
@@ -537,6 +543,7 @@ def run_random_event(user: str, money: int, DEBUG: int) -> int:
         "knee_surgery":             (20,    6),
         "sans":                     (50,    39),
         "freddy":                   (50,    21),
+        "lobotomy":                 (20,    15),
     }
 
     possible_events: list = []
@@ -550,6 +557,7 @@ def run_random_event(user: str, money: int, DEBUG: int) -> int:
     knee_surgery_chance =    randint(1, chances["knee_surgery"]         [0])
     sans_chance =            randint(1, chances["sans"]                 [0])
     freddy_chance =          randint(1, chances["freddy"]               [0])
+    lobotomy_chance =        randint(1, chances["lobotomy"]             [0])
 
     # Add all the possible events to the possible events list
     # the numbers that they have to be equal to are just some I picked out... I didn't want all them to just say 1
@@ -576,6 +584,9 @@ def run_random_event(user: str, money: int, DEBUG: int) -> int:
 
     if freddy_chance == chances["freddy"][1]:
         possible_events.append(freddy)
+        
+    if lobotomy_chance == chances["lobotomy"][1]:
+        possible_events.append(lobotomy)
 
     if DEBUG:
         # generate the generated numbers list
@@ -588,6 +599,7 @@ def run_random_event(user: str, money: int, DEBUG: int) -> int:
             knee_surgery_chance,
             sans_chance,
             freddy_chance,
+            lobotomy_chance
         ]
 
         debug_events: list[tuple[str, int, bool, int]] = []
