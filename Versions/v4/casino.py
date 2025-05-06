@@ -59,13 +59,15 @@ def main() -> None:
     # Outer game loop
     while 1:
         # Initialize the game vars
+        # Bool
         again: bool = False
+        # Ints
         streak: int = 0
         times_won: int = 0
         highest_streak: int = 0
         highest_earning: int = 0
         DEBUG: int = 0
-
+        # Other
         clear()
 
         # Get the user and their money
@@ -110,6 +112,9 @@ def main() -> None:
 
             elif game == "5":
                 chosen_game = baccarat
+                
+            else:
+                continue
 
             # Conformation print
             console.print()
