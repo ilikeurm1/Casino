@@ -366,6 +366,15 @@ def sans(money: int) -> int:
         console.print("[blue]You start thinking of something to do and think of the great idea to tell a joke!")
         sleep(4)
         console.print("[blue]You tell Sans a pun, ", end="")
+        sleep(2)
+        if dodge:
+            console.print("he laughs a little and leaves you alone.")
+        else:
+            console.print("he doesn't find it amusing and hits you in the head, you lose 50% of your money")
+            
+            money -= percent_of(money, 50)
+
+    elif action == "mercy":
         console.print("[blue]You start begging Sans for mercy")
         sleep(3)
         console.print("[blue]You tell him about your 2 children and nice wife")
