@@ -308,33 +308,102 @@ def sans(money: int) -> int:
     sleep(3)
     ascii_art_anim(SANS)
 
-    Sans_dialog = "Sans: Hey, kid. You know that gambling is an addiction right?"
-    for i, c in enumerate(Sans_dialog):
+    for i, c in enumerate("Sans: Hey, kid. You know that gambling is an addiction right?"):
         console.print(f"[magenta]{c}", end="")
-        if USE_SOUND and c.isalpha() and i > 4: # Make sans only talk on letters
+        if USE_SOUND and c.isalpha() and i > 5: # Make sans only talk on letters
             play_sound("sans_speaking")
-        sleep(.075)
+            
+        if c in (".", "?"):
+            sleep(.5)
+        else: 
+            sleep(.075)
 
     console.print()
 
     sleep(3)
     action = Prompt.ask("[green]What do you want to do?", choices=["fight", "act", "mercy"], case_sensitive=False)
+    dodge = fifty_fifty()
     if action == "fight":
         console.print("[blue]You try to fight Sans but he dodges all your attacks")
         sleep(3)
-        console.print("[blue]He hits you with a bone and you lose 50% of your money")
-
-        money -= percent_of(money, 50)
+        console.print("[blue]He tells you that you can't win against him")
+        sleep(3)
+        if not dodge:
+            console.print("[blue]You start feeling tired and can't keep up with Sans")
+            sleep(3)
+            console.print("[blue]You feel your final strength being sapped as you try to dodge his attacks")
+            sleep(3)
+            console.print("[blue]You feel a sharp pain in your side and realize you can't keep going")
+            sleep(3)
+            console.print("[blue]Sans hits you with his bone and you lose 50% of your money")
+            
+            money -= percent_of(money, 50)
+        
+        else:
+            console.print("[blue]You dodge his attack and he gets mad")
+            sleep(2)
+            console.print("[blue]You keep dodging and eventually Sans starts to slow down")
+            sleep(3)
+            console.print("[blue]He tells you to stop gambling and go home")
+            sleep(3)
+            console.print("[blue]You feel a little bad for Sans, he just wanted to help you")
+            sleep(3)
+            console.print("[blue]But you're blinded by rage and snap back to reality, this guy wanted to kill you!")
+            sleep(3)
+            console.print("[blue]You keep fighting and you end Sans. He had a lot of money on him...", end=" ")
+            sleep(2)
+            for c in "maybe he is a gambler??":
+                console.print(f"[blue]{c}", end="")
+                sleep(.075)
+            console.print("?")
+            sleep(4)
+            console.print("[blue]You take his money which amounts to 20% of what you currently have!")
+            sleep(3)
+            
+            money += percent_of(money, 20)    
 
     elif action == "act":
-        console.print("[blue]You tell Sans a pun, and he leaves you alone")
-
-    elif action == "mercy":
-        console.print("[blue]There is no mercy with an addiction kid!")
+        console.print("[blue]You start thinking of something to do and think of the great idea to tell a joke!")
+        sleep(4)
+        console.print("[blue]You tell Sans a pun, ", end="")
+        console.print("[blue]You start begging Sans for mercy")
         sleep(3)
-        console.print("[blue]He hits you with his BIG bone and you lose 50% of your money")
+        console.print("[blue]You tell him about your 2 children and nice wife")
+        sleep(3)
+        if dodge:
+            console.print("[blue]Sans is moved by your story and gives you 10% of your money to help your family")
+            sleep(3)
+            for i, c in enumerate("Sans: Hey bro, please stop gambling so much man. I know you need money for your family but this gambling stuff only hurts you"):
+                console.print(f"[magenta]{c}", end="")
+                if USE_SOUND and c.isalpha() and i > 5:
+                    play_sound("sans_speaking")
 
-        money -= percent_of(money, 50)
+                if c in (",", ".", "?"): # Comma works well here as if he Sans sighs when telling you to stop.
+                    sleep(.5)
+                else: 
+                    sleep(.075)
+
+            console.print("!")
+
+            money += percent_of(money, 10)
+            
+        else:
+            console.print("[blue]But he doesn't care about your sob story")
+            sleep(3)
+            
+            for i, c in enumerate("Sans: There is no mercy with an addiction kid"):
+                console.print(f"[magenta]{c}", end="")
+                
+                if USE_SOUND and c.isalpha() and i > 5:
+                    play_sound("sans_speaking")
+
+                sleep(.075)
+            
+            console.print("!")
+            sleep(3)
+            console.print("[blue]He hits you with his BIG bone and you lose 50% of your money")
+
+            money -= percent_of(money, 50)
 
     return money
 
